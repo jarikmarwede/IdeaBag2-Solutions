@@ -1,4 +1,4 @@
-# ideabag2-projects
+# IdeaBag2-Projects
 This is a collection of projects from the "Idea Bag 2" app ("Programming Ideas 2" on the google play store).
 
 All projects are written in python 3.
