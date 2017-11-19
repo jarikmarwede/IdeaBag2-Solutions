@@ -4,7 +4,7 @@ This document specifies how to contribute to the repository.
 ### Table Of Contents
 * [Contributing code](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#contributing-code)
   * [Contributing a new project](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#contributing-a-new-project)
-  * [Contributing to an existing project](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#contributing-to--an-existing-project)
+  * [Contributing to an existing project](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#contributing-to-an-existing-project)
 
 ## Contributing code
 
