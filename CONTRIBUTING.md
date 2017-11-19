@@ -1,9 +1,14 @@
 # Welcome
-This document specifies how to contribute to this repository.
+This document specifies how to contribute to the repository.
+
+### Table Of Contents
+* [Contributing code](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#contributing-code)
+  * [Contributing a new project](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#contribute-a-new-project)
+  * [Contributing to an existing project](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#contribute-to--an-existing-project)
 
 ## Contributing code
 
-### Contribute a new project
+### Contributing a new project
 
 When adding a new project please remember:
 * Add a shebang line
@@ -11,7 +16,7 @@ When adding a new project please remember:
 * Add ways to both import the project and to run it individually
 * All rules for contributing to existing projects
 
-### Contribute to  an existing project
+### Contributing to an existing project
 
 When improving a project please follow these rules:
 * Always add docstrings
