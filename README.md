@@ -11,11 +11,11 @@ You can find the app on the google play store [here](https://play.google.com/sto
 ## How to use
 If you want to get the projects for playing around with them or editing them just download them from Github.
 All projects need [python 3.5](https://www.python.org/downloads/) or later installed and for some projects external modules are required. 
-Go to Dependencies to check which modules you need to install.
+Go to [Dependencies](https://github.com/jarik-marwede/IdeaBag2-Projects#dependencies) to check which modules you need to install.
 
 ## License
 This repository uses the GNU General Public License v3.0.
-A copy of it can be found in LICENSE.
+A copy of it can be found in [LICENSE](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/LICENSE).
 
 ## Dependencies
 * [Python 3.5+](https://www.python.org/downloads/)
