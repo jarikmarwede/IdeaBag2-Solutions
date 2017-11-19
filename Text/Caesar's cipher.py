@@ -68,4 +68,3 @@ if __name__ == "__main__":
     ENCRYPTED = encrypt(STRING, SHIFT)
     print("Encrypted: " + ENCRYPTED)
     print("Decrypted: " + decrypt(ENCRYPTED, SHIFT))
-    

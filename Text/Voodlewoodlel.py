@@ -31,8 +31,7 @@ def voodlewoodlel(string):
             else:
                 new_string += char
         new_string += "\n"
-    # remove last newline
-    new_string = new_string[:len(new_string) - 1]
+    new_string = new_string.rstrip()
     return new_string
 
 

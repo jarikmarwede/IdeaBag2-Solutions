@@ -38,10 +38,10 @@ def scoobydoo(string: str) -> str:
             else:
                 new_string += char
         new_string += " "
-    new_string[:len(new_string) - 1]
+    new_string = new_string.rstrip()
     return new_string
-                
-            
+
+
 if __name__ == "__main__":
     STRING = input("Please input a string: ")
     print(scoobydoo(STRING))

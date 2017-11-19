@@ -20,7 +20,8 @@ def translate_to(string: str) -> str:
     """Return string translated to rovarspraket
     """
     vowels = ("a", "e", "i", "o", "u")
-    consonants = ("b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "x", "z")
+    consonants = ("b", "c", "d", "f", "g", "h", "j", "k", "l", "m",
+                  "n", "p", "q", "r", "s", "t", "v", "x", "z")
     new_string = ""
     for index, char in enumerate(string):
         if char.lower() in consonants:
@@ -42,7 +43,8 @@ def translate_from(string: str) -> str:
     """Return string translated from rovarspraket
     """
     vowels = ("a", "e", "i", "o", "u")
-    consonants = ("b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "x", "z")
+    consonants = ("b", "c", "d", "f", "g", "h", "j", "k", "l", "m",
+                  "n", "p", "q", "r", "s", "t", "v", "x", "z")
     new_string = ""
     skip = 0
     for index, char in enumerate(string):
@@ -50,7 +52,9 @@ def translate_from(string: str) -> str:
             skip -= 1
             continue
         if index < len(string) - 2:
-            if char.lower() in consonants and string[index + 1] == "o" and string[index + 2] == char:
+            if (char.lower() in consonants and
+                    string[index + 1] == "o" and
+                    string[index + 2] == char):
                 new_string += char
                 skip = 2
             elif index != 0:

@@ -14,6 +14,7 @@ for the multiples of five print "Buzz".
 For numbers which are multiples of both three and five print "FizzBuzz".
 """
 
+
 def fizzbuzz() -> list:
     """Return a list of numbers from 1 to 100,
     replacing multiples of three with Fizz,
@@ -32,6 +33,7 @@ def fizzbuzz() -> list:
             fizzbuzz_list.append(num)
     return fizzbuzz_list
 
+
 def xfizzbuzz():
     """Generator function for numbers from 1 to 100
     with every multiple of three replaced with Fizz,
@@ -47,6 +49,7 @@ def xfizzbuzz():
             yield "Buzz"
         else:
             yield num
+
 
 if __name__ == "__main__":
     for num in fizzbuzz():
