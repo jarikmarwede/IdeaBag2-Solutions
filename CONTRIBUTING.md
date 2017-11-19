@@ -11,18 +11,18 @@ This document specifies how to contribute to the repository.
 ### Contributing a new project
 
 When adding a new project please remember:
-* Add a shebang line
-* Add a module docstring
+* Add a [shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)) line
+* Add a module docstring containing the title and the description of the project from *Idea Bag 2*
 * Add ways to both import the project and to run it individually
-* All rules for contributing to existing projects
+* All rules for [contributing to existing projects](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#contributing-to-an-existing-project)
 
 ### Contributing to an existing project
 
 When improving a project please follow these rules:
 * Always add docstrings
 * Use comments for everything not self explanatory
-* Keep the Zen of Python in mind
-* Before commiting check your code for codestyle issues
+* Keep the [Zen of Python](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#the-zen-of-python) in mind
+* Before commiting check your code for [codestyle](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#codestyle) issues
 
 #### The Zen of Python
 The Zen of Python are some generall suggestions on how to write python code.
