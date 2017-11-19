@@ -14,6 +14,7 @@ When adding a new project please remember:
 * Add a [shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)) line
 * Add a module docstring containing the title and the description of the project from *Idea Bag 2*
 * Add ways to both import the project and to run it individually
+* If the project requires more than one file you should create a folder named after the project in the appropriate category
 * All rules for [contributing to existing projects](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#contributing-to-an-existing-project)
 
 ### Contributing to an existing project
