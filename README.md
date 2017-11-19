@@ -17,6 +17,9 @@ If you want to get the projects for playing around with them or editing them jus
 All projects need [python 3.5](https://www.python.org/downloads/) or later installed and for some projects external modules are required. 
 Go to [Dependencies](https://github.com/jarik-marwede/IdeaBag2-Projects#dependencies) to check which modules you need to install.
 
+## Contributing
+If you want to contribute to the repository in any way please take a look at [CONTRIBUTING.md](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md).
+
 ## License
 This repository uses the GNU General Public License v3.0.
 A copy of it can be found in [LICENSE](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/LICENSE).
