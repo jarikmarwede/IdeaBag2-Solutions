@@ -23,7 +23,7 @@ def count_lines(string: str) -> int:
     """Count number of lines in string
     """
     count = 0
-    for _ in string.split("\n"):
+    for _ in string.splitlines():
         count += 1
     return count
 
@@ -31,14 +31,15 @@ def count_lines(string: str) -> int:
 def count_paragraphs(string: str) -> int:
     """Count number of paragraphs in string
     """
-    count = 0
-    for _ in string.split("\n\n"):
-        count += 1
+    count = 1
+    for line in string.splitlines():
+        if line == "":
+            count += 1
     return count
 
 
 if __name__ == "__main__":
-    STRING = input("Please input a string: ")
+    STRING = input("Please input a string: ").replace("\\n", "\n")
     print("Words: " + str(count_words(STRING)))
     print("Lines: " + str(count_lines(STRING)))
     print("Paragraphs: " + str(count_paragraphs(STRING)))
