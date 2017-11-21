@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Encrypt/Decrypt strings by shifting them in alphabeticall order
+"""
+Encrypt/Decrypt strings by shifting them in alphabeticall order
 
 Title:
 Caesar's cipher
