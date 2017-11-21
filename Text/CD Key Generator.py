@@ -18,16 +18,21 @@ For added complexity,
 create the mechanism for validating the generated key.
 """
 import random
-import os
+import os    
 
 
-def generate_key(characters: tuple, length: int) -> str:
+def generate_key(characters: tuple, length: int, file_name=None) -> str:
     """Return random string containing specified characters
     """
     random_result = random.choices(characters, k=length)
     string = ""
     for character in random_result:
         string += character
+    # checking whether key already exists in file
+    if file_name is not None:
+        with open(file_name, "r") as file:
+            if string in file.read():
+                return generate_key(characters, length)
     return string
 
 
@@ -45,7 +50,7 @@ def add_key_to_file(key: str, file_name: str):
 def new_key(characters: tuple, length: int, file_name: str):
     """Generate new key and append to file
     """
-    key = generate_key(characters, length)
+    key = generate_key(characters, length, file_name)
     add_key_to_file(key, file_name)
 
 
