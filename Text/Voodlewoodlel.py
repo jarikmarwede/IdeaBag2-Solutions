@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Replace all vowels in s string with oodle
 
-Title: Voodlewoodlel
+Title:
+Voodlewoodlel
 
 Description:
 Boodleb wanted to see how his friend's name would look
@@ -36,5 +37,6 @@ def voodlewoodlel(string):
 
 
 if __name__ == "__main__":
-    STRING = input("Please input a string: ").replace("\\n", "\n")
-    print(voodlewoodlel(STRING))
+    while True:
+        STRING = input("Please input a string: ").replace("\\n", "\n")
+        print(voodlewoodlel(STRING))

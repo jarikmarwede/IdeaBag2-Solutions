@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Translate to and from rovarspraket
 
-Title: Rovarspraket
+Title:
+Rovarspraket
 
 Description:
 Rovarspraket which means "Robber's language" in Swedish
@@ -74,7 +75,8 @@ def translate_from(string: str) -> str:
 
 
 if __name__ == "__main__":
-    STRING = input("Please input a string: ")
-    ROVARSPRAKET = translate_to(STRING)
-    print(ROVARSPRAKET)
-    print(translate_from(ROVARSPRAKET))
+    while True:
+        STRING = input("Please input a string: ")
+        ROVARSPRAKET = translate_to(STRING)
+        print(ROVARSPRAKET)
+        print(translate_from(ROVARSPRAKET))

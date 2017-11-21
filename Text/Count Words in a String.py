@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Count words, lines and paragraphs in a string
 
-Title: Count Words in a String
+Title:
+Count Words in a String
 
 Description:
-Develop a program that counts the number of individual woeds in a string.
+Develop a program that counts the number of individual words in a string.
 For added complexity,
 try to see if you can find the number of paragraphs in it too.
 """
@@ -39,7 +40,8 @@ def count_paragraphs(string: str) -> int:
 
 
 if __name__ == "__main__":
-    STRING = input("Please input a string: ").replace("\\n", "\n")
-    print("Words: " + str(count_words(STRING)))
-    print("Lines: " + str(count_lines(STRING)))
-    print("Paragraphs: " + str(count_paragraphs(STRING)))
+    while True:
+        STRING = input("Please input a string: ").replace("\\n", "\n")
+        print("Words: " + str(count_words(STRING)))
+        print("Lines: " + str(count_lines(STRING)))
+        print("Paragraphs: " + str(count_paragraphs(STRING)))

@@ -91,8 +91,9 @@ def create_website(file_name: str, html: str):
 
 
 if __name__ == "__main__":
-    FILE = input("Please input the path to the file "
-                 "you want to convert to HTML: ")
-    FILE_NAME = input("How should the new HTML file be called: ")
-    HTML = generate_from_file(FILE)
-    create_website(FILE_NAME, HTML)
+    while True:
+        FILE = input("Please input the path to the file "
+                     "you want to convert to HTML: ")
+        FILE_NAME = input("How should the new HTML file be called: ")
+        HTML = generate_from_file(FILE)
+        create_website(FILE_NAME, HTML)

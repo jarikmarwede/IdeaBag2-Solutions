@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Convert text to morse code or morse code to text
 
-Title: Morse Code Maker
+Title:
+Morse Code Maker
 
 Description:
 Make a program which takes in a sting from the user
@@ -57,7 +58,8 @@ def convert_from_morse_code(string: str) -> str:
 
 
 if __name__ == "__main__":
-    STRING = input("Please input a string: ")
-    MORSE_CODE = convert_to_morse_code(STRING)
-    print(MORSE_CODE)
-    print(convert_from_morse_code(MORSE_CODE))
+    while True:
+        STRING = input("Please input a string: ")
+        MORSE_CODE = convert_to_morse_code(STRING)
+        print(MORSE_CODE)
+        print(convert_from_morse_code(MORSE_CODE))

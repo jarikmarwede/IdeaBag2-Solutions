@@ -3,7 +3,8 @@
 Then return the string that is left
 with all vowels added to the end of it.
 
-Title: Disemvoweler
+Title:
+Disemvoweler
 
 Description:
 Make a program that removes every vowel and whitespace found in a string.
@@ -31,5 +32,6 @@ def disemvowel(string: str) -> str:
 
 
 if __name__ == "__main__":
-    STRING = input("Please input a string: ")
-    print(disemvowel(STRING))
+    while True:
+        STRING = input("Please input a string: ")
+        print(disemvowel(STRING))

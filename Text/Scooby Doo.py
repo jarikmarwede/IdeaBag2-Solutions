@@ -2,7 +2,8 @@
 """Replace all characters in each word in string with "r"
 until a vowel appears in it
 
-Title: Scooby Doo
+Title:
+Scooby Doo
 
 Description
 In the popular kids show "Scooby-Doo",
@@ -43,5 +44,6 @@ def scoobydoo(string: str) -> str:
 
 
 if __name__ == "__main__":
-    STRING = input("Please input a string: ")
-    print(scoobydoo(STRING))
+    while True:
+        STRING = input("Please input a string: ")
+        print(scoobydoo(STRING))

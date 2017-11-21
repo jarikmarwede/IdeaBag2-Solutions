@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Encrypt/Decrypt strings by shifting them in alphabeticall order
 
-Title: Caesar's cipher
+Title:
+Caesar's cipher
 
 Description:
 The user first enters a number to be used as the shift parameter.
@@ -63,8 +64,9 @@ def decrypt(string: str, shift: int) -> str:
     
 
 if __name__ == "__main__":
-    STRING = input("Please input the string that you want to encrypt: ")
-    SHIFT = int(input("Please input the rotation: "))
-    ENCRYPTED = encrypt(STRING, SHIFT)
-    print("Encrypted: " + ENCRYPTED)
-    print("Decrypted: " + decrypt(ENCRYPTED, SHIFT))
+    while True:
+        STRING = input("Please input the string that you want to encrypt: ")
+        SHIFT = int(input("Please input the rotation: "))
+        ENCRYPTED = encrypt(STRING, SHIFT)
+        print("Encrypted: " + ENCRYPTED)
+        print("Decrypted: " + decrypt(ENCRYPTED, SHIFT))

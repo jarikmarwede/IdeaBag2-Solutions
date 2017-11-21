@@ -54,14 +54,15 @@ def new_key(characters: tuple, length: int, file_name: str):
     add_key_to_file(key, file_name)
 
 
-while True:
-    CHOICE = input("Do you want to generate a key or also append it to a file (gen|append): ")
-    if CHOICE == "gen":
-        CHARACTERS = tuple(input("Please specify which characters the generator should use: "))
-        LENGTH = int(input("How long should the key be: "))
-        print(generate_key(CHARACTERS, LENGTH))
-    elif CHOICE == "append":
-        CHARACTERS = tuple(input("Please specify which characters the generator should use: "))
-        LENGTH = int(input("How long should the key be: "))
-        FILE_NAME = input("Please specify the file name that the key should be appended to: ")
-        new_key(CHARACTERS, LENGTH, FILE_NAME)
+if __name__ == "__main__":
+    while True:
+        CHOICE = input("Do you want to generate a key or also append it to a file (gen|append): ")
+        if CHOICE == "gen":
+            CHARACTERS = tuple(input("Please specify which characters the generator should use: "))
+            LENGTH = int(input("How long should the key be: "))
+            print(generate_key(CHARACTERS, LENGTH))
+        elif CHOICE == "append":
+            CHARACTERS = tuple(input("Please specify which characters the generator should use: "))
+            LENGTH = int(input("How long should the key be: "))
+            FILE_NAME = input("Please specify the file name that the key should be appended to: ")
+            new_key(CHARACTERS, LENGTH, FILE_NAME)

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Return first half of a string
 
-Title: Half the String
+Title:
+Half the String
 
 Description:
 Make a program that prompts the user to enter a string.

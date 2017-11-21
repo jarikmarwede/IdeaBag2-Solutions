@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Count vowels used in a string
 
-Title: Count Vowels
+Title:
+Count Vowels
 
 Description:
 Develop a program that has the user enter a string.
@@ -51,6 +52,7 @@ def count_vowels(string: str):
 
 
 if __name__ == "__main__":
-    STRING = input("Please input a string: ")
-    print("")
-    count_vowels(STRING)
+    while True:
+        STRING = input("Please input a string: ")
+        print("")
+        count_vowels(STRING)

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Checks whether a string is a palindrome or not
 
-Title: Check if Palindrome
+Title:
+Check if Palindrome
 
 Description:
 Develop a program that checks if a string entered by a user is a palindrome.

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Check whether a string is alphabetically ordered
 
-Title: In Order
+Title:
+In Order
 
 Description:
 Make a program that notifies a user
@@ -40,5 +41,6 @@ def check_order(string: str) -> str:
 
 
 if __name__ == "__main__":
-    STRING = input("Please input a string: ")
-    print(check_order(STRING))
+    while True:
+        STRING = input("Please input a string: ")
+        print(check_order(STRING))

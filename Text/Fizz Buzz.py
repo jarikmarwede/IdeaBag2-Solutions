@@ -5,7 +5,8 @@ but replace every number that is a multiple of 3 with Fizz,
 every number that is a multiple of 5 with Buzz
 and every number that is both with FizzBuzz
 
-Title: Fizz Buzz
+Title:
+Fizz Buzz
 
 Description:
 Develop a program that prints the numbers from 1 to 100.

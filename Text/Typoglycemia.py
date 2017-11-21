@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
 
-Title: Typoglycemia
+Title:
+Typoglycemia
 
 Description:
 Make a program that accepts a string
@@ -47,5 +48,6 @@ def misspell(string: str) -> str:
 
 
 if __name__ == "__main__":
-    STRING = input("Please input a string: ")
-    print(misspell(STRING))
+    while True:
+        STRING = input("Please input a string: ")
+        print(misspell(STRING))

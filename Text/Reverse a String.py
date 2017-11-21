@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Reverse a string
 
-Title: Reverse a String
+Title:
+Reverse a String
 
 Description:
 Develop a program that has the user enter a string.
@@ -19,5 +20,6 @@ def reverse(string: str) -> str:
 
 
 if __name__ == "__main__":
-    STRING = input("Please input a string: ")
-    print(reverse(STRING))
+    while True:
+        STRING = input("Please input a string: ")
+        print(reverse(STRING))
