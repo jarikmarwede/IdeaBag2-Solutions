@@ -5,7 +5,7 @@ Wandering Fingers
 
 Description:
 Software like Swype and SwiftKey lets smartphone users enter text
-by dragging therir finger over th on-screen keyboard,
+by dragging their finger over th on-screen keyboard,
 rather than tapping on each letter.
 You'll be given a string of characters
 representing the letters the user has dragged their finger over.
@@ -18,7 +18,7 @@ find all possible output words 5 characters or longer from:
 Your program should find all possible words (5+ characters)
 that can be derived from the strings supplied.
 Use http://norvig.com/ngrams/enable1.txt as your search dictionary.
-The order of the output words doesn't matter
+The order of the output words doesn't matter.
 """
 
 
