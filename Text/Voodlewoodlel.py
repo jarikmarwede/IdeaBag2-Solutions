@@ -20,7 +20,7 @@ Soodlenoodlestroodle
 """
 
 
-def voodlewoodlel(string):
+def voodlewoodlel(string: str):
     """Return voodlewoodlel version of string
     """
     vowels = ("a", "e", "i", "o", "u")
