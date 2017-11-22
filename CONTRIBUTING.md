@@ -3,23 +3,24 @@ This document specifies how to contribute to the repository.
 
 ### Table Of Contents
 * [Contributing code](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#contributing-code)
-  * [Contributing a new project](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#contributing-a-new-project)
-  * [Contributing to an existing project](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#contributing-to-an-existing-project)
+  * [Contributing a new program](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#contributing-a-new-program)
+  * [Contributing to an existing program](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#contributing-to-an-existing-program)
 
 ## Contributing code
 
-### Contributing a new project
+### Contributing a new program
 
-When adding a new project please remember:
+When adding a new program please remember:
 * Add a [shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)) line
-* Add a module docstring containing the title and the description of the project from *Idea Bag 2*
-* Add ways to both import the project and to run it individually
-* If the project requires more than one file you should create a folder named after the project in the appropriate category
-* All rules for [contributing to existing projects](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#contributing-to-an-existing-project)
+* Add a module docstring containing the title and the description of the idea from *Idea Bag 2*
+* Add ways to both import the program and to run it individually
+* Try to use only modules from the standard library, if possible
+* If the program requires more than one file you should create a folder named after the program in the appropriate category
+* All rules for [contributing to existing programs](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#contributing-to-an-existing-program)
 
-### Contributing to an existing project
+### Contributing to an existing program
 
-When improving a project please follow these rules:
+When improving a program please follow these rules:
 * Always add docstrings
 * Use comments for everything not self explanatory
 * Keep the [Zen of Python](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#the-zen-of-python) in mind
@@ -57,9 +58,9 @@ inside the python shell.
 > Namespaces are one honking great idea -- let's do more of those!
 
 #### Codestyle
-In generall, all projects should follow the [PEP 8](https://pep8.org/) styleguide.
+In generall, all programs should follow the [PEP 8](https://pep8.org/) styleguide.
 However this is just a suggestion.
-Just try to make your code as readable as possible.
+Just try to make your code as readable and understandable as possible.
 
 To automatically check for PEP 8 complience use:
 * [Pylint](https://www.pylint.org/)
