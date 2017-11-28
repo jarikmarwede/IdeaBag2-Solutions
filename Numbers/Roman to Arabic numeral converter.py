@@ -24,7 +24,7 @@ Submitted by Alex Lushiku
 """
 
 
-def convert_to_arabic(number: str):
+def convert_to_arabic(number: str) -> int:
     """Return arabic version of number
     """
     result = 0
