@@ -17,11 +17,15 @@ import random
 
 
 def gamble() -> list:
+    """Return a list of 6 random integers in the range of 1-49
+    """
     result = random.choices(range(1, 50), k=6)
     return result
 
 
 def lotto(guesses: list) -> int:
+    """Return number of right guesses
+    """
     result = gamble()
     right = 0
     for guess in guesses:
