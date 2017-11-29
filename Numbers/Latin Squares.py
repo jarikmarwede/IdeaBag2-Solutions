@@ -28,6 +28,7 @@ Example output
 true
 false
 false
+"""
 
 
 def is_latin_square(row_length: int, array: str) -> bool:
