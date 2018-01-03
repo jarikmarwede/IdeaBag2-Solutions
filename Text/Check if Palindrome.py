@@ -14,10 +14,7 @@ An example is "racecar" or "madam".
 def check_palindrome(string: str) -> bool:
     """Return whether string is a palindrome or not
     """
-    reversed_string = ""
-    for char in reversed(string.lower()):
-        reversed_string += char
-    if reversed_string == string.lower():
+    if "".join(reversed(string)) == string.lower():
         return True
     return False
 
