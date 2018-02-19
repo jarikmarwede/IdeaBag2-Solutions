@@ -27,3 +27,4 @@ A copy of it can be found in [LICENSE](https://github.com/jarik-marwede/IdeaBag2
 
 ## Dependencies
 * [Python 3.5+](https://www.python.org/downloads/)
+* [Pillow 5.0.0](https://github.com/python-pillow/Pillow) (Graphics and Multimedia/Dominant Colors)
