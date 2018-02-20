@@ -38,9 +38,14 @@ class MainWindow:
         self.second_dominant_color = tk.StringVar()
         self.third_dominant_color = tk.StringVar()
 
+        self.current_image_frame = ttk.Frame(self.master)
         self.bands_frame = ttk.Frame(self.master)
         self.colors_frame = ttk.Frame(self.master)
 
+        self.current_image_label = ttk.Label(self.current_image_frame,
+                                             text="Currently opened image: ")
+        self.current_image_label2 = ttk.Label(self.current_image_frame,
+                                              text="None")
         self.bands_label = ttk.Label(self.bands_frame,
                                      text="The bands of the image are: ")
         self.bands_entry = ttk.Entry(self.bands_frame,
@@ -65,16 +70,19 @@ class MainWindow:
                                               command=self.new_image,
                                               text="Choose a new image")
 
-        self.bands_frame.grid(row=0, column=0, padx=5, pady=10)
-        self.colors_frame.grid(row=1, column=0, padx=5, pady=10)
+        self.current_image_frame.grid(row=0, column=0, padx=5, pady=10)
+        self.bands_frame.grid(row=1, column=0, padx=5, pady=10)
+        self.colors_frame.grid(row=2, column=0, padx=5, pady=10)
 
+        self.current_image_label.grid(row=0, column=0, padx=5, pady=2.5)
+        self.current_image_label2.grid(row=1, column=0, padx=5, pady=5)
         self.bands_label.grid(row=0, column=0, padx=5, pady=2.5)
         self.bands_entry.grid(row=1, column=0, padx=5, pady=5)
         self.dominant_colors_label.grid(row=0, column=0, padx=5, pady=2.5, columnspan=3)
         self.dominant_color_entry.grid(row=1, column=0, padx=5, pady=5)
         self.second_dominant_color_entry.grid(row=1, column=1, padx=5, pady=5)
         self.third_dominant_color_entry.grid(row=1, column=2, padx=5, pady=5)
-        self.choose_image_button.grid(row=2, column=0, padx=10, pady=10)
+        self.choose_image_button.grid(row=3, column=0, padx=10, pady=10)
 
     def new_image(self):
         """Get image path from user and display dominant colors."""
@@ -83,6 +91,8 @@ class MainWindow:
                                                         defaultextension=".png",
                                                         filetypes=[("Image", ("*.png", "*jpg")),
                                                                    ("All files", "*.*")])
+        self.current_image_label2.config(text=current_image_path)
+
         image = load_image(current_image_path)
 
         colors = image.getcolors(maxcolors=image.size[0]*image.size[1])
