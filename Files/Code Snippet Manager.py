@@ -16,6 +16,7 @@ import string
 import tkinter as tk
 import tkinter.messagebox
 from tkinter import ttk
+DEFAULT_SEARCH_SELECTION = "name"
 
 
 class CodeSnippet:
@@ -50,19 +51,37 @@ class MainWindow:
         self.code_snippets = []
         self.table = []
 
+        # create variables for widgets
+        self.search_selection = tk.StringVar(value=DEFAULT_SEARCH_SELECTION)
+
         # create frames
         self.search_frame = ttk.Frame(self.master)
+        self.search_radiobuttons_frame = ttk.Frame(self.search_frame)
         self.selection_buttons_frame = ttk.Frame(self.master)
         self.code_buttons_frame = ttk.Frame(self.master)
 
         # create other widgets
+        self.search_button = ttk.Button(self.search_frame,
+                                        text="Search",
+                                        command=self.refresh_treeview)
         self.search_bar_entry = ttk.Entry(self.search_frame,
                                           width=40)
-        self.name_search_selection_radiobutton = ttk.Radiobutton(self.search_frame)
-        self.language_search_selection_radiobutton = ttk.Radiobutton(self.search_frame)
-        self.type_search_selection_radiobutton = ttk.Radiobutton(self.search_frame)
-        self.code_search_selection_radiobutton = ttk.Radiobutton(self.search_frame)
-        self.tags_search_selection_radiobutton = ttk.Radiobutton(self.search_frame)
+        self.name_search_selection_radiobutton = ttk.Radiobutton(self.search_radiobuttons_frame,
+                                                                 text="Name",
+                                                                 value="name",
+                                                                 variable=self.search_selection)
+        self.language_search_selection_radiobutton = ttk.Radiobutton(self.search_radiobuttons_frame,
+                                                                     text="Language",
+                                                                     value="language",
+                                                                     variable=self.search_selection)
+        self.type_search_selection_radiobutton = ttk.Radiobutton(self.search_radiobuttons_frame,
+                                                                 text="Type",
+                                                                 value="type",
+                                                                 variable=self.search_selection)
+        self.tags_search_selection_radiobutton = ttk.Radiobutton(self.search_radiobuttons_frame,
+                                                                 text="Tags",
+                                                                 value="tags",
+                                                                 variable=self.search_selection)
         self.snippet_selection_treeview = ttk.Treeview(self.master,
                                                        columns=("Name", "Type", "Language", "Tags"),
                                                        selectmode="browse")
@@ -84,6 +103,7 @@ class MainWindow:
                                               command=self.copy_snippet)
 
         # widget bindings
+        self.search_bar_entry.bind("<KeyPress-Return>", lambda _: self.refresh_treeview())
         self.snippet_selection_treeview.bind("<<TreeviewSelect>>", self.refresh_text_editor)
 
         # configure treeview widget
@@ -95,11 +115,17 @@ class MainWindow:
 
         # display frames
         self.search_frame.grid(row=0, column=0, padx=10, pady=10)
+        self.search_radiobuttons_frame.grid(row=0, column=2, padx=10)
         self.selection_buttons_frame.grid(row=2, column=0, padx=10, pady=10)
         self.code_buttons_frame.grid(row=2, column=1, padx=10, pady=10)
 
         # display other widgets
-        self.search_bar_entry.grid(row=0, column=0)
+        self.search_button.grid(row=0, column=0, padx=2.5)
+        self.search_bar_entry.grid(row=0, column=1, padx=10)
+        self.name_search_selection_radiobutton.grid(row=0, column=0, padx=5)
+        self.language_search_selection_radiobutton.grid(row=0, column=1, padx=5)
+        self.type_search_selection_radiobutton.grid(row=0, column=2, padx=5)
+        self.tags_search_selection_radiobutton.grid(row=0, column=3, padx=5)
         self.snippet_selection_treeview.grid(row=1, column=0, padx=10, pady=10)
         self.code_editor_text.grid(row=1, column=1, padx=10, pady=10)
         self.add_snippet_button.grid(row=0, column=0, padx=2.5)
@@ -144,12 +170,32 @@ class MainWindow:
         """Sync treeview widget with self.code_snippets."""
         self.snippet_selection_treeview.delete(*self.snippet_selection_treeview.get_children())
         self.table = []
-        if self.code_snippets:
-            for snippet in self.code_snippets:
-                self.table.append(self.snippet_selection_treeview.insert("", tk.END, values=(snippet.name,
-                                                                         snippet.code_type,
-                                                                         snippet.language,
-                                                                         ", ".join(snippet.tags))))
+        search_term = self.search_bar_entry.get()
+        search_selection = self.search_selection.get()
+        filtered_snippets = []
+
+        for snippet in self.code_snippets:
+            if search_selection == "name":
+                if search_term in snippet.name:
+                    filtered_snippets.append(snippet)
+            elif search_selection == "type":
+                if search_term in snippet.code_type:
+                    filtered_snippets.append(snippet)
+            elif search_selection == "language":
+                if search_term in snippet.language:
+                    filtered_snippets.append(snippet)
+            elif search_selection == "tags":
+                if search_term in snippet.tags:
+                    filtered_snippets.append(snippet)
+
+        if filtered_snippets:
+            for snippet in filtered_snippets:
+                self.table.append(
+                    self.snippet_selection_treeview.insert("", tk.END, values=(snippet.name,
+                                                                               snippet.code_type,
+                                                                               snippet.language,
+                                                                               ", ".join(
+                                                                                   snippet.tags))))
             self.snippet_selection_treeview.selection_set(self.table[-1])
 
         self.refresh_text_editor()
