@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""
+"""A program for managing various code snippets.
+
 Title:
 Code Snippet Manager
 
@@ -70,22 +71,22 @@ class MainWindow:
                                         command=self.refresh_treeview)
         self.search_bar_entry = ttk.Entry(self.search_frame,
                                           width=40)
-        self.name_search_selection_radiobutton = ttk.Radiobutton(self.search_radiobuttons_frame,
-                                                                 text="Name",
-                                                                 value="name",
-                                                                 variable=self.search_selection)
-        self.language_search_selection_radiobutton = ttk.Radiobutton(self.search_radiobuttons_frame,
-                                                                     text="Language",
-                                                                     value="language",
-                                                                     variable=self.search_selection)
-        self.type_search_selection_radiobutton = ttk.Radiobutton(self.search_radiobuttons_frame,
-                                                                 text="Type",
-                                                                 value="type",
-                                                                 variable=self.search_selection)
-        self.tags_search_selection_radiobutton = ttk.Radiobutton(self.search_radiobuttons_frame,
-                                                                 text="Tags",
-                                                                 value="tags",
-                                                                 variable=self.search_selection)
+        self.name_search_radiobutton = ttk.Radiobutton(self.search_radiobuttons_frame,
+                                                       text="Name",
+                                                       value="name",
+                                                       variable=self.search_selection)
+        self.language_search_radiobutton = ttk.Radiobutton(self.search_radiobuttons_frame,
+                                                           text="Language",
+                                                           value="language",
+                                                           variable=self.search_selection)
+        self.type_search_radiobutton = ttk.Radiobutton(self.search_radiobuttons_frame,
+                                                       text="Type",
+                                                       value="type",
+                                                       variable=self.search_selection)
+        self.tags_search_radiobutton = ttk.Radiobutton(self.search_radiobuttons_frame,
+                                                       text="Tags",
+                                                       value="tags",
+                                                       variable=self.search_selection)
         self.snippet_selection_treeview = ttk.Treeview(self.master,
                                                        columns=("Name", "Type", "Language", "Tags"),
                                                        selectmode="browse")
@@ -107,8 +108,10 @@ class MainWindow:
                                               command=self.copy_snippet)
 
         # widget bindings
-        self.search_bar_entry.bind("<KeyPress-Return>", lambda _: self.refresh_treeview())
-        self.snippet_selection_treeview.bind("<<TreeviewSelect>>", self.refresh_text_editor)
+        self.search_bar_entry.bind("<KeyPress-Return>",
+                                   lambda _: self.refresh_treeview())
+        self.snippet_selection_treeview.bind("<<TreeviewSelect>>",
+                                             lambda _: self.refresh_text_editor())
 
         # configure treeview widget
         self.snippet_selection_treeview.column("#0", minwidth=0, width=0)
@@ -126,10 +129,10 @@ class MainWindow:
         # display other widgets
         self.search_button.grid(row=0, column=0, padx=2.5)
         self.search_bar_entry.grid(row=0, column=1, padx=10)
-        self.name_search_selection_radiobutton.grid(row=0, column=0, padx=5)
-        self.language_search_selection_radiobutton.grid(row=0, column=1, padx=5)
-        self.type_search_selection_radiobutton.grid(row=0, column=2, padx=5)
-        self.tags_search_selection_radiobutton.grid(row=0, column=3, padx=5)
+        self.name_search_radiobutton.grid(row=0, column=0, padx=5)
+        self.language_search_radiobutton.grid(row=0, column=1, padx=5)
+        self.type_search_radiobutton.grid(row=0, column=2, padx=5)
+        self.tags_search_radiobutton.grid(row=0, column=3, padx=5)
         self.snippet_selection_treeview.grid(row=1, column=0, padx=10, pady=10)
         self.code_editor_text.grid(row=1, column=1, padx=10, pady=10)
         self.add_snippet_button.grid(row=0, column=0, padx=2.5)
@@ -160,12 +163,15 @@ class MainWindow:
     def remove_snippet(self):
         """Remove currently selected snippet."""
         try:
-            selected_snippet_index = self.snippet_selection_treeview.index(self.snippet_selection_treeview.selection()[0])
+            selected_snippet = self.snippet_selection_treeview.selection()[0]
         except IndexError:
             return None
+        selected_snippet_index = self.snippet_selection_treeview.index(selected_snippet)
+        snippet_name = self.code_snippets[selected_snippet_index].name
 
         user_input = tkinter.messagebox.askyesno(title="Delete Snippet?",
-                                                 message="Do you really want to delete \"" + self.code_snippets[selected_snippet_index].name + "\" ?",
+                                                 message="Do you really want to delete \""
+                                                         f" {snippet_name}\" ?",
                                                  default=tkinter.messagebox.NO,
                                                  parent=self.master)
 
@@ -208,14 +214,15 @@ class MainWindow:
 
         self.refresh_text_editor()
 
-    def refresh_text_editor(self, tk_event=None):
+    def refresh_text_editor(self):
         """Refresh code text editor widget with new snippet data."""
         self.code_editor_text.delete(0.1, tk.END)
 
         try:
-            selected_snippet_index = self.snippet_selection_treeview.index(self.snippet_selection_treeview.selection()[0])
+            selected_snippet = self.snippet_selection_treeview.selection()[0]
         except IndexError:
             return None
+        selected_snippet_index = self.snippet_selection_treeview.index(selected_snippet)
         snippet = self.code_snippets[selected_snippet_index]
 
         self.code_editor_text.insert(0.1, snippet.code)
@@ -223,18 +230,21 @@ class MainWindow:
     def save_code_changes(self):
         """Save changes to the code in the text editor."""
         try:
-            selected_snippet_index = self.snippet_selection_treeview.index(self.snippet_selection_treeview.selection()[0])
+            selected_snippet = self.snippet_selection_treeview.selection()[0]
         except IndexError:
             return None
+        selected_snippet_index = self.snippet_selection_treeview.index(selected_snippet)
 
         self.code_snippets[selected_snippet_index].code = self.code_editor_text.get(0.1, tk.END)
 
     def change_properties(self):
         """Open window for changing properties of selected snippet."""
         try:
-            selected_snippet_index = self.snippet_selection_treeview.index(self.snippet_selection_treeview.selection()[0])
+            selected_snippet = self.snippet_selection_treeview.selection()[0]
         except IndexError:
             return None
+        selected_snippet_index = self.snippet_selection_treeview.index(selected_snippet)
+
         properties_window = PropertiesWindow(self.master,
                                              self.code_snippets[selected_snippet_index])
         self.master.wait_window(properties_window)
@@ -265,6 +275,7 @@ class NewCodeSnippetWindow(tk.Toplevel):
     """Window for creating a new code snippet."""
 
     def __init__(self, master: tk.Tk):
+        """Initialize window."""
         self.master = master
         super().__init__(self.master)
         self.title("New Code Snippet")
@@ -307,10 +318,10 @@ class NewCodeSnippetWindow(tk.Toplevel):
                                         command=self.destroy)
 
         # widget bindings
-        self.name_entry.bind("<KeyPress-Return>", self.save_and_exit)
-        self.code_type_entry.bind("<KeyPress-Return>", self.save_and_exit)
-        self.language_entry.bind("<KeyPress-Return>", self.save_and_exit)
-        self.tags_entry.bind("<KeyPress-Return>", self.save_and_exit)
+        self.name_entry.bind("<KeyPress-Return>", lambda _: self.save_and_exit())
+        self.code_type_entry.bind("<KeyPress-Return>", lambda _: self.save_and_exit())
+        self.language_entry.bind("<KeyPress-Return>", lambda _: self.save_and_exit())
+        self.tags_entry.bind("<KeyPress-Return>", lambda _: self.save_and_exit())
 
         # display frames
         self.input_frame.grid(row=0, column=0, padx=10, pady=10)
@@ -335,7 +346,7 @@ class NewCodeSnippetWindow(tk.Toplevel):
         self.save_snippet_button.grid(row=0, column=0, padx=5)
         self.cancel_button.grid(row=0, column=1, padx=5)
 
-    def save_and_exit(self, event=None):
+    def save_and_exit(self):
         """Save all input into new snippet."""
         name = self.name_entry.get()
         code_type = self.code_type_entry.get()
@@ -363,6 +374,7 @@ class PropertiesWindow(tk.Toplevel):
     """Window for editing properties of a snippet."""
 
     def __init__(self, master: tk.Tk, snippet: CodeSnippet):
+        """Initialize window."""
         self.master = master
         super().__init__(self.master)
         self.title("Properties")
@@ -412,10 +424,10 @@ class PropertiesWindow(tk.Toplevel):
                                         command=self.destroy)
 
         # widget bindings
-        self.name_entry.bind("<KeyPress-Return>", self.save_changes)
-        self.type_entry.bind("<KeyPress-Return>", self.save_changes)
-        self.language_entry.bind("<KeyPress-Return>", self.save_changes)
-        self.tags_entry.bind("<KeyPress-Return>", self.save_changes)
+        self.name_entry.bind("<KeyPress-Return>", lambda _: self.save_changes())
+        self.type_entry.bind("<KeyPress-Return>", lambda _: self.save_changes())
+        self.language_entry.bind("<KeyPress-Return>", lambda _: self.save_changes())
+        self.tags_entry.bind("<KeyPress-Return>", lambda _: self.save_changes())
 
         # display frames
         self.properties_frame.grid(row=0, column=0, padx=10, pady=10)
@@ -437,7 +449,7 @@ class PropertiesWindow(tk.Toplevel):
         self.save_button.grid(row=0, column=0, padx=5)
         self.cancel_button.grid(row=0, column=1, padx=5)
 
-    def save_changes(self, event=None):
+    def save_changes(self):
         """Save changes to properties and exit window."""
         name = self.name.get()
         language = self.language.get()
