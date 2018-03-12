@@ -58,9 +58,11 @@ inside the python shell.
 > Namespaces are one honking great idea -- let's do more of those!
 
 #### Codestyle
-In generall, all programs should follow the [PEP 8](https://pep8.org/) styleguide.
-However this is just a suggestion.
+In general, all programs should follow the [PEP 8](https://pep8.org/) styleguide.
+However this is only a suggestion.
 Just try to make your code as readable and understandable as possible.
+For example do not shorten your code to make each line fit into 80 characters like described in PEP 8.
+Instead only shorten your lines if the code is still readable afterwards.
 
 To automatically check for PEP 8 complience use:
 * [Pylint](https://www.pylint.org/)
