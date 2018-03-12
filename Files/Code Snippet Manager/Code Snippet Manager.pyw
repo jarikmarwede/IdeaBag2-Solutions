@@ -12,11 +12,14 @@ the coder can quickly look up code.
 For extra practice
 try adding syntax highlighting based on the language.
 """
+import os
+import pickle
 import string
 import tkinter as tk
 import tkinter.messagebox
 from tkinter import ttk
 DEFAULT_SEARCH_SELECTION = "name"
+DATABASE_FILE_NAME = "./database"
 
 
 class CodeSnippet:
@@ -46,6 +49,7 @@ class MainWindow:
         self.master.title("Code Snippet Manager")
         self.master.geometry()
         self.master.resizable(width=False, height=False)
+        self.master.protocol("WM_DELETE_WINDOW", self.save_and_exit)
 
         # define instance variables
         self.code_snippets = []
@@ -133,6 +137,10 @@ class MainWindow:
         self.change_properties_button.grid(row=0, column=2, padx=2.5)
         self.save_changes_button.grid(row=0, column=0, padx=2.5)
         self.copy_snippet_button.grid(row=0, column=1, padx=2.5)
+
+        # load user data
+        self.load_data()
+        self.refresh_treeview()
 
     def copy_snippet(self):
         """Copy code of current snippet to clipboard."""
@@ -235,6 +243,22 @@ class MainWindow:
         if changed_snippet.not_empty():
             self.code_snippets[selected_snippet_index] = changed_snippet
             self.refresh_treeview()
+
+    def save_and_exit(self):
+        """Save user data and then exit."""
+        self.save_data()
+        self.master.destroy()
+
+    def save_data(self):
+        """Save user data to pickle file."""
+        with open(DATABASE_FILE_NAME, "wb") as file:
+            pickle.dump(self.code_snippets, file)
+
+    def load_data(self):
+        """Load user data."""
+        if os.path.exists(DATABASE_FILE_NAME):
+            with open(DATABASE_FILE_NAME, "rb") as file:
+                self.code_snippets = pickle.load(file)
 
 
 class NewCodeSnippetWindow(tk.Toplevel):
