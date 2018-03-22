@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""
+"""A webscraper that scrapes all images and links from a website.
 
 Title:
 Page Scraper
@@ -54,7 +54,7 @@ def save_to_file(links: list, file_path: str):
 
 
 def _start():
-    """Starts the program interactively."""
+    """Start the program interactively."""
     url = input("What url do you want to get images/links from? ")
     html = get_html(url)
     images = get_image_urls(html)
