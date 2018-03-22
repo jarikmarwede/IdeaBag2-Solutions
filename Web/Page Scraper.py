@@ -28,15 +28,29 @@ def get_image_urls(source: str):
 
     images = soup.find_all("img")
     urls = [image.get("src") for image in images]
-    return urls
+    return list(set(urls))
+
+
+def get_links(source: str):
+    """Return the urls of all links in the specified html code."""
+    soup = bs.BeautifulSoup(source, "lxml")
+
+    links = soup.find_all("a")
+    urls = [link.get("href") for link in links
+            if link.get("href")
+            and link.get("href") != "#"
+            and link.get("href") != "/"]
+    return list(set(urls))
 
 
 def _start():
     """Starts the program interactively."""
-    url = input("What url do you want to get images from? ")
+    url = input("What url do you want to get images/links from? ")
     html = get_html(url)
     images = get_image_urls(html)
-    print(", ".join(images))
+    links = get_links(html)
+    print(" ".join(("Images: ", *images)))
+    print(" ".join(("Links: ", *links)))
 
 
 if __name__ == "__main__":
