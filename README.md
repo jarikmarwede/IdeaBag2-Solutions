@@ -24,6 +24,8 @@ If you want to contribute in any way please take a look at [CONTRIBUTING.md](htt
 ## Dependencies
 * [Python 3.6+](https://www.python.org/downloads/)
 * [Pillow 5.0.0](http://python-pillow.org) (Graphics and Multimedia/Dominant Colors)
+* [Beautifulsoup4 4.6.0](https://www.crummy.com/software/BeautifulSoup/) (Web/Page Scraper)
+* [lxml 4.2.1](http://lxml.de/) (Web/Page Scraper)
 
 ## License
 This repository uses the GNU General Public License v3.0.
