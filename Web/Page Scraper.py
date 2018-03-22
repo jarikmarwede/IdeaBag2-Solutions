@@ -43,6 +43,16 @@ def get_links(source: str):
     return list(set(urls))
 
 
+def save_to_file(links: list, file_path: str):
+    """Save the specified links to the specified file."""
+    text = ""
+    for index, link in enumerate(links):
+        text += " ".join((str(index), link, "\n"))
+
+    with open(file_path, "w") as file:
+        file.write(text)
+
+
 def _start():
     """Starts the program interactively."""
     url = input("What url do you want to get images/links from? ")
@@ -51,6 +61,8 @@ def _start():
     links = get_links(html)
     print(" ".join(("Images: ", *images)))
     print(" ".join(("Links: ", *links)))
+    file_path = input("What file do you want to save the links in? ")
+    save_to_file(images + links, file_path)
 
 
 if __name__ == "__main__":
