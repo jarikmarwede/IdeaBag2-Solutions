@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""
+"""Multi threaded bulk image resizer.
 
 Title:
 Bulk Thumbnail Creator
@@ -16,11 +16,37 @@ have another bulk renaming of thumbnails etc.
 """
 import os
 import threading
-import PIL
+from PIL import Image
 
 
-def resize_images(image_files: list, size: tuple):
-    """Resize specified images to size and save them in new files."""
+class ImageResizer:
+    """Class for multi threaded image resizing."""
+
+    def __init__(self):
+        """Define instance variables."""
+        self.threads = 0
+        self._size = None
+        self._image_files = []
+        self._lock = threading.Lock()
+
+    def resize_images(self, image_files: list, size: tuple):
+        """Resize specified images to size and save them in new files."""
+        self._image_files = image_files
+        self._size = size
+        while self._image_files:
+            if self.threads < 4:
+                new_thread = threading.Thread(target=self._resize_image)
+                self.threads += 1
+                new_thread.start()
+
+    def _resize_image(self):
+        """Resize the next image from self._image_files to self._size."""
+        with self._lock:
+            image_path = self._image_files.pop()
+        old_image = Image.open(image_path)
+        new_image = old_image.resize(self._size)
+        new_image.save(image_path)
+        self.threads -= 1
 
 
 def get_images_from_directory(directory_path: str) -> list:
@@ -33,5 +59,16 @@ def get_images_from_directory(directory_path: str) -> list:
     return images
 
 
+def _start():
+    """Start program interactively."""
+    directory = input("Please specify the directory the images are in: ")
+    size_input = input("Please specify the size that the images "
+                       "should be resized to (e.g. 1920x1080): ").split("x")
+    size = (int(size_input[0]), int(size_input[1]))
+    images = get_images_from_directory(directory)
+    image_resizer = ImageResizer()
+    image_resizer.resize_images(images, size)
+
+
 if __name__ == "__main__":
-    pass
+    _start()
