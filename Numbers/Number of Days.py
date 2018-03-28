@@ -71,18 +71,29 @@ def number_of_days(date1: str, date2: str) -> int:
                                  for month in months_between])
         days_between += day2 - day1
     else:
-        # TODO: account for current year being a leap year
         if month1 > month2:
             months_between = [month for month in range(0, 13)
                               if month1 > month >= month2]
             days_between += sum([MONTH_DICTIONARY[month]
                                  for month in months_between])
+            # check for leap month in a leap year (every fourth February)
+            if 2 in months_between and year1 % 4 == 0:
+                if year1 % 100 == 0 and year1 % 400 != 0:
+                    pass
+                else:
+                    days_between += 1
             days_between += day1 - day2
         elif month2 > month1:
             months_between = [month for month in range(0, 13)
                               if month2 > month >= month1]
             days_between += sum([MONTH_DICTIONARY[month]
                                  for month in months_between])
+            # check for leap month in a leap year (every fourth February)
+            if 2 in months_between and year1 % 4 == 0:
+                if year1 % 100 == 0 and year1 % 400 != 0:
+                    pass
+                else:
+                    days_between += 1
             days_between += day2 - day1
         else:
             days_between += max(day1, day2) - min(day1, day2)
