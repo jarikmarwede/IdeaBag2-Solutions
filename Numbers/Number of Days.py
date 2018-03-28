@@ -39,7 +39,17 @@ def number_of_days(date1: str, date2: str) -> int:
     year2 = int(date2_split[2])
 
     if year1 > year2:
-        days_between += 365 * (year1 - year2)
+        year = year2
+        while year < year1:
+            # check for leap years
+            if year % 4 == 0:
+                if year % 100 == 0 and year % 400 != 0:
+                    days_between += 365
+                else:
+                    days_between += 366
+            else:
+                days_between += 365
+            year += 1
         if month1 > month2:
             months_between = [month for month in range(0, 13)
                               if month1 > month >= month2]
@@ -52,7 +62,17 @@ def number_of_days(date1: str, date2: str) -> int:
                                  for month in months_between])
         days_between += day1 - day2
     elif year2 > year1:
-        days_between += 365 * (year2 - year1)
+        year = year1
+        while year < year2:
+            # check for leap years
+            if year % 4 == 0:
+                if year % 100 == 0 and year % 400 != 0:
+                    days_between += 365
+                else:
+                    days_between += 366
+            else:
+                days_between += 365
+            year += 1
         if month2 > month1:
             months_between = [month for month in range(0, 13)
                               if month2 > month >= month1]
