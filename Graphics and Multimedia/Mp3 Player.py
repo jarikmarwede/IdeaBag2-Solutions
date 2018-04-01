@@ -15,7 +15,7 @@ by rating songs based on if a song is skipped or played to the end
 or if the volume is increased/decreased whilst the song is being played.
 """
 import tkinter as tk
-from tkinter import ttk
+from tkinter import filedialog, ttk
 
 
 class MainWindow(tk.Tk):
@@ -32,9 +32,13 @@ class MainWindow(tk.Tk):
                                             value=False)
 
         # create frames
+        self.treeview_frame = ttk.Frame(self)
         self.bottom_audio_buttons_frame = ttk.Frame(self)
 
         # create other widgets
+        self.playlist_treeview = ttk.Treeview(self.treeview_frame,
+                                              columns=("filename", "length"),
+                                              selectmode="browse")
         self.play_pause_button = ttk.Button(self.bottom_audio_buttons_frame,
                                             text="Play",
                                             command=self.play_pause_audio)
@@ -59,11 +63,42 @@ class MainWindow(tk.Tk):
         self.shuffle_playlist_button = ttk.Button(self.bottom_audio_buttons_frame,
                                                   text="Shuffle",
                                                   command=self.shuffle_playlist)
+        self.main_menu = tk.Menu(self,
+                                 tearoff=0)
+        self.file_sub_menu = tk.Menu(self.main_menu,
+                                     tearoff=0)
+
+        # configure playlist_treeview
+        self.playlist_treeview.column("#0",
+                                      minwidth=0,
+                                      width=0)
+        self.playlist_treeview.heading("filename",
+                                       text="Filename",
+                                       anchor=tk.CENTER)
+        self.playlist_treeview.heading("length",
+                                       text="Length",
+                                       anchor=tk.CENTER)
+
+        # configure main menu
+        self.config(menu=self.main_menu)
+        self.main_menu.add_cascade(menu=self.file_sub_menu,
+                                   label="File")
+
+        # configure file sub menu
+        self.file_sub_menu.add_command(label="Open file(s)",
+                                       command=self.open_file)
+        self.file_sub_menu.add_command(label="Open playlist",
+                                       command=self.open_playlist)
+        self.file_sub_menu.add_separator()
+        self.file_sub_menu.add_command(label="Exit",
+                                       command=self.destroy)
 
         # display frames
-        self.bottom_audio_buttons_frame.grid(padx=10, pady=10)
+        self.treeview_frame.grid(row=0, column=0, padx=10, pady=10)
+        self.bottom_audio_buttons_frame.grid(row=1, column=0, padx=10, pady=10)
 
         # display other widgets
+        self.playlist_treeview.grid(row=0, column=0)
         self.shuffle_playlist_button.grid(row=0, column=0, padx=5)
         self.previous_button.grid(row=0, column=1, padx=5)
         self.rewind_button.grid(row=0, column=2, padx=5)
@@ -93,6 +128,18 @@ class MainWindow(tk.Tk):
 
     def shuffle_playlist(self):
         """Shuffle files in current playlist randomly."""
+
+    def open_file(self):
+        """Open new audio file."""
+        files = filedialog.askopenfilenames(defaultextension=".mp3",
+                                            filetypes=[("Mp3", "*.mp3")],
+                                            parent=self)
+        for file in files:
+            pass
+
+    def open_playlist(self):
+        """Open all audio files in a folder as a playlist."""
+        directory = filedialog.askdirectory(parent=self)
 
 
 def _start_window():
