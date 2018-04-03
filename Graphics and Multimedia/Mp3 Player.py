@@ -14,6 +14,7 @@ You could also generate a Like/Dislike playlist
 by rating songs based on if a song is skipped or played to the end
 or if the volume is increased/decreased whilst the song is being played.
 """
+import os
 import tkinter as tk
 from tkinter import filedialog, ttk
 
@@ -37,8 +38,16 @@ class MainWindow(tk.Tk):
 
         # create other widgets
         self.playlist_treeview = ttk.Treeview(self.treeview_frame,
-                                              columns=("filename", "length"),
-                                              selectmode="browse")
+                                              columns=("filename",),
+                                              selectmode="browse",
+                                              show="tree")
+        self.playlist_scroll_x = ttk.Scrollbar(self.treeview_frame,
+                                               command=self.playlist_treeview.xview,
+                                               orient=tk.HORIZONTAL)
+        self.playlist_scroll_y = ttk.Scrollbar(self.treeview_frame,
+                                               command=self.playlist_treeview.yview,)
+        self.playlist_treeview["xscrollcommand"] = self.playlist_scroll_x.set
+        self.playlist_treeview["yscrollcommand"] = self.playlist_scroll_y.set
         self.play_pause_button = ttk.Button(self.bottom_audio_buttons_frame,
                                             text="Play",
                                             command=self.play_pause_audio)
@@ -72,11 +81,10 @@ class MainWindow(tk.Tk):
         self.playlist_treeview.column("#0",
                                       minwidth=0,
                                       width=0)
+        self.playlist_treeview.column("filename",
+                                      width=500)
         self.playlist_treeview.heading("filename",
                                        text="Filename",
-                                       anchor=tk.CENTER)
-        self.playlist_treeview.heading("length",
-                                       text="Length",
                                        anchor=tk.CENTER)
 
         # configure main menu
@@ -99,6 +107,8 @@ class MainWindow(tk.Tk):
 
         # display other widgets
         self.playlist_treeview.grid(row=0, column=0)
+        self.playlist_scroll_y.grid(row=0, column=1, sticky=tk.NS)
+        self.playlist_scroll_x.grid(row=1, column=0, sticky=tk.EW)
         self.shuffle_playlist_button.grid(row=0, column=0, padx=5)
         self.previous_button.grid(row=0, column=1, padx=5)
         self.rewind_button.grid(row=0, column=2, padx=5)
@@ -135,11 +145,16 @@ class MainWindow(tk.Tk):
                                             filetypes=[("Mp3", "*.mp3")],
                                             parent=self)
         for file in files:
-            pass
+            file_name = os.path.basename(file)
+            self.playlist_treeview.insert("", "end", values=(file_name,))
 
     def open_playlist(self):
         """Open all audio files in a folder as a playlist."""
         directory = filedialog.askdirectory(parent=self)
+        for file in os.listdir(directory):
+            if file.endswith(".mp3"):
+                file_name = os.path.basename(file)
+                self.playlist_treeview.insert("", "end", values=(file_name,))
 
 
 def _start_window():
