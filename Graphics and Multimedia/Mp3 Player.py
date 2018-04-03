@@ -48,6 +48,8 @@ class MainWindow(tk.Tk):
                                                command=self.playlist_treeview.yview,)
         self.playlist_treeview["xscrollcommand"] = self.playlist_scroll_x.set
         self.playlist_treeview["yscrollcommand"] = self.playlist_scroll_y.set
+        self.current_file_label = ttk.Label(self,
+                                            text="Currently playing: ")
         self.play_pause_button = ttk.Button(self.bottom_audio_buttons_frame,
                                             text="Play",
                                             command=self.play_pause_audio)
@@ -103,12 +105,13 @@ class MainWindow(tk.Tk):
 
         # display frames
         self.treeview_frame.grid(row=0, column=0, padx=10, pady=10)
-        self.bottom_audio_buttons_frame.grid(row=1, column=0, padx=10, pady=10)
+        self.bottom_audio_buttons_frame.grid(row=2, column=0, padx=10, pady=10)
 
         # display other widgets
         self.playlist_treeview.grid(row=0, column=0)
         self.playlist_scroll_y.grid(row=0, column=1, sticky=tk.NS)
         self.playlist_scroll_x.grid(row=1, column=0, sticky=tk.EW)
+        self.current_file_label.grid(row=1, column=0, padx=10, pady=10)
         self.shuffle_playlist_button.grid(row=0, column=0, padx=5)
         self.previous_button.grid(row=0, column=1, padx=5)
         self.rewind_button.grid(row=0, column=2, padx=5)
