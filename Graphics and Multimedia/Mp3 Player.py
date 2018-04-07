@@ -15,6 +15,7 @@ by rating songs based on if a song is skipped or played to the end
 or if the volume is increased/decreased whilst the song is being played.
 """
 import os
+import random
 import tkinter as tk
 from tkinter import filedialog, ttk
 
@@ -141,6 +142,12 @@ class MainWindow(tk.Tk):
 
     def shuffle_playlist(self):
         """Shuffle files in current playlist randomly."""
+        old_entries = self.playlist_treeview.get_children()
+        entries = [self.playlist_treeview.item(entry, "values") for entry in old_entries]
+        random.shuffle(entries)
+        self.playlist_treeview.delete(*old_entries)
+        for entry in entries:
+            self.playlist_treeview.insert("", "end", values=entry)
 
     def open_file(self):
         """Open new audio file."""
