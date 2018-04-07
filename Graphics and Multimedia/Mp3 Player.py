@@ -32,9 +32,11 @@ class MainWindow(tk.Tk):
         # define variables
         self.repeat_forever = tk.BooleanVar(self,
                                             value=False)
+        self.currently_playing = tk.StringVar(self)
 
         # create frames
         self.treeview_frame = ttk.Frame(self)
+        self.currently_playing_frame = ttk.Frame(self)
         self.bottom_audio_buttons_frame = ttk.Frame(self)
 
         # create other widgets
@@ -49,11 +51,17 @@ class MainWindow(tk.Tk):
                                                command=self.playlist_treeview.yview,)
         self.playlist_treeview["xscrollcommand"] = self.playlist_scroll_x.set
         self.playlist_treeview["yscrollcommand"] = self.playlist_scroll_y.set
-        self.current_file_label = ttk.Label(self,
-                                            text="Currently playing: ")
-        self.play_pause_button = ttk.Button(self.bottom_audio_buttons_frame,
-                                            text="Play",
-                                            command=self.play_pause_audio)
+        self.currently_playing_label = ttk.Label(self.currently_playing_frame,
+                                                 text="Currently playing: ")
+        self.current_file_label = ttk.Label(self.currently_playing_frame,
+                                            text="",
+                                            textvariable=self.currently_playing)
+        self.play_button = ttk.Button(self.bottom_audio_buttons_frame,
+                                      text="Play",
+                                      command=self.play_audio)
+        self.pause_resume_button = ttk.Button(self.bottom_audio_buttons_frame,
+                                              text="Pause",
+                                              command=self.pause_resume)
         self.fast_forward_button = ttk.Button(self.bottom_audio_buttons_frame,
                                               text="Fast forward",
                                               command=self.fast_forward_audio)
@@ -106,24 +114,38 @@ class MainWindow(tk.Tk):
 
         # display frames
         self.treeview_frame.grid(row=0, column=0, padx=10, pady=10)
-        self.bottom_audio_buttons_frame.grid(row=2, column=0, padx=10, pady=10)
+        self.currently_playing_frame.grid(row=1, column=0, padx=10, pady=10)
+        self.bottom_audio_buttons_frame.grid(row=3, column=0, padx=10, pady=10)
 
         # display other widgets
         self.playlist_treeview.grid(row=0, column=0)
         self.playlist_scroll_y.grid(row=0, column=1, sticky=tk.NS)
         self.playlist_scroll_x.grid(row=1, column=0, sticky=tk.EW)
-        self.current_file_label.grid(row=1, column=0, padx=10, pady=10)
+        self.currently_playing_label.grid(row=0, column=0, padx=10)
+        self.current_file_label.grid(row=1, column=0, padx=10, pady=5)
         self.shuffle_playlist_button.grid(row=0, column=0, padx=5)
         self.previous_button.grid(row=0, column=1, padx=5)
         self.rewind_button.grid(row=0, column=2, padx=5)
-        self.play_pause_button.grid(row=0, column=3, padx=5)
-        self.fast_forward_button.grid(row=0, column=4, padx=5)
-        self.next_button.grid(row=0, column=5, padx=5)
-        self.repeat_once_button.grid(row=0, column=6, padx=5)
-        self.repeat_forever_checkbutton.grid(row=0, column=7, padx=5)
+        self.play_button.grid(row=0, column=3, padx=5)
+        self.pause_resume_button.grid(row=0, column=4, padx=5)
+        self.fast_forward_button.grid(row=0, column=5, padx=5)
+        self.next_button.grid(row=0, column=6, padx=5)
+        self.repeat_once_button.grid(row=0, column=7, padx=5)
+        self.repeat_forever_checkbutton.grid(row=0, column=8, padx=5)
 
-    def play_pause_audio(self):
-        """Play the audio if paused otherwise pause."""
+        # create bindings
+        self.playlist_treeview.bind("<Double-Button-1>",
+                                    lambda _: self.play_audio())
+
+    def play_audio(self):
+        """Play the currently selected file."""
+        selection = self.playlist_treeview.selection()
+        if selection:
+            self.currently_playing.set(self.playlist_treeview.item(selection,
+                                                                   "values")[0])
+
+    def pause_resume(self):
+        """Pause the audio that is currently playing/resume playing it."""
 
     def fast_forward_audio(self):
         """Fast forward the current audio."""
