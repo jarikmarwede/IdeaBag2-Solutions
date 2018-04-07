@@ -27,7 +27,9 @@ class MainWindow(tk.Tk):
         """Initialize window."""
         super().__init__()
         self.title("Mp3 Player")
-        self.resizable(width=False, height=False)
+        self.resizable(width=True, height=True)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
 
         # define variables
         self.repeat_forever = tk.BooleanVar(self,
@@ -95,7 +97,7 @@ class MainWindow(tk.Tk):
                                       minwidth=0,
                                       width=0)
         self.playlist_treeview.column("filename",
-                                      width=500)
+                                      width=750)
         self.playlist_treeview.heading("filename",
                                        text="Filename",
                                        anchor=tk.CENTER)
@@ -115,12 +117,12 @@ class MainWindow(tk.Tk):
                                        command=self.destroy)
 
         # display frames
-        self.treeview_frame.grid(row=0, column=0, padx=10, pady=10)
+        self.treeview_frame.grid(row=0, column=0, padx=40, pady=10, sticky=tk.NSEW)
         self.currently_playing_frame.grid(row=1, column=0, padx=10, pady=10)
-        self.bottom_audio_buttons_frame.grid(row=3, column=0, padx=10, pady=10)
+        self.bottom_audio_buttons_frame.grid(row=3, column=0, padx=40, pady=10)
 
         # display other widgets
-        self.playlist_treeview.grid(row=0, column=0)
+        self.playlist_treeview.grid(row=0, column=0, sticky=tk.NSEW)
         self.playlist_scroll_y.grid(row=0, column=1, sticky=tk.NS)
         self.playlist_scroll_x.grid(row=1, column=0, sticky=tk.EW)
         self.currently_playing_label.grid(row=0, column=0, padx=10)
@@ -134,6 +136,10 @@ class MainWindow(tk.Tk):
         self.next_button.grid(row=0, column=6, padx=5)
         self.repeat_once_button.grid(row=0, column=7, padx=5)
         self.repeat_forever_checkbutton.grid(row=0, column=8, padx=5)
+
+        # configure grid
+        self.treeview_frame.grid_columnconfigure(0, weight=1)
+        self.treeview_frame.grid_rowconfigure(0, weight=1)
 
         # create bindings
         self.playlist_treeview.bind("<Double-Button-1>",
