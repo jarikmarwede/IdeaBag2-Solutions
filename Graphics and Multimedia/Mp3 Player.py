@@ -32,7 +32,9 @@ class MainWindow(tk.Tk):
         # define variables
         self.repeat_forever = tk.BooleanVar(self,
                                             value=False)
+        self.repeat = False
         self.currently_playing = tk.StringVar(self)
+        self.current_index = None
 
         # create frames
         self.treeview_frame = ttk.Frame(self)
@@ -72,7 +74,7 @@ class MainWindow(tk.Tk):
                                       text="Next",
                                       command=self.play_next_file)
         self.previous_button = ttk.Button(self.bottom_audio_buttons_frame,
-                                          text="previous",
+                                          text="Previous",
                                           command=self.play_previous_file)
         self.repeat_once_button = ttk.Button(self.bottom_audio_buttons_frame,
                                              text="Repeat once",
@@ -137,12 +139,16 @@ class MainWindow(tk.Tk):
         self.playlist_treeview.bind("<Double-Button-1>",
                                     lambda _: self.play_audio())
 
-    def play_audio(self):
+    def play_audio(self, file: tuple=None):
         """Play the currently selected file."""
-        selection = self.playlist_treeview.selection()
-        if selection:
-            self.currently_playing.set(self.playlist_treeview.item(selection,
-                                                                   "values")[0])
+        if not file:
+            selection = self.playlist_treeview.selection()
+            if selection:
+                self.currently_playing.set(self.playlist_treeview.item(selection, "values")[0])
+                self.current_index = self.playlist_treeview.index(selection)
+        else:
+            self.currently_playing.set(file[0])
+            self.current_index = file[1]
 
     def pause_resume(self):
         """Pause the audio that is currently playing/resume playing it."""
@@ -155,12 +161,26 @@ class MainWindow(tk.Tk):
 
     def play_next_file(self):
         """Play the next file in playlist."""
+        if self.repeat_forever.get():
+            self.play_audio((self.currently_playing.get(),
+                             self.current_index))
+        elif self.repeat:
+            self.play_audio((self.currently_playing.get(),
+                             self.current_index))
+            self.repeat = False
+        else:
+            new_index = self.current_index + 1
+            new_item = self.playlist_treeview.get_children()[new_index]
+            self.playlist_treeview.see(new_item)
+            self.play_audio((self.playlist_treeview.item(new_item, "values")[0],
+                             new_index))
 
     def play_previous_file(self):
         """Play the previous file in playlist."""
 
     def repeat_once(self):
         """Repeat current file once."""
+        self.repeat = True
 
     def shuffle_playlist(self):
         """Shuffle files in current playlist randomly."""
