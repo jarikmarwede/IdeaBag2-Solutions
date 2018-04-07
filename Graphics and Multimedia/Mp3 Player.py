@@ -170,6 +170,8 @@ class MainWindow(tk.Tk):
             self.repeat = False
         else:
             new_index = self.current_index + 1
+            if new_index > len(self.playlist_treeview.get_children()):
+                return None
             new_item = self.playlist_treeview.get_children()[new_index]
             self.playlist_treeview.see(new_item)
             self.play_audio((self.playlist_treeview.item(new_item, "values")[0],
@@ -177,6 +179,13 @@ class MainWindow(tk.Tk):
 
     def play_previous_file(self):
         """Play the previous file in playlist."""
+        new_index = self.current_index - 1
+        if new_index < 0:
+            return None
+        new_item = self.playlist_treeview.get_children()[new_index]
+        self.playlist_treeview.see(new_item)
+        self.play_audio((self.playlist_treeview.item(new_item, "values")[0],
+                         new_index))
 
     def repeat_once(self):
         """Repeat current file once."""
