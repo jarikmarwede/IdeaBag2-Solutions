@@ -19,6 +19,8 @@ import random
 import tkinter as tk
 from tkinter import filedialog, ttk
 
+from pygame import mixer as media_player
+
 
 class MainWindow(tk.Tk):
     """Tkinter root window."""
@@ -37,6 +39,7 @@ class MainWindow(tk.Tk):
         self.repeat = False
         self.currently_playing = tk.StringVar(self)
         self.current_index = None
+        self.paused = False
 
         # create frames
         self.treeview_frame = ttk.Frame(self)
@@ -145,6 +148,9 @@ class MainWindow(tk.Tk):
         self.playlist_treeview.bind("<Double-Button-1>",
                                     lambda _: self.play_audio())
 
+        # load media player
+        media_player.init()
+
     def play_audio(self, file: tuple=None):
         """Play the currently selected file."""
         if not file:
@@ -152,12 +158,22 @@ class MainWindow(tk.Tk):
             if selection:
                 self.currently_playing.set(self.playlist_treeview.item(selection, "values")[0])
                 self.current_index = self.playlist_treeview.index(selection)
+            media_player.music.load(self.currently_playing.get())
+            media_player.music.play()
         else:
             self.currently_playing.set(file[0])
             self.current_index = file[1]
+            media_player.music.load(self.currently_playing.get())
+            media_player.music.play()
 
     def pause_resume(self):
         """Pause the audio that is currently playing/resume playing it."""
+        if self.paused:
+            media_player.music.unpause()
+            self.paused = False
+        elif media_player.music.get_busy():
+            media_player.music.pause()
+            self.paused = True
 
     def fast_forward_audio(self):
         """Fast forward the current audio."""
@@ -176,7 +192,7 @@ class MainWindow(tk.Tk):
             self.repeat = False
         else:
             new_index = self.current_index + 1
-            if new_index > len(self.playlist_treeview.get_children()):
+            if new_index >= len(self.playlist_treeview.get_children()):
                 return None
             new_item = self.playlist_treeview.get_children()[new_index]
             self.playlist_treeview.see(new_item)
@@ -212,16 +228,15 @@ class MainWindow(tk.Tk):
                                             filetypes=[("Mp3", "*.mp3")],
                                             parent=self)
         for file in files:
-            file_name = os.path.basename(file)
-            self.playlist_treeview.insert("", "end", values=(file_name,))
+            self.playlist_treeview.insert("", "end", values=(file,))
 
     def open_playlist(self):
         """Open all audio files in a folder as a playlist."""
         directory = filedialog.askdirectory(parent=self)
         for file in os.listdir(directory):
             if file.endswith(".mp3"):
-                file_name = os.path.basename(file)
-                self.playlist_treeview.insert("", "end", values=(file_name,))
+                file_path = directory + "/" + file
+                self.playlist_treeview.insert("", "end", values=(file_path,))
 
 
 def _start_window():
