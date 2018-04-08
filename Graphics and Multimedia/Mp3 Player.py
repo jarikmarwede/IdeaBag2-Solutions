@@ -72,12 +72,6 @@ class MainWindow(tk.Tk):
         self.pause_resume_button = ttk.Button(self.bottom_audio_buttons_frame,
                                               text="Pause",
                                               command=self.pause_resume)
-        self.fast_forward_button = ttk.Button(self.bottom_audio_buttons_frame,
-                                              text="Fast forward",
-                                              command=self.fast_forward_audio)
-        self.rewind_button = ttk.Button(self.bottom_audio_buttons_frame,
-                                        text="Rewind",
-                                        command=self.rewind_audio)
         self.next_button = ttk.Button(self.bottom_audio_buttons_frame,
                                       text="Next",
                                       command=self.play_next_file)
@@ -135,13 +129,11 @@ class MainWindow(tk.Tk):
         self.current_file_label.grid(row=1, column=0, padx=10, pady=5)
         self.shuffle_playlist_button.grid(row=0, column=0, padx=5)
         self.previous_button.grid(row=0, column=1, padx=5)
-        self.rewind_button.grid(row=0, column=2, padx=5)
-        self.play_button.grid(row=0, column=3, padx=5)
-        self.pause_resume_button.grid(row=0, column=4, padx=5)
-        self.fast_forward_button.grid(row=0, column=5, padx=5)
-        self.next_button.grid(row=0, column=6, padx=5)
-        self.repeat_once_button.grid(row=0, column=7, padx=5)
-        self.repeat_forever_checkbutton.grid(row=0, column=8, padx=5)
+        self.play_button.grid(row=0, column=2, padx=5)
+        self.pause_resume_button.grid(row=0, column=3, padx=5)
+        self.next_button.grid(row=0, column=4, padx=5)
+        self.repeat_once_button.grid(row=0, column=5, padx=5)
+        self.repeat_forever_checkbutton.grid(row=0, column=6, padx=5)
 
         # configure grid
         self.treeview_frame.grid_columnconfigure(0, weight=1)
@@ -179,12 +171,6 @@ class MainWindow(tk.Tk):
         elif media_player.music.get_busy():
             media_player.music.pause()
             self.paused = True
-
-    def fast_forward_audio(self):
-        """Fast forward the current audio."""
-
-    def rewind_audio(self):
-        """Rewind the current audio."""
 
     def play_next_file(self):
         """Play the next file in playlist."""
