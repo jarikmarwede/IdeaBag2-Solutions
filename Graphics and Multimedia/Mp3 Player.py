@@ -19,7 +19,10 @@ import random
 import tkinter as tk
 from tkinter import filedialog, ttk
 
+import pygame
 from pygame import mixer as media_player
+
+SONG_END = pygame.USEREVENT + 1
 
 
 class MainWindow(tk.Tk):
@@ -149,7 +152,9 @@ class MainWindow(tk.Tk):
                                     lambda _: self.play_audio())
 
         # load media player
+        pygame.init()
         media_player.init()
+        media_player.music.set_endevent(SONG_END)
 
     def play_audio(self, file: tuple=None):
         """Play the currently selected file."""
@@ -238,10 +243,17 @@ class MainWindow(tk.Tk):
                 file_path = directory + "/" + file
                 self.playlist_treeview.insert("", "end", values=(file_path,))
 
+    def event_checker(self):
+        for event in pygame.event.get():
+            if event.type == SONG_END:
+                self.play_next_file()
+        self.after(1, self.event_checker)
+
 
 def _start_window():
     """Start the tkinter GUI."""
     main_window = MainWindow()
+    main_window.after(1, main_window.event_checker)
     main_window.mainloop()
 
 
