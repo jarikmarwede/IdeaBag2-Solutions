@@ -23,6 +23,7 @@ import pygame
 from pygame import mixer as media_player
 
 SONG_END = pygame.USEREVENT + 1
+DEFAULT_VOLUME = 5
 
 
 class MainWindow(tk.Tk):
@@ -46,6 +47,7 @@ class MainWindow(tk.Tk):
 
         # create frames
         self.treeview_frame = ttk.Frame(self)
+        self.volume_frame = ttk.Frame(self)
         self.currently_playing_frame = ttk.Frame(self)
         self.bottom_audio_buttons_frame = ttk.Frame(self)
 
@@ -66,6 +68,14 @@ class MainWindow(tk.Tk):
         self.current_file_label = ttk.Label(self.currently_playing_frame,
                                             text="",
                                             textvariable=self.currently_playing)
+        self.volume_label = ttk.Label(self.volume_frame,
+                                      text="Volume: ")
+        self.volume_scale = ttk.Scale(self.volume_frame,
+                                      orient=tk.VERTICAL,
+                                      from_=10,
+                                      to=0,
+                                      value=DEFAULT_VOLUME,
+                                      command=change_volume)
         self.play_button = ttk.Button(self.bottom_audio_buttons_frame,
                                       text="Play",
                                       command=self.play_audio)
@@ -118,6 +128,7 @@ class MainWindow(tk.Tk):
 
         # display frames
         self.treeview_frame.grid(row=0, column=0, padx=40, pady=10, sticky=tk.NSEW)
+        self.volume_frame.grid(row=0, column=1, padx=10, pady=10, sticky=tk.NS)
         self.currently_playing_frame.grid(row=1, column=0, padx=10, pady=10)
         self.bottom_audio_buttons_frame.grid(row=3, column=0, padx=40, pady=10)
 
@@ -125,6 +136,8 @@ class MainWindow(tk.Tk):
         self.playlist_treeview.grid(row=0, column=0, sticky=tk.NSEW)
         self.playlist_scroll_y.grid(row=0, column=1, sticky=tk.NS)
         self.playlist_scroll_x.grid(row=1, column=0, sticky=tk.EW)
+        self.volume_label.grid(row=0, column=0)
+        self.volume_scale.grid(row=1, column=0, sticky=tk.NS)
         self.currently_playing_label.grid(row=0, column=0, padx=10)
         self.current_file_label.grid(row=1, column=0, padx=10, pady=5)
         self.shuffle_playlist_button.grid(row=0, column=0, padx=5)
@@ -138,6 +151,7 @@ class MainWindow(tk.Tk):
         # configure grid
         self.treeview_frame.grid_columnconfigure(0, weight=1)
         self.treeview_frame.grid_rowconfigure(0, weight=1)
+        self.volume_frame.grid_rowconfigure(1, weight=1)
 
         # create bindings
         self.playlist_treeview.bind("<Double-Button-1>",
@@ -230,10 +244,16 @@ class MainWindow(tk.Tk):
                 self.playlist_treeview.insert("", "end", values=(file_path,))
 
     def event_checker(self):
+        """Check whether the current audio file has ended."""
         for event in pygame.event.get():
             if event.type == SONG_END:
                 self.play_next_file()
         self.after(1, self.event_checker)
+
+
+def change_volume(volume):
+    """Change the volume to the specified volume."""
+    media_player.music.set_volume(float(volume) / 10)
 
 
 def _start_window():
