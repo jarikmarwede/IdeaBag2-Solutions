@@ -44,11 +44,13 @@ class MainWindow(tk.Tk):
         self.currently_playing = tk.StringVar(self)
         self.current_index = None
         self.paused = False
+        self.time_played = tk.StringVar(self)
 
         # create frames
         self.treeview_frame = ttk.Frame(self)
         self.volume_frame = ttk.Frame(self)
         self.currently_playing_frame = ttk.Frame(self)
+        self.time_played_frame = ttk.Frame(self)
         self.bottom_audio_buttons_frame = ttk.Frame(self)
 
         # create other widgets
@@ -68,6 +70,11 @@ class MainWindow(tk.Tk):
         self.current_file_label = ttk.Label(self.currently_playing_frame,
                                             text="",
                                             textvariable=self.currently_playing)
+        self.time_played_text_label = ttk.Label(self.time_played_frame,
+                                                text="Time played: ")
+        self.time_played_label = ttk.Label(self.time_played_frame,
+                                           text="",
+                                           textvariable=self.time_played)
         self.volume_label = ttk.Label(self.volume_frame,
                                       text="Volume: ")
         self.volume_scale = ttk.Scale(self.volume_frame,
@@ -130,6 +137,7 @@ class MainWindow(tk.Tk):
         self.treeview_frame.grid(row=0, column=0, padx=40, pady=10, sticky=tk.NSEW)
         self.volume_frame.grid(row=0, column=1, padx=10, pady=10, sticky=tk.NS)
         self.currently_playing_frame.grid(row=1, column=0, padx=10, pady=10)
+        self.time_played_frame.grid(row=2, column=0, padx=10, pady=10)
         self.bottom_audio_buttons_frame.grid(row=3, column=0, padx=40, pady=10)
 
         # display other widgets
@@ -140,6 +148,8 @@ class MainWindow(tk.Tk):
         self.volume_scale.grid(row=1, column=0, sticky=tk.NS)
         self.currently_playing_label.grid(row=0, column=0, padx=10)
         self.current_file_label.grid(row=1, column=0, padx=10, pady=5)
+        self.time_played_text_label.grid(row=0, column=0)
+        self.time_played_label.grid(row=1, column=0)
         self.shuffle_playlist_button.grid(row=0, column=0, padx=5)
         self.previous_button.grid(row=0, column=1, padx=5)
         self.play_button.grid(row=0, column=2, padx=5)
@@ -171,11 +181,13 @@ class MainWindow(tk.Tk):
                 self.current_index = self.playlist_treeview.index(selection)
                 media_player.music.load(self.currently_playing.get())
                 media_player.music.play()
+                self.update_time_played()
         else:
             self.currently_playing.set(file[0])
             self.current_index = file[1]
             media_player.music.load(self.currently_playing.get())
             media_player.music.play()
+            self.update_time_played()
 
     def pause_resume(self):
         """Pause the audio that is currently playing/resume playing it."""
@@ -253,6 +265,12 @@ class MainWindow(tk.Tk):
             if event.type == SONG_END_EVENT:
                 self.play_next_file()
         self.after(1, self.event_checker)
+
+    def update_time_played(self):
+        """Update the time the current file has been played."""
+        time = round(media_player.music.get_pos() / 1000)
+        self.time_played.set(str(time) + " seconds")
+        self.after(500, self.update_time_played)
 
 
 def change_volume(volume):
