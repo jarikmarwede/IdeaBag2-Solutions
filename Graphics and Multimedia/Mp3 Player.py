@@ -22,8 +22,8 @@ from tkinter import filedialog, ttk
 import pygame
 from pygame import mixer as media_player
 
-SONG_END = pygame.USEREVENT + 1
-DEFAULT_VOLUME = 5
+SONG_END_EVENT = pygame.USEREVENT + 1
+DEFAULT_VOLUME = 0.5
 
 
 class MainWindow(tk.Tk):
@@ -72,7 +72,7 @@ class MainWindow(tk.Tk):
                                       text="Volume: ")
         self.volume_scale = ttk.Scale(self.volume_frame,
                                       orient=tk.VERTICAL,
-                                      from_=10,
+                                      from_=1,
                                       to=0,
                                       value=DEFAULT_VOLUME,
                                       command=change_volume)
@@ -160,7 +160,7 @@ class MainWindow(tk.Tk):
         # load media player
         pygame.init()
         media_player.init()
-        media_player.music.set_endevent(SONG_END)
+        media_player.music.set_endevent(SONG_END_EVENT)
 
     def play_audio(self, file: tuple=None):
         """Play the currently selected file."""
@@ -169,8 +169,8 @@ class MainWindow(tk.Tk):
             if selection:
                 self.currently_playing.set(self.playlist_treeview.item(selection, "values")[0])
                 self.current_index = self.playlist_treeview.index(selection)
-            media_player.music.load(self.currently_playing.get())
-            media_player.music.play()
+                media_player.music.load(self.currently_playing.get())
+                media_player.music.play()
         else:
             self.currently_playing.set(file[0])
             self.current_index = file[1]
@@ -181,38 +181,42 @@ class MainWindow(tk.Tk):
         """Pause the audio that is currently playing/resume playing it."""
         if self.paused:
             media_player.music.unpause()
+            self.pause_resume_button.config(text="Pause")
             self.paused = False
         elif media_player.music.get_busy():
             media_player.music.pause()
+            self.pause_resume_button.config(text="Resume")
             self.paused = True
 
     def play_next_file(self):
         """Play the next file in playlist."""
-        if self.repeat_forever.get():
-            self.play_audio((self.currently_playing.get(),
-                             self.current_index))
-        elif self.repeat:
-            self.play_audio((self.currently_playing.get(),
-                             self.current_index))
-            self.repeat = False
-        else:
-            new_index = self.current_index + 1
-            if new_index >= len(self.playlist_treeview.get_children()):
+        if self.current_index:
+            if self.repeat_forever.get():
+                self.play_audio((self.currently_playing.get(),
+                                 self.current_index))
+            elif self.repeat:
+                self.play_audio((self.currently_playing.get(),
+                                 self.current_index))
+                self.repeat = False
+            else:
+                new_index = self.current_index + 1
+                if new_index >= len(self.playlist_treeview.get_children()):
+                    return None
+                new_item = self.playlist_treeview.get_children()[new_index]
+                self.playlist_treeview.see(new_item)
+                self.play_audio((self.playlist_treeview.item(new_item, "values")[0],
+                                 new_index))
+
+    def play_previous_file(self):
+        """Play the previous file in playlist."""
+        if self.current_index:
+            new_index = self.current_index - 1
+            if new_index < 0:
                 return None
             new_item = self.playlist_treeview.get_children()[new_index]
             self.playlist_treeview.see(new_item)
             self.play_audio((self.playlist_treeview.item(new_item, "values")[0],
                              new_index))
-
-    def play_previous_file(self):
-        """Play the previous file in playlist."""
-        new_index = self.current_index - 1
-        if new_index < 0:
-            return None
-        new_item = self.playlist_treeview.get_children()[new_index]
-        self.playlist_treeview.see(new_item)
-        self.play_audio((self.playlist_treeview.item(new_item, "values")[0],
-                         new_index))
 
     def repeat_once(self):
         """Repeat current file once."""
@@ -246,14 +250,14 @@ class MainWindow(tk.Tk):
     def event_checker(self):
         """Check whether the current audio file has ended."""
         for event in pygame.event.get():
-            if event.type == SONG_END:
+            if event.type == SONG_END_EVENT:
                 self.play_next_file()
         self.after(1, self.event_checker)
 
 
 def change_volume(volume):
     """Change the volume to the specified volume."""
-    media_player.music.set_volume(float(volume) / 10)
+    media_player.music.set_volume(float(volume))
 
 
 def _start_window():
