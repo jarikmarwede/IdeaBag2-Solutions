@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""
+"""A simple mp3 player built with tkinter and pygame.
 
 Title:
 Mp3 Player (and Other Formats)
@@ -27,12 +27,14 @@ DEFAULT_VOLUME = 0.5
 CURRENTLY_PLAYING_INDICATOR = "➤"
 
 
-class ToolTip(object):
+class ToolTip:
     """Create a tooltip for a given widget.
 
-    From: https://stackoverflow.com/a/36221216
+    Originally from: https://stackoverflow.com/a/36221216
     """
+
     def __init__(self, widget, text='Widget info'):
+        """Initialize instance attributes."""
         self.waittime = 500     # miliseconds
         self.wraplength = 180   # pixels
         self.widget = widget
@@ -40,45 +42,51 @@ class ToolTip(object):
         self.widget.bind("<Enter>", lambda _: self.enter())
         self.widget.bind("<Leave>", lambda _: self.leave())
         self.widget.bind("<ButtonPress>", lambda _: self.leave())
-        self.id = None
-        self.tw = None
+        self.after_id = None
+        self.window = None
 
     def enter(self):
+        """Schedule tooltip on mouse enter event."""
         self.schedule()
 
     def leave(self):
+        """Hide tooltip on mouse leave event."""
         self.unschedule()
         self.hidetip()
 
     def schedule(self):
+        """Schedule displaying of tooltip."""
         self.unschedule()
-        self.id = self.widget.after(self.waittime, self.showtip)
+        self.after_id = self.widget.after(self.waittime, self.showtip)
 
     def unschedule(self):
-        id = self.id
-        self.id = None
-        if id:
-            self.widget.after_cancel(id)
+        """Unschedule displaying of tooltip."""
+        after_id = self.after_id
+        self.after_id = None
+        if after_id:
+            self.widget.after_cancel(after_id)
 
     def showtip(self):
+        """Display tooltip on screen."""
         x = self.widget.winfo_pointerx() - 10
         y = self.widget.winfo_pointery() - 25
 
         # creates a toplevel window
-        self.tw = tk.Toplevel(self.widget)
+        self.window = tk.Toplevel(self.widget)
         # Leaves only the label and removes the app window
-        self.tw.wm_overrideredirect(True)
-        self.tw.wm_geometry("+%d+%d" % (x, y))
-        label = tk.Label(self.tw, text=self.text, justify='left',
+        self.window.wm_overrideredirect(True)
+        self.window.wm_geometry("+%d+%d" % (x, y))
+        label = tk.Label(self.window, text=self.text, justify='left',
                          background="#ffffff", relief='solid',
                          borderwidth=1, wraplength=self.wraplength)
         label.pack(ipadx=1)
 
     def hidetip(self):
-        tw = self.tw
-        self.tw = None
-        if tw:
-            tw.destroy()
+        """Remove tooltip from screen."""
+        window = self.window
+        self.window = None
+        if window:
+            window.destroy()
 
 
 class MainWindow(tk.Tk):
@@ -238,35 +246,33 @@ class MainWindow(tk.Tk):
         media_player.init()
         media_player.music.set_endevent(SONG_END_EVENT)
 
-    def play_audio(self, file: tuple=None):
+    def play_audio(self, file: tuple = None):
         """Play the currently selected file."""
         selection = self.playlist_treeview.selection()
-        if not file and not selection:
-            return None
+        if file or selection:
+            if self.currently_playing.get():
+                self.playlist_treeview.item(self.playlist_treeview.get_children()[self.current_index],
+                                            values=(" ", self.currently_playing.get()))
 
-        if self.currently_playing.get():
+            if not file:
+                self.currently_playing.set(self.playlist_treeview.item(selection, "values")[1])
+                self.current_index = self.playlist_treeview.index(selection)
+            else:
+                self.currently_playing.set(file[0])
+                self.current_index = file[1]
+
             self.playlist_treeview.item(self.playlist_treeview.get_children()[self.current_index],
-                                        values=(" ", self.currently_playing.get()))
-
-        if not file:
-            self.currently_playing.set(self.playlist_treeview.item(selection, "values")[1])
-            self.current_index = self.playlist_treeview.index(selection)
-        else:
-            self.currently_playing.set(file[0])
-            self.current_index = file[1]
-
-        self.playlist_treeview.item(self.playlist_treeview.get_children()[self.current_index],
-                                    values=(CURRENTLY_PLAYING_INDICATOR,
-                                            self.currently_playing.get()))
-        media_player.music.load(self.currently_playing.get())
-        media_player.music.play()
-        self.update_time_played()
+                                        values=(CURRENTLY_PLAYING_INDICATOR,
+                                                self.currently_playing.get()))
+            media_player.music.load(self.currently_playing.get())
+            media_player.music.play()
+            self.update_time_played()
 
     def pause_resume(self):
         """Pause the audio that is currently playing/resume playing it."""
         if self.paused:
             media_player.music.unpause()
-            self.pause_resume_button.config(text="Pause")
+            self.pause_resume_button.config(text="⏸")
             self.paused = False
         elif media_player.music.get_busy():
             media_player.music.pause()
@@ -285,23 +291,21 @@ class MainWindow(tk.Tk):
                 self.repeat = False
             else:
                 new_index = self.current_index + 1
-                if new_index >= len(self.playlist_treeview.get_children()):
-                    return None
-                new_item = self.playlist_treeview.get_children()[new_index]
-                self.playlist_treeview.see(new_item)
-                self.play_audio((self.playlist_treeview.item(new_item, "values")[1],
-                                 new_index))
+                if new_index < len(self.playlist_treeview.get_children()):
+                    new_item = self.playlist_treeview.get_children()[new_index]
+                    self.playlist_treeview.see(new_item)
+                    self.play_audio((self.playlist_treeview.item(new_item, "values")[1],
+                                     new_index))
 
     def play_previous_file(self):
         """Play the previous file in playlist."""
         if self.current_index:
             new_index = self.current_index - 1
-            if new_index < 0:
-                return None
-            new_item = self.playlist_treeview.get_children()[new_index]
-            self.playlist_treeview.see(new_item)
-            self.play_audio((self.playlist_treeview.item(new_item, "values")[1],
-                             new_index))
+            if new_index >= 0:
+                new_item = self.playlist_treeview.get_children()[new_index]
+                self.playlist_treeview.see(new_item)
+                self.play_audio((self.playlist_treeview.item(new_item, "values")[1],
+                                 new_index))
 
     def repeat_once(self):
         """Repeat current file once."""
