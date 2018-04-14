@@ -246,6 +246,8 @@ class MainWindow(tk.Tk):
         media_player.init()
         media_player.music.set_endevent(SONG_END_EVENT)
 
+        center_window_on_screen(self)
+
     def play_audio(self, file: tuple = None):
         """Play the currently selected file."""
         selection = self.playlist_treeview.selection()
@@ -356,6 +358,23 @@ class MainWindow(tk.Tk):
 def change_volume(volume):
     """Change the volume to the specified volume."""
     media_player.music.set_volume(float(volume))
+
+
+def center_window_on_screen(window):
+    """Center the specified window on the screen."""
+    window.update_idletasks()
+    height = window.winfo_height()
+    width = window.winfo_width()
+    screen_height = window.winfo_screenheight()
+    screen_width = window.winfo_screenwidth()
+
+    x_coordinate = int(screen_width / 2 - width / 2)
+    y_coordinate = int(screen_height / 2 - height / 2)
+
+    window.geometry("".join((str(width), "x",
+                             str(height), "+",
+                             str(x_coordinate), "+",
+                             str(y_coordinate))))
 
 
 def _start_window():
