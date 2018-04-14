@@ -24,6 +24,62 @@ from pygame import mixer as media_player
 
 SONG_END_EVENT = pygame.USEREVENT + 1
 DEFAULT_VOLUME = 0.5
+CURRENTLY_PLAYING_INDICATOR = "➤"
+
+
+class ToolTip(object):
+    """Create a tooltip for a given widget.
+
+    From: https://stackoverflow.com/a/36221216
+    """
+    def __init__(self, widget, text='widget info'):
+        self.waittime = 500     # miliseconds
+        self.wraplength = 180   # pixels
+        self.widget = widget
+        self.text = text
+        self.widget.bind("<Enter>", self.enter)
+        self.widget.bind("<Leave>", self.leave)
+        self.widget.bind("<ButtonPress>", self.leave)
+        self.id = None
+        self.tw = None
+
+    def enter(self, event=None):
+        self.schedule()
+
+    def leave(self, event=None):
+        self.unschedule()
+        self.hidetip()
+
+    def schedule(self):
+        self.unschedule()
+        self.id = self.widget.after(self.waittime, self.showtip)
+
+    def unschedule(self):
+        id = self.id
+        self.id = None
+        if id:
+            self.widget.after_cancel(id)
+
+    def showtip(self, event=None):
+        x = y = 0
+        x, y, cx, cy = self.widget.bbox("insert")
+        x += self.widget.winfo_rootx() + 25
+        y += self.widget.winfo_rooty() + 20
+        # creates a toplevel window
+        self.tw = tk.Toplevel(self.widget)
+        # Leaves only the label and removes the app window
+        self.tw.wm_overrideredirect(True)
+        self.tw.wm_geometry("+%d+%d" % (x, y))
+        label = tk.Label(self.tw, text=self.text, justify='left',
+                         background="#ffffff", relief='solid', borderwidth=1,
+                         wraplength = self.wraplength)
+        label.pack(ipadx=1)
+
+    def hidetip(self):
+        tw = self.tw
+        self.tw= None
+        if tw:
+            tw.destroy()
 
 
 class MainWindow(tk.Tk):
@@ -55,7 +111,7 @@ class MainWindow(tk.Tk):
 
         # create other widgets
         self.playlist_treeview = ttk.Treeview(self.treeview_frame,
-                                              columns=("filename",),
+                                              columns=("state", "filename",),
                                               selectmode="browse",
                                               show="tree")
         self.playlist_scroll_x = ttk.Scrollbar(self.treeview_frame,
@@ -84,25 +140,25 @@ class MainWindow(tk.Tk):
                                       value=DEFAULT_VOLUME,
                                       command=change_volume)
         self.play_button = ttk.Button(self.bottom_audio_buttons_frame,
-                                      text="Play",
+                                      text="⏵",
                                       command=self.play_audio)
         self.pause_resume_button = ttk.Button(self.bottom_audio_buttons_frame,
-                                              text="Pause",
+                                              text="⏸",
                                               command=self.pause_resume)
         self.next_button = ttk.Button(self.bottom_audio_buttons_frame,
-                                      text="Next",
+                                      text="⏭",
                                       command=self.play_next_file)
         self.previous_button = ttk.Button(self.bottom_audio_buttons_frame,
-                                          text="Previous",
+                                          text="⏮",
                                           command=self.play_previous_file)
         self.repeat_once_button = ttk.Button(self.bottom_audio_buttons_frame,
-                                             text="Repeat once",
+                                             text="⟳",
                                              command=self.repeat_once)
         self.repeat_forever_checkbutton = ttk.Checkbutton(self.bottom_audio_buttons_frame,
                                                           text="Repeat forever",
                                                           variable=self.repeat_forever)
         self.shuffle_playlist_button = ttk.Button(self.bottom_audio_buttons_frame,
-                                                  text="Shuffle",
+                                                  text="⤧",
                                                   command=self.shuffle_playlist)
         self.main_menu = tk.Menu(self,
                                  tearoff=0)
@@ -113,6 +169,9 @@ class MainWindow(tk.Tk):
         self.playlist_treeview.column("#0",
                                       minwidth=0,
                                       width=0)
+        self.playlist_treeview.column("state",
+                                      minwidth=10,
+                                      width=20)
         self.playlist_treeview.column("filename",
                                       width=750)
         self.playlist_treeview.heading("filename",
@@ -174,20 +233,27 @@ class MainWindow(tk.Tk):
 
     def play_audio(self, file: tuple=None):
         """Play the currently selected file."""
+        selection = self.playlist_treeview.selection()
+        if not file and not selection:
+            return None
+
+        if self.currently_playing.get():
+            self.playlist_treeview.item(self.playlist_treeview.get_children()[self.current_index],
+                                        values=(" ", self.currently_playing.get()))
+
         if not file:
-            selection = self.playlist_treeview.selection()
-            if selection:
-                self.currently_playing.set(self.playlist_treeview.item(selection, "values")[0])
-                self.current_index = self.playlist_treeview.index(selection)
-                media_player.music.load(self.currently_playing.get())
-                media_player.music.play()
-                self.update_time_played()
+            self.currently_playing.set(self.playlist_treeview.item(selection, "values")[1])
+            self.current_index = self.playlist_treeview.index(selection)
         else:
             self.currently_playing.set(file[0])
             self.current_index = file[1]
-            media_player.music.load(self.currently_playing.get())
-            media_player.music.play()
-            self.update_time_played()
+
+        self.playlist_treeview.item(self.playlist_treeview.get_children()[self.current_index],
+                                    values=(CURRENTLY_PLAYING_INDICATOR,
+                                            self.currently_playing.get()))
+        media_player.music.load(self.currently_playing.get())
+        media_player.music.play()
+        self.update_time_played()
 
     def pause_resume(self):
         """Pause the audio that is currently playing/resume playing it."""
@@ -216,7 +282,7 @@ class MainWindow(tk.Tk):
                     return None
                 new_item = self.playlist_treeview.get_children()[new_index]
                 self.playlist_treeview.see(new_item)
-                self.play_audio((self.playlist_treeview.item(new_item, "values")[0],
+                self.play_audio((self.playlist_treeview.item(new_item, "values")[1],
                                  new_index))
 
     def play_previous_file(self):
@@ -227,7 +293,7 @@ class MainWindow(tk.Tk):
                 return None
             new_item = self.playlist_treeview.get_children()[new_index]
             self.playlist_treeview.see(new_item)
-            self.play_audio((self.playlist_treeview.item(new_item, "values")[0],
+            self.play_audio((self.playlist_treeview.item(new_item, "values")[1],
                              new_index))
 
     def repeat_once(self):
@@ -241,7 +307,10 @@ class MainWindow(tk.Tk):
         random.shuffle(entries)
         self.playlist_treeview.delete(*old_entries)
         for entry in entries:
-            self.playlist_treeview.insert("", "end", values=entry)
+            iid = self.playlist_treeview.insert("", "end", values=entry)
+            if entry[0] == CURRENTLY_PLAYING_INDICATOR:
+                self.currently_playing.set(entry[1])
+                self.current_index = self.playlist_treeview.index(iid)
 
     def open_file(self):
         """Open new audio file."""
@@ -249,7 +318,7 @@ class MainWindow(tk.Tk):
                                             filetypes=[("Mp3", "*.mp3")],
                                             parent=self)
         for file in files:
-            self.playlist_treeview.insert("", "end", values=(file,))
+            self.playlist_treeview.insert("", "end", values=(" ", file))
 
     def open_playlist(self):
         """Open all audio files in a folder as a playlist."""
@@ -257,7 +326,7 @@ class MainWindow(tk.Tk):
         for file in os.listdir(directory):
             if file.endswith(".mp3"):
                 file_path = directory + "/" + file
-                self.playlist_treeview.insert("", "end", values=(file_path,))
+                self.playlist_treeview.insert("", "end", values=(" ", file_path))
 
     def event_checker(self):
         """Check whether the current audio file has ended."""
