@@ -32,21 +32,21 @@ class ToolTip(object):
 
     From: https://stackoverflow.com/a/36221216
     """
-    def __init__(self, widget, text='widget info'):
+    def __init__(self, widget, text='Widget info'):
         self.waittime = 500     # miliseconds
         self.wraplength = 180   # pixels
         self.widget = widget
         self.text = text
-        self.widget.bind("<Enter>", self.enter)
-        self.widget.bind("<Leave>", self.leave)
-        self.widget.bind("<ButtonPress>", self.leave)
+        self.widget.bind("<Enter>", lambda _: self.enter())
+        self.widget.bind("<Leave>", lambda _: self.leave())
+        self.widget.bind("<ButtonPress>", lambda _: self.leave())
         self.id = None
         self.tw = None
 
-    def enter(self, event=None):
+    def enter(self):
         self.schedule()
 
-    def leave(self, event=None):
+    def leave(self):
         self.unschedule()
         self.hidetip()
 
@@ -60,24 +60,23 @@ class ToolTip(object):
         if id:
             self.widget.after_cancel(id)
 
-    def showtip(self, event=None):
-        x = y = 0
-        x, y, cx, cy = self.widget.bbox("insert")
-        x += self.widget.winfo_rootx() + 25
-        y += self.widget.winfo_rooty() + 20
+    def showtip(self):
+        x = self.widget.winfo_pointerx() - 10
+        y = self.widget.winfo_pointery() - 25
+
         # creates a toplevel window
         self.tw = tk.Toplevel(self.widget)
         # Leaves only the label and removes the app window
         self.tw.wm_overrideredirect(True)
         self.tw.wm_geometry("+%d+%d" % (x, y))
         label = tk.Label(self.tw, text=self.text, justify='left',
-                         background="#ffffff", relief='solid', borderwidth=1,
-                         wraplength = self.wraplength)
+                         background="#ffffff", relief='solid',
+                         borderwidth=1, wraplength=self.wraplength)
         label.pack(ipadx=1)
 
     def hidetip(self):
         tw = self.tw
-        self.tw= None
+        self.tw = None
         if tw:
             tw.destroy()
 
@@ -191,6 +190,14 @@ class MainWindow(tk.Tk):
         self.file_sub_menu.add_separator()
         self.file_sub_menu.add_command(label="Exit",
                                        command=self.destroy)
+
+        # set up tooltips
+        ToolTip(self.shuffle_playlist_button, "Shuffle")
+        ToolTip(self.previous_button, "Previous file")
+        ToolTip(self.play_button, "Play")
+        ToolTip(self.pause_resume_button, "Pause/Resume")
+        ToolTip(self.next_button, "Next file")
+        ToolTip(self.repeat_once_button, "Repeat once")
 
         # display frames
         self.treeview_frame.grid(row=0, column=0, padx=40, pady=10, sticky=tk.NSEW)
