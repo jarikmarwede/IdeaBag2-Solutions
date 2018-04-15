@@ -29,5 +29,5 @@ If you want to contribute in any way please take a look at [CONTRIBUTING.md](htt
 * [Pygame 1.9.3](https://www.pygame.org/) (Graphics and Multimedia/Mp3 Player)
 
 ## License
-This repository uses the GNU General Public License v3.0.
+This repository uses the MIT License.
 A copy of it can be found in [LICENSE](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/LICENSE).
