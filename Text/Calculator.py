@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Calculates a mathematical expression
+"""Calculates a mathematical expression.
 
 Title:
 Calculator
@@ -16,12 +16,11 @@ Submitted by David
 
 
 def evaluate(expression: str) -> float:
-    """Returns the value of expression using eval()
-    """
+    """Return the value of expression using eval()."""
     try:
         result = eval(expression)
         return result
-    except:
+    except Exception:
         raise ValueError(expression + " is not a mathematical expression.")
 
 

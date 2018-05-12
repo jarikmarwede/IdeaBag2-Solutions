@@ -13,8 +13,7 @@ otherwise quit the program.
 
 
 def next_prime(number: int) -> int:
-    """Return the next prime number after the specified number
-    """
+    """Return the next prime number after the specified number."""
     while True:
         number += 1
         for num in range(2, number):
