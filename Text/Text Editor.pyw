@@ -9,8 +9,9 @@ open, edit, and save text documents.
 For added complexity,
 add syntax highlighting, find and replace, text formatting etc.
 """
+import os
 import tkinter as tk
-from tkinter import ttk
+from tkinter import filedialog as tk_filedialog, ttk
 
 
 class MainWindow(tk.Tk):
@@ -56,9 +57,8 @@ class MainWindow(tk.Tk):
 
         # load empty text editor
         self.add_new_tab()
-        self.add_new_tab()
 
-    def add_new_tab(self, tab_name="New file", editor_text=""):
+    def add_new_tab(self, tab_name="New file", file_path="",  editor_text=""):
         """Add new editor tab to notebook."""
         # create widgets
         notebook_tab_frame = ttk.Frame(self.tab_notebook)
@@ -82,14 +82,24 @@ class MainWindow(tk.Tk):
         text_editor_scroll_x.grid(row=1, column=0, sticky=tk.EW)
 
         self.notebook_tabs[tab_name] = {
-                "text_editor": text_editor,
-                "text_editor_scroll_x": text_editor_scroll_x,
-                "text_editor_scroll_y": text_editor_scroll_y
+            "tab_frame": notebook_tab_frame,
+            "text_editor": text_editor,
+            "text_editor_scroll_x": text_editor_scroll_x,
+            "text_editor_scroll_y": text_editor_scroll_y,
+            "file_path": file_path
         }
         self.tab_notebook.add(notebook_tab_frame, text=tab_name)
+        self.tab_notebook.select(notebook_tab_frame)
 
     def open_file(self):
         """Open a file."""
+        file_path = tk_filedialog.askopenfilename(parent=self,
+                                                  defaultextension=".txt")
+        with open(file_path, "r") as file:
+            file_content = file.read()
+        file_name = os.path.basename(file_path)
+
+        self.add_new_tab(file_name, file_path, file_content)
 
     def save_file(self):
         """Save current file."""
