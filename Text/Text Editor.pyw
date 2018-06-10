@@ -23,22 +23,18 @@ class MainWindow(tk.Tk):
         self.resizable(width=False, height=False)
         self.geometry()
 
+        # create variables
+        self.notebook_tabs = {}
+
         # create widgets
         self.tab_notebook = ttk.Notebook(self)
-        self.text_editor_scroll_x = ttk.Scrollbar(self, orient=tk.HORIZONTAL)
-        self.text_editor_scroll_y = ttk.Scrollbar(self, orient=tk.VERTICAL)
-        self.text_editor = tk.Text(self, wrap=tk.NONE,
-                                   xscrollcommand=self.text_editor_scroll_x.set,
-                                   yscrollcommand=self.text_editor_scroll_y.set)
         self.main_menu = tk.Menu(self,
                                  tearoff=0)
         self.file_sub_menu = tk.Menu(self.main_menu,
                                      tearoff=0)
 
         # configure widgets
-        self.text_editor_scroll_x.config(command=self.text_editor.xview)
-        self.text_editor_scroll_y.config(command=self.text_editor.yview)
-
+        self.tab_notebook.enable_traversal()
         self.config(menu=self.main_menu)
         self.main_menu.add_cascade(menu=self.file_sub_menu,
                                    label="File")
@@ -55,13 +51,42 @@ class MainWindow(tk.Tk):
         self.file_sub_menu.add_command(label="Exit",
                                        command=self.destroy)
 
+        # display widgets
+        self.tab_notebook.grid()
+
+        # load empty text editor
+        self.add_new_tab()
+        self.add_new_tab()
+
+    def add_new_tab(self, tab_name="New file", editor_text=""):
+        """Add new editor tab to notebook."""
+        # create widgets
+        notebook_tab_frame = ttk.Frame(self.tab_notebook)
+        text_editor_scroll_x = ttk.Scrollbar(notebook_tab_frame, orient=tk.HORIZONTAL)
+        text_editor_scroll_y = ttk.Scrollbar(notebook_tab_frame, orient=tk.VERTICAL)
+        text_editor = tk.Text(notebook_tab_frame, wrap=tk.NONE,
+                              xscrollcommand=text_editor_scroll_x.set,
+                              yscrollcommand=text_editor_scroll_y.set)
+
+        # configure widgets
+        text_editor.insert("0.0", editor_text)
+        text_editor_scroll_x.config(command=text_editor.xview)
+        text_editor_scroll_y.config(command=text_editor.yview)
+
         # create bindings
-        self.text_editor.bind("<Tab>", lambda _: tab_pressed(self.text_editor))
+        text_editor.bind("<Tab>", lambda _: tab_pressed(text_editor))
 
         # display widgets
-        self.text_editor.grid(row=0, column=0)
-        self.text_editor_scroll_y.grid(row=0, column=1, sticky=tk.NS)
-        self.text_editor_scroll_x.grid(row=1, column=0, sticky=tk.EW)
+        text_editor.grid(row=0, column=0)
+        text_editor_scroll_y.grid(row=0, column=1, sticky=tk.NS)
+        text_editor_scroll_x.grid(row=1, column=0, sticky=tk.EW)
+
+        self.notebook_tabs[tab_name] = {
+                "text_editor": text_editor,
+                "text_editor_scroll_x": text_editor_scroll_x,
+                "text_editor_scroll_y": text_editor_scroll_y
+        }
+        self.tab_notebook.add(notebook_tab_frame, text=tab_name)
 
     def open_file(self):
         """Open a file."""
