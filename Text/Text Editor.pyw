@@ -52,6 +52,11 @@ class MainWindow(tk.Tk):
         self.file_sub_menu.add_command(label="Exit",
                                        command=self.destroy)
 
+        # create bindings
+        self.tab_notebook.bind("<Button-3>", self.show_context_menu)
+        self.tab_notebook.bind_all("<Control-KeyPress-w>",
+                                   lambda _: self.close_tab())
+
         # display widgets
         self.tab_notebook.grid()
 
@@ -106,6 +111,20 @@ class MainWindow(tk.Tk):
 
     def save_file_as(self):
         """Save current file as filename specified by the user."""
+
+    def show_context_menu(self, event):
+        """Show the context menu at position specified by event."""
+        context_menu = tk.Menu(self.master, tearoff=0)
+        context_menu.add_command(label="Close current tab (Ctrl+W)",
+                                 command=self.close_tab)
+        try:
+            context_menu.tk_popup(event.x_root, event.y_root, 0)
+        finally:
+            context_menu.grab_release()
+
+    def close_tab(self):
+        """Close the current tab in the notebook."""
+        self.tab_notebook.forget(tk.CURRENT)
 
 
 def tab_pressed(text_widget):
