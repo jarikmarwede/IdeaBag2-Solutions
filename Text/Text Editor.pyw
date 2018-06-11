@@ -108,6 +108,13 @@ class MainWindow(tk.Tk):
 
     def save_file(self):
         """Save current file."""
+        file_name = self.tab_notebook.tab(tk.CURRENT)["text"]
+        file = self.notebook_tabs[file_name]
+        if not file["file_path"]:
+            self.save_file_as()
+        else:
+            with open(file["file_path"], "w") as fw:
+                fw.write(file["text_editor"].get("0.0", tk.END))
 
     def save_file_as(self):
         """Save current file as filename specified by the user."""
