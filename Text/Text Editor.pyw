@@ -129,7 +129,8 @@ class MainWindow(tk.Tk):
         if file["file_path"]:
             with open(file["file_path"], "r") as fr:
                 file_content = fr.read()
-            if file_content == file["text_editor"].get("0.0", tk.END):
+            if (file_content == file["text_editor"].get("0.0", tk.END) or
+                    file_content == file["text_editor"].get("0.0", tk.END).rstrip()):
                 del self.notebook_tabs[file_name]
                 self.tab_notebook.forget(tk.CURRENT)
                 return
