@@ -108,16 +108,24 @@ class MainWindow(tk.Tk):
 
     def save_file(self):
         """Save current file."""
-        file_name = self.tab_notebook.tab(tk.CURRENT)["text"]
-        file = self.notebook_tabs[file_name]
-        if not file["file_path"]:
+        tab_name = self.tab_notebook.tab(tk.CURRENT)["text"]
+        tab = self.notebook_tabs[tab_name]
+        if not tab["file_path"]:
             self.save_file_as()
         else:
-            with open(file["file_path"], "w") as fw:
-                fw.write(file["text_editor"].get("0.0", tk.END))
+            with open(tab["file_path"], "w") as fw:
+                fw.write(tab["text_editor"].get("0.0", tk.END))
 
     def save_file_as(self):
         """Save current file as filename specified by the user."""
+        file_path = tk_filedialog.asksaveasfilename(parent=self,
+                                                    defaultextension=".txt",
+                                                    filetypes=[("All types", "*.*")])
+        if file_path:
+            tab_name = self.tab_notebook.tab(tk.CURRENT)["text"]
+            tab = self.notebook_tabs[tab_name]
+            with open(file_path, "w") as fw:
+                fw.write(tab["text_editor"].get("0.0", tk.END))
 
     def show_context_menu(self, event):
         """Show the context menu at position specified by event."""
