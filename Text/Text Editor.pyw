@@ -41,6 +41,7 @@ class MainWindow(tk.Tk):
                                    label="File")
 
         self.file_sub_menu.add_command(label="Open file",
+                                       accelerator="Ctrl+O",
                                        command=self.open_file)
         self.file_sub_menu.add_separator()
         self.file_sub_menu.add_command(label="Save file",
@@ -53,9 +54,11 @@ class MainWindow(tk.Tk):
                                        command=self.destroy)
 
         # create bindings
+        self.bind_all("<Control-KeyPress-w>",
+                      lambda _: self.close_tab())
+        self.bind_all("<Control-KeyPress-o>", lambda _: self.open_file())
+        self.bind_all("<Control-KeyPress-s>", lambda _: self.save_file())
         self.tab_notebook.bind("<Button-3>", self.show_context_menu)
-        self.tab_notebook.bind_all("<Control-KeyPress-w>",
-                                   lambda _: self.close_tab())
 
         # display widgets
         self.tab_notebook.grid()
