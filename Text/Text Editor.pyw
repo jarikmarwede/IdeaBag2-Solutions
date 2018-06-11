@@ -11,7 +11,7 @@ add syntax highlighting, find and replace, text formatting etc.
 """
 import os
 import tkinter as tk
-from tkinter import filedialog as tk_filedialog, ttk
+from tkinter import filedialog as tk_filedialog, messagebox as tk_messagebox, ttk
 
 
 class MainWindow(tk.Tk):
@@ -124,7 +124,15 @@ class MainWindow(tk.Tk):
 
     def close_tab(self):
         """Close the current tab in the notebook."""
-        self.tab_notebook.forget(tk.CURRENT)
+        save = tk_messagebox.askyesnocancel(title="Save Document?",
+                                            message="Do you want to save the document before closing it?")
+        if save:
+            self.save_file()
+        if save is not None:
+            current_tab = self.tab_notebook.tab(tk.CURRENT)
+            file_name = current_tab["text"]
+            del self.notebook_tabs[file_name]
+            self.tab_notebook.forget(tk.CURRENT)
 
 
 def tab_pressed(text_widget):
