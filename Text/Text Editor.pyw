@@ -124,15 +124,23 @@ class MainWindow(tk.Tk):
 
     def close_tab(self):
         """Close the current tab in the notebook."""
+        file_name = self.tab_notebook.tab(tk.CURRENT)["text"]
+        file = self.notebook_tabs[file_name]
+        if file["file_path"]:
+            with open(file["file_path"], "r") as fr:
+                file_content = fr.read()
+            if file_content == file["text_editor"].get("0.0", tk.END):
+                del self.notebook_tabs[file_name]
+                self.tab_notebook.forget(tk.CURRENT)
+                return
         save = tk_messagebox.askyesnocancel(title="Save Document?",
                                             message="Do you want to save the document before closing it?")
         if save:
             self.save_file()
-        if save is not None:
-            current_tab = self.tab_notebook.tab(tk.CURRENT)
-            file_name = current_tab["text"]
-            del self.notebook_tabs[file_name]
-            self.tab_notebook.forget(tk.CURRENT)
+        elif save is None:
+            return
+        del self.notebook_tabs[file_name]
+        self.tab_notebook.forget(tk.CURRENT)
 
 
 def tab_pressed(text_widget):
