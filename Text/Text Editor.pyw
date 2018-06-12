@@ -12,6 +12,7 @@ add syntax highlighting, find and replace, text formatting etc.
 import os
 import tkinter as tk
 from tkinter import filedialog as tk_filedialog, messagebox as tk_messagebox, ttk
+INDENT_SIZE = 4
 
 
 class MainWindow(tk.Tk):
@@ -83,6 +84,7 @@ class MainWindow(tk.Tk):
 
         # create bindings
         text_editor.bind("<Tab>", lambda _: tab_pressed(text_editor))
+        text_editor.bind("<Shift-KeyPress-Tab>", lambda _: shift_tab_pressed(text_editor))
 
         # display widgets
         text_editor.grid(row=0, column=0)
@@ -164,8 +166,17 @@ class MainWindow(tk.Tk):
 
 def tab_pressed(text_widget):
     """Insert spaces instead of tabs."""
-    text_widget.insert(tk.INSERT, " " * 4)
+    text_widget.insert(tk.INSERT, " " * INDENT_SIZE)
     return "break"
+
+
+def shift_tab_pressed(text_widget):
+    """Remove spaces according to indent size."""
+    reversed_text = text_widget.get("insert linestart", tk.INSERT)[::-1]
+    if reversed_text.startswith(" " * INDENT_SIZE):
+        new_text = reversed_text[:INDENT_SIZE-1:-1]
+        text_widget.delete("insert linestart", tk.INSERT)
+        text_widget.insert(tk.INSERT, new_text)
 
 
 def _start_gui():
