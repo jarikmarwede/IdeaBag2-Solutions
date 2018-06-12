@@ -58,7 +58,6 @@ class MainWindow(tk.Tk):
         self.bind_all("<Control-KeyPress-w>",
                       lambda _: self.close_tab())
         self.bind_all("<Control-KeyPress-o>", lambda _: self.open_file())
-        self.bind_all("<Control-KeyPress-s>", lambda _: self.save_file())
         self.tab_notebook.bind("<Button-3>", self.show_context_menu)
 
         # display widgets
@@ -86,15 +85,17 @@ class MainWindow(tk.Tk):
         text_editor.bind("<Tab>", lambda _: tab_pressed(text_editor))
         text_editor.bind("<Shift-KeyPress-Tab>", lambda _: shift_tab_pressed(text_editor))
         text_editor.bind("<Return>", lambda _: enter_pressed(text_editor))
+        text_editor.bind_all("<Control-KeyPress-w>", lambda _: self.close_tab(text_editor))
+        text_editor.bind_all("<Control-KeyPress-s>", lambda _: self.save_file(text_editor))
 
         # display widgets
         text_editor.grid(row=0, column=0)
         text_editor_scroll_y.grid(row=0, column=1, sticky=tk.NS)
         text_editor_scroll_x.grid(row=1, column=0, sticky=tk.EW)
 
-        self.notebook_tabs[tab_name] = {
+        self.notebook_tabs[text_editor] = {
             "tab_frame": notebook_tab_frame,
-            "text_editor": text_editor,
+            "tab_name": tab_name,
             "text_editor_scroll_x": text_editor_scroll_x,
             "text_editor_scroll_y": text_editor_scroll_y,
             "file_path": file_path
@@ -112,26 +113,23 @@ class MainWindow(tk.Tk):
 
         self.add_new_tab(file_name, file_path, file_content)
 
-    def save_file(self):
+    def save_file(self, text_editor):
         """Save current file."""
-        tab_name = self.tab_notebook.tab(tk.CURRENT)["text"]
-        tab = self.notebook_tabs[tab_name]
+        tab = self.notebook_tabs[text_editor]
         if not tab["file_path"]:
-            self.save_file_as()
+            self.save_file_as(text_editor)
         else:
             with open(tab["file_path"], "w") as fw:
-                fw.write(tab["text_editor"].get("0.0", tk.END))
+                fw.write(text_editor.get("0.0", tk.END))
 
-    def save_file_as(self):
+    def save_file_as(self, text_editor):
         """Save current file as filename specified by the user."""
         file_path = tk_filedialog.asksaveasfilename(parent=self,
                                                     defaultextension=".txt",
                                                     filetypes=[("All types", "*.*")])
         if file_path:
-            tab_name = self.tab_notebook.tab(tk.CURRENT)["text"]
-            tab = self.notebook_tabs[tab_name]
             with open(file_path, "w") as fw:
-                fw.write(tab["text_editor"].get("0.0", tk.END))
+                fw.write(text_editor.get("0.0", tk.END))
 
     def show_context_menu(self, event):
         """Show the context menu at position specified by event."""
@@ -143,29 +141,29 @@ class MainWindow(tk.Tk):
         finally:
             context_menu.grab_release()
 
-    def close_tab(self):
+    def close_tab(self, text_editor):
         """Close the current tab in the notebook."""
-        file_name = self.tab_notebook.tab(tk.CURRENT)["text"]
-        file = self.notebook_tabs[file_name]
+        file = self.notebook_tabs[text_editor]
         if file["file_path"]:
             with open(file["file_path"], "r") as fr:
                 file_content = fr.read()
-            if (file_content == file["text_editor"].get("0.0", tk.END) or
-                    file_content == file["text_editor"].get("0.0", tk.END).rstrip()):
-                del self.notebook_tabs[file_name]
+            if (file_content == text_editor.get("0.0", tk.END) or
+                    file_content == text_editor.get("0.0", tk.END).rstrip()):
+                del self.notebook_tabs[text_editor]
                 self.tab_notebook.forget(tk.CURRENT)
                 if len(self.tab_notebook.tabs()) <= 0:
                     self.add_new_tab()
                 return
-        if file["text_editor"].get("0.0", tk.END) == "\n":
-            return
-        save = tk_messagebox.askyesnocancel(title="Save Document?",
-                                            message="Do you want to save the document before closing it?")
+        if text_editor.get("0.0", tk.END) == "\n":
+            save = False
+        else:
+            save = tk_messagebox.askyesnocancel(title="Save Document?",
+                                                message="Do you want to save the document before closing it?")
         if save:
-            self.save_file()
+            self.save_file(text_editor)
         elif save is None:
             return
-        del self.notebook_tabs[file_name]
+        del self.notebook_tabs[text_editor]
         self.tab_notebook.forget(tk.CURRENT)
         if len(self.tab_notebook.tabs()) <= 0:
             self.add_new_tab()
