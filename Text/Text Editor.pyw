@@ -41,6 +41,9 @@ class MainWindow(tk.Tk):
         self.main_menu.add_cascade(menu=self.file_sub_menu,
                                    label="File")
 
+        self.file_sub_menu.add_command(label="New file",
+                                       accelerator="Ctrl+N",
+                                       command=self.add_new_tab)
         self.file_sub_menu.add_command(label="Open file",
                                        accelerator="Ctrl+O",
                                        command=self.open_file)
@@ -55,8 +58,7 @@ class MainWindow(tk.Tk):
                                        command=self.destroy)
 
         # create bindings
-        self.bind_all("<Control-KeyPress-w>",
-                      lambda _: self.close_tab())
+        self.bind_all("<Control-KeyPress-n>", lambda _: self.add_new_tab())
         self.bind_all("<Control-KeyPress-o>", lambda _: self.open_file())
         self.tab_notebook.bind("<Button-3>", self.show_context_menu)
 
