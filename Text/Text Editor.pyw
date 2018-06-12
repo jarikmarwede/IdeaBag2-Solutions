@@ -157,6 +157,8 @@ class MainWindow(tk.Tk):
                 if len(self.tab_notebook.tabs()) <= 0:
                     self.add_new_tab()
                 return
+        if file["text_editor"].get("0.0", tk.END) == "\n":
+            return
         save = tk_messagebox.askyesnocancel(title="Save Document?",
                                             message="Do you want to save the document before closing it?")
         if save:
