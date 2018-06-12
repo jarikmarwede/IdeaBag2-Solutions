@@ -154,6 +154,8 @@ class MainWindow(tk.Tk):
                     file_content == file["text_editor"].get("0.0", tk.END).rstrip()):
                 del self.notebook_tabs[file_name]
                 self.tab_notebook.forget(tk.CURRENT)
+                if len(self.tab_notebook.tabs()) <= 0:
+                    self.add_new_tab()
                 return
         save = tk_messagebox.askyesnocancel(title="Save Document?",
                                             message="Do you want to save the document before closing it?")
@@ -163,6 +165,8 @@ class MainWindow(tk.Tk):
             return
         del self.notebook_tabs[file_name]
         self.tab_notebook.forget(tk.CURRENT)
+        if len(self.tab_notebook.tabs()) <= 0:
+            self.add_new_tab()
 
 
 def tab_pressed(text_widget):
