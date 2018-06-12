@@ -85,6 +85,7 @@ class MainWindow(tk.Tk):
         # create bindings
         text_editor.bind("<Tab>", lambda _: tab_pressed(text_editor))
         text_editor.bind("<Shift-KeyPress-Tab>", lambda _: shift_tab_pressed(text_editor))
+        text_editor.bind("<Return>", lambda _: enter_pressed(text_editor))
 
         # display widgets
         text_editor.grid(row=0, column=0)
@@ -177,6 +178,19 @@ def shift_tab_pressed(text_widget):
         new_text = reversed_text[:INDENT_SIZE-1:-1]
         text_widget.delete("insert linestart", tk.INSERT)
         text_widget.insert(tk.INSERT, new_text)
+
+
+def enter_pressed(text_widget):
+    """Callback for pressing Enter."""
+    current_line = text_widget.get("insert linestart", "insert lineend")
+    preceding_spaces = 0
+    for character in current_line:
+        if character == " ":
+            preceding_spaces += 1
+        else:
+            break
+    text_widget.insert("insert lineend", "\n" + " " * preceding_spaces)
+    return "break"
 
 
 def _start_gui():
