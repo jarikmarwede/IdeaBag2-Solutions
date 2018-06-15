@@ -27,9 +27,12 @@ class MainWindow(tk.Tk):
 
         # create variables
         self.notebook_tabs = {}
+        self.status_text = tk.StringVar()
 
         # create widgets
         self.tab_notebook = ttk.Notebook(self)
+        self.status_bar = ttk.Label(self,
+                                    textvariable=self.status_text)
         self.main_menu = tk.Menu(self,
                                  tearoff=0)
         self.file_sub_menu = tk.Menu(self.main_menu,
@@ -58,12 +61,14 @@ class MainWindow(tk.Tk):
                                        command=self.destroy)
 
         # create bindings
+        self.tab_notebook.bind("<<NotebookTabChanged>>", lambda _: self.tab_changed())
         self.bind_all("<Control-KeyPress-n>", lambda _: self.add_new_tab())
         self.bind_all("<Control-KeyPress-o>", lambda _: self.open_file())
         self.tab_notebook.bind("<Button-3>", self.show_context_menu)
 
         # display widgets
-        self.tab_notebook.grid()
+        self.tab_notebook.grid(row=0, column=0)
+        self.status_bar.grid(row=1, column=0, sticky=tk.EW)
 
         # load empty text editor
         self.add_new_tab()
@@ -104,7 +109,6 @@ class MainWindow(tk.Tk):
         }
         self.tab_notebook.add(notebook_tab_frame, text=tab_name)
         self.tab_notebook.select(notebook_tab_frame)
-        text_editor.focus_set()
 
     def open_file(self):
         """Open a file."""
@@ -130,6 +134,7 @@ class MainWindow(tk.Tk):
         file_path = tk_filedialog.asksaveasfilename(parent=self,
                                                     defaultextension=".txt",
                                                     filetypes=[("All types", "*.*")])
+        self.notebook_tabs[notebook_tab_frame]["file_path"] = file_path
         tab = self.notebook_tabs[notebook_tab_frame]
         if file_path:
             with open(file_path, "w") as fw:
@@ -157,9 +162,6 @@ class MainWindow(tk.Tk):
                 self.tab_notebook.forget(tk.CURRENT)
                 if len(self.tab_notebook.tabs()) <= 0:
                     self.add_new_tab()
-                else:
-                    selected_tab = self.nametowidget(self.tab_notebook.select())
-                    self.notebook_tabs[selected_tab]["text_editor"].focus_set()
                 return
         if tab["text_editor"].get("0.0", tk.END) == "\n":
             save = False
@@ -174,9 +176,14 @@ class MainWindow(tk.Tk):
         self.tab_notebook.forget(tk.CURRENT)
         if len(self.tab_notebook.tabs()) <= 0:
             self.add_new_tab()
-        else:
-            selected_tab = self.nametowidget(self.tab_notebook.select())
-            self.notebook_tabs[selected_tab]["text_editor"].focus_set()
+
+    def tab_changed(self):
+        """Callback for tab change in notebook."""
+        selected_tab = self.nametowidget(self.tab_notebook.select())
+        self.notebook_tabs[selected_tab]["text_editor"].focus_set()
+
+        file_path = self.notebook_tabs[selected_tab]["file_path"]
+        self.status_text.set(file_path)
 
 
 def tab_pressed(text_widget):
