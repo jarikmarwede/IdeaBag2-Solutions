@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""
+"""A simple text editor with tabs.
+
 Title:
 Text Editor
 
@@ -73,7 +74,7 @@ class MainWindow(tk.Tk):
         # load empty text editor
         self.add_new_tab()
 
-    def add_new_tab(self, tab_name="New file", file_path="",  editor_text=""):
+    def add_new_tab(self, tab_name="New file", file_path="", editor_text=""):
         """Add new editor tab to notebook."""
         # create widgets
         notebook_tab_frame = ttk.Frame(self.tab_notebook)
@@ -103,9 +104,6 @@ class MainWindow(tk.Tk):
         self.notebook_tabs[notebook_tab_frame] = {
             "text_editor": text_editor,
             "file_path": file_path
-            # "tab_name": tab_name,
-            # "text_editor_scroll_x": text_editor_scroll_x,
-            # "text_editor_scroll_y": text_editor_scroll_y,
         }
         self.tab_notebook.add(notebook_tab_frame, text=tab_name)
         self.tab_notebook.select(notebook_tab_frame)
@@ -126,8 +124,8 @@ class MainWindow(tk.Tk):
         if not tab["file_path"]:
             self.save_file_as(notebook_tab_frame)
         else:
-            with open(tab["file_path"], "w") as fw:
-                fw.write(tab["text_editor"].get("0.0", tk.END))
+            with open(tab["file_path"], "w") as file:
+                file.write(tab["text_editor"].get("0.0", tk.END))
 
     def save_file_as(self, notebook_tab_frame):
         """Save current file as filename specified by the user."""
@@ -137,8 +135,8 @@ class MainWindow(tk.Tk):
         self.notebook_tabs[notebook_tab_frame]["file_path"] = file_path
         tab = self.notebook_tabs[notebook_tab_frame]
         if file_path:
-            with open(file_path, "w") as fw:
-                fw.write(tab["text_editor"].get("0.0", tk.END))
+            with open(file_path, "w") as file:
+                file.write(tab["text_editor"].get("0.0", tk.END))
 
     def show_context_menu(self, event):
         """Show the context menu at position specified by event."""
@@ -154,8 +152,8 @@ class MainWindow(tk.Tk):
         """Close the current tab in the notebook."""
         tab = self.notebook_tabs[notebook_tab_frame]
         if tab["file_path"]:
-            with open(tab["file_path"], "r") as fr:
-                file_content = fr.read()
+            with open(tab["file_path"], "r") as file:
+                file_content = file.read()
             if (file_content == tab["text_editor"].get("0.0", tk.END) or
                     file_content == tab["text_editor"].get("0.0", tk.END).rstrip()):
                 del self.notebook_tabs[notebook_tab_frame]
@@ -167,7 +165,8 @@ class MainWindow(tk.Tk):
             save = False
         else:
             save = tk_messagebox.askyesnocancel(title="Save Document?",
-                                                message="Do you want to save the document before closing it?")
+                                                message="Do you want to save the document "
+                                                        "before closing it?")
         if save:
             self.save_file(notebook_tab_frame)
         elif save is None:
@@ -178,7 +177,7 @@ class MainWindow(tk.Tk):
             self.add_new_tab()
 
     def tab_changed(self):
-        """Callback for tab change in notebook."""
+        """Change focus and update status bar on tab change."""
         selected_tab = self.nametowidget(self.tab_notebook.select())
         self.notebook_tabs[selected_tab]["text_editor"].focus_set()
 
@@ -202,7 +201,7 @@ def shift_tab_pressed(text_widget):
 
 
 def enter_pressed(text_widget):
-    """Callback for pressing Enter."""
+    """Handle indentation when pressing enter."""
     current_line = text_widget.get("insert linestart", "insert lineend")
     preceding_spaces = 0
     for character in current_line:
