@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""
+"""A program that simulates coin flips.
+
 Title:
 Coin Flip Simulation
 
