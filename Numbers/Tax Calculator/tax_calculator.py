@@ -28,7 +28,7 @@ def _start_interactively():
     while True:
         cost = float(input("Please input the price without tax: "))
         tax_rate = float(input("Please input the tax rate in percent: ")
-                       .replace("%", ""))
+                         .replace("%", ""))
         print(f"Tax: {get_tax(cost, tax_rate)}")
         print(f"Final cost: {apply_tax(cost, tax_rate)}")
 
