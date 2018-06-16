@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""
+"""A tax calculator for the command line.
+
 Title:
 Tax Calculator
 
@@ -10,30 +11,27 @@ It then returns the tax plus the total cost with tax.
 """
 
 
-def add_tax(base_cost: float, tax_rate: int):
-    """Return base_cost with tax added to it
-    """
-    total_cost = base_cost / 100 * tax_rate + base_cost
+def get_tax(base_cost: float, tax_rate: int) -> float:
+    """Return the tax on base_cost."""
+    tax = base_cost / 100 * tax_rate
+    return tax
+
+
+def apply_tax(base_cost: float, tax_rate: int) -> float:
+    """Return base_cost with tax applied to it."""
+    total_cost = base_cost + get_tax(base_cost, tax_rate)
     return total_cost
 
 
-def remove_tax(cost: float, tax_rate: int):
-    """Return specified cost with tax removed
-    """
-    base_cost = cost - cost / 100 * tax_rate
-    return base_cost
+def _start_interactively():
+    """Start program interactively in the command line."""
+    while True:
+        cost = float(input("Please input the price without tax: "))
+        tax_rate = int(input("Please input the tax rate in percent: ")
+                       .replace("%", ""))
+        print(f"Tax: {get_tax(cost, tax_rate)}")
+        print(f"Final cost: {apply_tax(cost, tax_rate)}")
 
 
 if __name__ == "__main__":
-    while True:
-        CHOICE = input("Do you want to add tax or remove tax (add|remove): ")
-        if CHOICE == "add":
-            COST = float(input("Please input the price without tax: "))
-            TAX_RATE = int(input("Please input the tax rate in percent: ")
-                           .replace("%", ""))
-            print(add_tax(COST, TAX_RATE))
-        elif CHOICE == "remove":
-            COST = float(input("Please input the price with tax: "))
-            TAX_RATE = int(input("Please input the tax rate in percent: ")
-                           .replace("%", ""))
-            print(remove_tax(COST, TAX_RATE))
+    _start_interactively()
