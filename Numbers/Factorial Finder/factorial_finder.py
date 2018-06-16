@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""
+"""A program that finds the factorial to any given number.
+
 Title:
 Factorial Finder
 
@@ -13,16 +14,25 @@ of any user given number using both loops and recursion.
 
 
 def find_factorial(number: int) -> int:
-    """Return factorial for specidied number
-    """
+    """Return factorial for specified number."""
     if number > 0:
         return number * find_factorial(number - 1)
     elif number == 0:
         return 1
+    else:
+        raise ValueError("Negative number")
+
+
+def _start_interactively():
+    """Start the program interactively through the command line."""
+    while True:
+        number = int(input("Please type in the number "
+                           "you want to get the factorial from: "))
+        try:
+            print(find_factorial(number))
+        except ValueError:
+            print(f"Invalid number: {number}")
 
 
 if __name__ == "__main__":
-    while True:
-        NUMBER = int(input("Please type in the number "
-                           "you want to get the factorial from: "))
-        print(find_factorial(NUMBER))
+    _start_interactively()
