@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""
+"""Find all circular primes in any given range.
+
 Title:
 Circular Primes
 
@@ -23,8 +24,7 @@ Submitted by Lovecraft
 
 
 def is_prime(number: int) -> bool:
-    """Return whether the specified number is a prime number
-    """
+    """Return whether the specified number is a prime number."""
     if number <= 1:
         return False
     for num in range(1, number):
@@ -34,28 +34,30 @@ def is_prime(number: int) -> bool:
 
 
 def is_circular_prime(number: int) -> bool:
-    """Return whether the specified number is a circular prime number
-    """
+    """Return whether the specified number is a circular prime number."""
     for index in range(0, len(str(number))):
         if not is_prime(int(str(number)[index:] + str(number)[:index])):
             return False
     return True
 
 
-def circular_primes(number_range: tuple) -> list:
-    """Return all circular prime number in the specified range
-    """
+def circular_primes(start: int, end: int) -> list:
+    """Return all circular prime numbers in the specified range."""
     result = []
-    for number in range(number_range[0], number_range[1]):
+    for number in range(start, end):
         if is_circular_prime(number):
             result.append(number)
     return result
 
 
-if __name__ == "__main__":
+def _start_interactively():
+    """Start the program interactively through the command line."""
     while True:
-        START = int(input("Please input the starting number: "))
-        END = int(input("Please input the ending number: ")) + 1
-        RANGE = (START, END)
-        print(*circular_primes(RANGE))
+        start = int(input("Please input the starting number: "))
+        end = int(input("Please input the ending number: ")) + 1
+        print(*circular_primes(start, end))
         print("")
+
+
+if __name__ == "__main__":
+    _start_interactively()
