@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""
+"""Find the N-th natural number and the number its a part of.
+
 Title:
 Find the N-th Natural Number
 
@@ -17,9 +18,7 @@ Submitted by Dusan N.
 
 
 def find_natural_number(position: int) -> tuple:
-    """Return the natural number at specified position
-    and the number its a part of
-    """
+    """Return natural number at specified position and number its a part of."""
     num_range = ""
     counter = 0
     while len(str(num_range)) < position:
@@ -28,9 +27,14 @@ def find_natural_number(position: int) -> tuple:
     return num_range[-1], counter
 
 
-if __name__ == "__main__":
+def _start_interactively():
+    """Start the program interactively through the command line."""
     while True:
-        POSITION = int(input("Please input the position "
+        position = int(input("Please input the position "
                              "you want to get information on: "))
-        print(*find_natural_number(POSITION))
+        print(*find_natural_number(position))
         print("")
+
+
+if __name__ == "__main__":
+    _start_interactively()
