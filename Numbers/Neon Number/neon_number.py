@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""
+"""Find neon numbers in a given range.
+
 Title:
 Neon Number
 
@@ -17,8 +18,7 @@ Submitted by Shib Shankar Ghosh
 
 
 def is_neon(number: int) -> bool:
-    """Return whether the specified number is a neon number
-    """
+    """Return whether the specified number is a neon number."""
     square = number ** 2
     result = 0
     for digit in str(square):
@@ -28,19 +28,22 @@ def is_neon(number: int) -> bool:
     return False
 
 
-def find_neons(search_range: tuple) -> list:
-    """Return a list of all neon numbers in the specified range
-    """
+def find_neons(start: int, end: int) -> list:
+    """Return a list of all neon numbers in the specified range."""
     neons = []
-    for number in range(search_range[0], search_range[1] + 1):
+    for number in range(start, end + 1):
         if is_neon(number):
             neons.append(number)
     return neons
 
 
-if __name__ == "__main__":
+def _start_interactively():
+    """Start the program interactively through the command line."""
     while True:
-        START = int(input("Please enter the starting number: "))
-        END = int(input("Please enter the ending number: "))
-        RANGE = (START, END)
-        print(find_neons(RANGE))
+        start = int(input("Please enter the starting number: "))
+        end = int(input("Please enter the ending number: "))
+        print(str(find_neons(start, end)) + "\n")
+
+
+if __name__ == "__main__":
+    _start_interactively()
