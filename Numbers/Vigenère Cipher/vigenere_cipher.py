@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""
+"""Encrypt text using the Vigenère Cipher.
+
 Title:
 Vigenère Cipher
 
@@ -13,38 +14,37 @@ Give the user a message if their input is invalid
 (empty/just numbers/etc)
 Submitted by Imperial_Squid
 """
+ALPHABET = (
+    "a", "b", "c", "d", "e", "f",
+    "g", "h", "i", "j", "k", "l",
+    "m", "n", "o", "p", "q", "r",
+    "s", "t", "u", "v", "w", "x",
+    "y", "z"
+)
 
 
 def vigenere_table() -> tuple:
-    """Return vigenère table
-    """
-    alphabet = ("a", "b", "c", "d", "e", "f",
-                "g", "h", "i", "j", "k", "l",
-                "m", "n", "o", "p", "q", "r",
-                "s", "t", "u", "v", "w", "x",
-                "y", "z")
-    result = [alphabet, ]
+    """Return vigenère table."""
+    result = [ALPHABET, ]
     for shift in range(1, 26):
-        result.append(alphabet[shift:] + alphabet[:shift])
+        result.append(ALPHABET[shift:] + ALPHABET[:shift])
     return tuple(result)
 
 
 def get_key(string: str, key: str) -> str:
-    """Return key repeated to fit the length of string
-    """
+    """Return key repeated to fit the length of string."""
     full_key = key
     while len(full_key) < len(string):
-            if len(full_key + key) <= len(string):
-                full_key += key
-            # if adding key would make full_key longer than string
-            else:
-                full_key += key[:len(string) - len(full_key)]
+        if len(full_key + key) <= len(string):
+            full_key += key
+        # if adding key would make full_key longer than string
+        else:
+            full_key += key[:len(string) - len(full_key)]
     return full_key
 
 
 def encrypt(string: str, key: str) -> str:
-    """Return encrypted version of string using key
-    """
+    """Return encrypted version of string using key."""
     if not isinstance(string, str):
         raise TypeError("Expected type 'str', "
                         "got type '{}'".format(type(string)))
@@ -55,11 +55,6 @@ def encrypt(string: str, key: str) -> str:
         raise ValueError("String can not be empty")
     if key == "":
         raise ValueError("Key can not be empty")
-    alphabet = ("a", "b", "c", "d", "e", "f",
-                "g", "h", "i", "j", "k", "l",
-                "m", "n", "o", "p", "q", "r",
-                "s", "t", "u", "v", "w", "x",
-                "y", "z")
     full_key = get_key(string, key)
     table = vigenere_table()
     result = ""
@@ -70,21 +65,26 @@ def encrypt(string: str, key: str) -> str:
                 break
         else:
             continue
-        if character.lower() not in alphabet:
+        if character.lower() not in ALPHABET:
             result += character
         elif character.lower() != character:
-            result += current_row[alphabet.index(character.lower())].upper()
+            result += current_row[ALPHABET.index(character.lower())].upper()
         else:
-            result += current_row[alphabet.index(character.lower())]
+            result += current_row[ALPHABET.index(character.lower())]
     return result
 
 
-if __name__ == "__main__":
+def _start_interactively():
+    """Start the program interactively through the command line."""
     while True:
-        STRING = input("Please input the string you want to encrypt: ")
-        KEY = input("Please input the encryption key: ")
+        string = input("Please input the string you want to encrypt: ")
+        key = input("Please input the encryption key: ")
         try:
-            print("Encrypted: " + encrypt(STRING, KEY))
+            print("Encrypted: " + encrypt(string, key))
         except ValueError:
             print("Please make sure your input is correct.")
         print("")
+
+
+if __name__ == "__main__":
+    _start_interactively()
