@@ -6,4 +6,4 @@ Changes made: DETAILED CHANGES
 
 Related Issue(s): ISSUE_MENTION
 
-Mentions: @jarik-marwede
+Mentions: @jarikmarwede
