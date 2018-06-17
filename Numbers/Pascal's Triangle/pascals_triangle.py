@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
-"""
+"""Display Pascal's Triangle for any given number.
+
 Title:
 Pascal's Triangle
 
 Description:
 Create a program to print the Pascal's Triangle representation for a number N
 where N is an integer specified by the user.
-For more info on OasÄs Triangle,
+For more info on Pascal's Triangle,
 look here: https://en.m.wikipedia.org/wiki/Pascal's_triangle
 Submitted by Imperial_Squid
 """
 
 
 def pascals_triangle(rows: int) -> tuple:
-    """Return tuple containing pascals triangle up to specified length
-    """
+    """Return tuple containing pascals triangle up to specified length."""
     result = []
     next_numbers = [1]
     for _ in range(0, rows):
@@ -33,9 +33,15 @@ def pascals_triangle(rows: int) -> tuple:
     return tuple(result)
 
 
-if __name__ == "__main__":
+def _start_interactively():
+    """Start program interactively through the command line."""
     while True:
-        ROWS = int(input("Please input the number of rows"
+        rows = int(input("Please input the number of rows"
                          " the program should print out: "))
-        for row in pascals_triangle(ROWS):
+        for row in pascals_triangle(rows):
             print(*row)
+        print("")
+
+
+if __name__ == "__main__":
+    _start_interactively()
