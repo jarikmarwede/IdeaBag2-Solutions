@@ -14,10 +14,10 @@ The original categorys from *Idea Bag 2* are used to organize them.
 If you want to get the programs for playing around with them or editing them just download or clone them from Github.
 All programs need [python 3.6](https://www.python.org/downloads/) or later installed, 
 and for some of them external modules are required.
-Go to [Dependencies](https://github.com/jarik-marwede/IdeaBag2-Projects#dependencies) to check which modules you need to install.
+Go to [Dependencies](#dependencies) to check which modules you need to install.
 
 ## Contributing
-If you want to contribute in any way please take a look at [CONTRIBUTING.md](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md).
+If you want to contribute in any way please take a look at [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Dependencies
 * [Python 3.6+](https://www.python.org/downloads/)
@@ -28,4 +28,4 @@ If you want to contribute in any way please take a look at [CONTRIBUTING.md](htt
 
 ## License
 This repository uses the MIT License.
-A copy of it can be found in [LICENSE](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/LICENSE).
+A copy of it can be found in [LICENSE](LICENSE).
