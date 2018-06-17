@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""
+"""Calculate the number of days between two dates.
 
 Title:
 Number of Days
@@ -10,10 +10,7 @@ in the format (dd/mm/yyyy)
 and calculate the number of days between those two dates.
 Submitted by Kanishk
 """
-MONTH_DICTIONARY = {1: 31, 2: 28, 3: 31,
-                    4: 30, 5: 31, 6: 30,
-                    7: 31, 8: 31, 9: 30,
-                    10: 31, 11: 30, 12: 31}
+DAYS_IN_A_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
 
 def number_of_days(date1: str, date2: str) -> int:
@@ -39,12 +36,12 @@ def number_of_days(date1: str, date2: str) -> int:
         if month1 > month2:
             months_between = [month for month in range(0, 13)
                               if month1 > month >= month2]
-            days_between += sum([MONTH_DICTIONARY[month]
+            days_between += sum([DAYS_IN_A_MONTH[month]
                                  for month in months_between])
         elif month2 > month1:
             months_between = [month for month in range(0, 13)
                               if month2 > month >= month1]
-            days_between -= sum([MONTH_DICTIONARY[month]
+            days_between -= sum([DAYS_IN_A_MONTH[month]
                                  for month in months_between])
         days_between += day1 - day2
     elif year2 > year1:
@@ -62,19 +59,19 @@ def number_of_days(date1: str, date2: str) -> int:
         if month2 > month1:
             months_between = [month for month in range(0, 13)
                               if month2 > month >= month1]
-            days_between += sum([MONTH_DICTIONARY[month]
+            days_between += sum([DAYS_IN_A_MONTH[month]
                                  for month in months_between])
         elif month1 > month2:
             months_between = [month for month in range(0, 13)
                               if month1 > month >= month2]
-            days_between -= sum([MONTH_DICTIONARY[month]
+            days_between -= sum([DAYS_IN_A_MONTH[month]
                                  for month in months_between])
         days_between += day2 - day1
     else:
         if month1 > month2:
             months_between = [month for month in range(0, 13)
                               if month1 > month >= month2]
-            days_between += sum([MONTH_DICTIONARY[month]
+            days_between += sum([DAYS_IN_A_MONTH[month]
                                  for month in months_between])
             # check for leap month in a leap year (every fourth February)
             if 2 in months_between and year1 % 4 == 0:
@@ -86,7 +83,7 @@ def number_of_days(date1: str, date2: str) -> int:
         elif month2 > month1:
             months_between = [month for month in range(0, 13)
                               if month2 > month >= month1]
-            days_between += sum([MONTH_DICTIONARY[month]
+            days_between += sum([DAYS_IN_A_MONTH[month]
                                  for month in months_between])
             # check for leap month in a leap year (every fourth February)
             if 2 in months_between and year1 % 4 == 0:
