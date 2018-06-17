@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""
+"""Find the least and greatest common denominator of two fractions.
+
 Title:
 Least/Greatest Common Denominator
 
@@ -11,8 +12,7 @@ between those two fractions and print it out.
 
 
 def least_common_multiple(number1: int, number2: int) -> int:
-    """Return least common multiple of number1 and number2
-    """
+    """Return least common multiple of number1 and number2."""
     start1 = number1
     start2 = number2
     while number1 != number2:
@@ -24,8 +24,7 @@ def least_common_multiple(number1: int, number2: int) -> int:
 
 
 def greatest_common_divisor(number1: int, number2: int) -> int:
-    """Return greatest common divisor of number1 and number2
-    """
+    """Return greatest common divisor of number1 and number2."""
     if number1 < number2:
         divisor = number1
     else:
@@ -37,14 +36,19 @@ def greatest_common_divisor(number1: int, number2: int) -> int:
     return divisor
 
 
-if __name__ == "__main__":
+def _start_interactively():
+    """Start the program interactively through the command line."""
     while True:
-        FRACTION1 = input("Please input the first fraction (eg. 2/3): ")
-        FRACTION2 = input("Please input the second fraction (eg. 4/7): ")
-        NUMBER1 = int(FRACTION1.split("/")[-1])
-        NUMBER2 = int(FRACTION2.split("/")[-1])
+        fraction1 = input("Please input the first fraction (eg. 2/3): ")
+        fraction2 = input("Please input the second fraction (eg. 4/7): ")
+        number1 = int(fraction1.split("/")[-1])
+        number2 = int(fraction2.split("/")[-1])
         print("Least Common Denominator:",
-              least_common_multiple(NUMBER1, NUMBER2))
+              least_common_multiple(number1, number2))
         print("Greatest Common Divisor:",
-              greatest_common_divisor(NUMBER1, NUMBER2))
+              greatest_common_divisor(number1, number2))
         print("")
+
+
+if __name__ == "__main__":
+    _start_interactively()
