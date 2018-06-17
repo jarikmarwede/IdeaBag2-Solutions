@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""
+"""Find the next prime number for any given number.
+
 Title:
 Next Prime Number
 
@@ -23,13 +24,18 @@ def next_prime(number: int) -> int:
             return number
 
 
-if __name__ == "__main__":
-    NUMBER = int(input("Please specify the staring number: "))
+def _start_interactively():
+    """Start the program interactively through the command line."""
+    number = int(input("Please specify the staring number: "))
     while True:
-        NUMBER = next_prime(NUMBER)
-        print(NUMBER)
-        CHOICE = input("Display next prime number? (y|n)")
-        if CHOICE == "y":
+        number = next_prime(number)
+        print(str(number) + "\n")
+        choice = input("Display next prime number? (y|n)")
+        if choice == "y":
             continue
-        elif CHOICE == "n":
+        elif choice == "n":
             break
+
+
+if __name__ == "__main__":
+    _start_interactively()
