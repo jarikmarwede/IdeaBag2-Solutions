@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""
+"""Convert arabic numbers to roman numbers.
+
 Title:
 Roman Number Generator
 
@@ -15,11 +16,10 @@ Submitted by SoReNa
 
 
 def arabic_to_roman(number: int) -> str:
-    """Return roman version of the specified arabic number
-    """
+    """Return roman version of the specified arabic number."""
     if number > 3999:
-        raise ValueError("Number can not be represented with roman numerals: "
-                         "{}".format(number))
+        raise ValueError(f"Number can not be represented with roman numerals: "
+                         f"{number}")
     roman_number = ""
     for index, digit in enumerate(reversed(str(number))):
         if index == 0:
@@ -39,7 +39,7 @@ def arabic_to_roman(number: int) -> str:
             fifth = ""
             tenth = ""
         else:
-            raise ValueError("Invalid input: {}".format(number))
+            raise ValueError(f"Invalid input: {number}")
 
         if digit == "0":
             continue
@@ -64,9 +64,14 @@ def arabic_to_roman(number: int) -> str:
     return roman_number
 
 
-if __name__ == "__main__":
+def _start_interactively():
+    """Start the program interactively through the command line."""
     while True:
-        NUMBER = int(input("Please type in the number "
+        number = int(input("Please type in the number "
                            "you want to convert: "))
-        print(arabic_to_roman(NUMBER))
+        print(arabic_to_roman(number))
         print("")
+
+
+if __name__ == "__main__":
+    _start_interactively()
