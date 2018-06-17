@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""
+"""Find kaprekar numbers within a given range.
+
 Title:
 Kaprekar numbers
 
@@ -20,8 +21,7 @@ For added complexity, see if you can make it work in arbitrary bases.
 
 
 def is_kaprekar(number: int) -> bool:
-    """Return whether the specified number is a kaprekar number
-    """
+    """Return whether the specified number is a kaprekar number."""
     squared = str(number ** 2)
     # check whether squared has an even length
     if len(str(squared)) % 2 == 0:
@@ -41,8 +41,7 @@ def is_kaprekar(number: int) -> bool:
 
 
 def find_kaprekars(search_range: tuple) -> list:
-    """Return all kaprekar number in the specified range
-    """
+    """Return all kaprekar number in the specified range."""
     kaprekars = []
     for number in range(search_range[0], search_range[1] + 1):
         if is_kaprekar(number):
@@ -50,8 +49,13 @@ def find_kaprekars(search_range: tuple) -> list:
     return kaprekars
 
 
-if __name__ == "__main__":
+def _start_interactively():
+    """Start the program interactively through the command line."""
     while True:
-        RANGE0 = int(input("Please specify the starting number: "))
-        RANGE1 = int(input("Plese specify the ending number: "))
-        print(find_kaprekars((RANGE0, RANGE1)))
+        start = int(input("Please specify the starting number: "))
+        end = int(input("Please specify the ending number: "))
+        print(str(find_kaprekars((start, end))) + "\n")
+
+
+if __name__ == "__main__":
+    _start_interactively()
