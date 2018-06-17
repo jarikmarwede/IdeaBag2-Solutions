@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""
+"""A program for calculating optimal change.
+
 Title:
 Change Return Program
 
@@ -9,24 +10,25 @@ and then the amount the user paid for the item.
 Your program should figure out the change
 and the number of quarters, dimes, nickels, pennies needed for the change.
 """
+from pprint import pprint
 
 
 def calculate_change(price: float, paid: float) -> dict:
-    """Return a dictionary showing the optimal amount of currency
-    that should be given back as change
-    """
-    change_dictionary = {"one_hundred": 0,
-                         "fifty": 0,
-                         "twenty": 0,
-                         "ten": 0,
-                         "five": 0,
-                         "two": 0,
-                         "one": 0,
-                         "half": 0,
-                         "quarter": 0,
-                         "dime": 0,
-                         "nickel": 0,
-                         "penny": 0}
+    """Return the optimal amount of currency to be given back as change."""
+    change_dictionary = {
+        "one_hundred": 0,
+        "fifty": 0,
+        "twenty": 0,
+        "ten": 0,
+        "five": 0,
+        "two": 0,
+        "one": 0,
+        "half": 0,
+        "quarter": 0,
+        "dime": 0,
+        "nickel": 0,
+        "penny": 0
+    }
     change = round(paid - price, 2)
     while change > 0:
         if change - 100 >= 0:
@@ -68,8 +70,14 @@ def calculate_change(price: float, paid: float) -> dict:
     return change_dictionary
 
 
-if __name__ == "__main__":
+def _start_interactively():
+    """Start the program interactively through the command line."""
     while True:
-        PRICE = float(input("Please input the original price: "))
-        PAID = float(input("Please input how much was paid: "))
-        print(calculate_change(PRICE, PAID))
+        price = float(input("Please input the original price: "))
+        paid = float(input("Please input how much was paid: "))
+        pprint(calculate_change(price, paid))
+        print("")
+
+
+if __name__ == "__main__":
+    _start_interactively()
