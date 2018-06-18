@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Encrypt/Decrypt strings by shifting them in alphabetical order
+"""Encrypt/Decrypt text by shifting letters in alphabetical order.
 
 Title:
 Caesar's cipher
@@ -24,17 +23,16 @@ Ciphertext:
 QEB NRFZH YOLTK CLU GRJMP LSBO QEB IXWV ALD
 Submitted by Neo
 """
+ALPHABET = ("a", "b", "c", "d", "e", "f",
+            "g", "h", "i", "j", "k", "l",
+            "m", "n", "o", "p", "q", "r",
+            "s", "t", "u", "v", "w", "x",
+            "y", "z")
 
 
 def encrypt(string: str, shift: int) -> str:
-    """Return encrypted version of string
-    """
+    """Return encrypted version of string."""
     encrypted_string = ""
-    alphabet = ("a", "b", "c", "d", "e", "f",
-                "g", "h", "i", "j", "k", "l",
-                "m", "n", "o", "p", "q", "r",
-                "s", "t", "u", "v", "w", "x",
-                "y", "z")
 
     for char in string:
         if char == char.lower():
@@ -42,32 +40,36 @@ def encrypt(string: str, shift: int) -> str:
         else:
             uppercase = True
 
-        if char.lower() in alphabet:
-            char_index = alphabet.index(char.lower())
+        if char.lower() in ALPHABET:
+            char_index = ALPHABET.index(char.lower())
             encrypted_char_index = char_index - shift
             while encrypted_char_index > 25:
                 encrypted_char_index -= 26
             while encrypted_char_index < 0:
                 encrypted_char_index += 26
             if uppercase is True:
-                encrypted_string += alphabet[encrypted_char_index].upper()
+                encrypted_string += ALPHABET[encrypted_char_index].upper()
             else:
-                encrypted_string += alphabet[encrypted_char_index]
+                encrypted_string += ALPHABET[encrypted_char_index]
         else:
             encrypted_string += char
     return encrypted_string
 
 
 def decrypt(string: str, shift: int) -> str:
-    """Return decrypted version of string
-    """
+    """Return decrypted version of string."""
     return encrypt(string, 26 - shift)
-    
+
+
+def _start_interactively():
+    """Start the program interactively through the command line."""
+    while True:
+        string = input("Please input the string that you want to encrypt: ")
+        shift = int(input("Please input the rotation: "))
+        encrypted = encrypt(string, shift)
+        print("Encrypted: " + encrypted)
+        print("Decrypted: " + decrypt(encrypted, shift) + "\n")
+
 
 if __name__ == "__main__":
-    while True:
-        STRING = input("Please input the string that you want to encrypt: ")
-        SHIFT = int(input("Please input the rotation: "))
-        ENCRYPTED = encrypt(STRING, SHIFT)
-        print("Encrypted: " + ENCRYPTED)
-        print("Decrypted: " + decrypt(ENCRYPTED, SHIFT))
+    _start_interactively()
