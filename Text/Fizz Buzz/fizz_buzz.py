@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""
-Print numbers from 1-100
-but replace every number that is a multiple of 3 with Fizz,
-every number that is a multiple of 5 with Buzz
-and every number that is both with FizzBuzz
+"""Fizz Buzz algorithm.
 
 Title:
 Fizz Buzz
@@ -14,13 +10,16 @@ For multiples of three print "Fizz" instead of the number and
 for the multiples of five print "Buzz".
 For numbers which are multiples of both three and five print "FizzBuzz".
 """
+from typing import Generator
 
 
 def fizzbuzz() -> list:
-    """Return a list of numbers from 1 to 100,
+    """Return Fizz Buzz from 1 to 100.
+
+    Return a list of numbers from 1 to 100,
     replacing multiples of three with Fizz,
     multiples of five with Buzz and
-    multiples of both with FizzBuzz
+    multiples of both with FizzBuzz.
     """
     fizzbuzz_list = []
     for num in range(1, 101):
@@ -35,11 +34,13 @@ def fizzbuzz() -> list:
     return fizzbuzz_list
 
 
-def xfizzbuzz():
-    """Generator function for numbers from 1 to 100
+def xfizzbuzz() -> Generator:
+    """Fizz Buzz generator from 1 to 100.
+
+    Generator function for numbers from 1 to 100
     with every multiple of three replaced with Fizz,
     every multiple of five replaced with Buzz and
-    every multiple of both five and three with FizzBuzz
+    every multiple of both five and three with FizzBuzz.
     """
     for num in range(1, 101):
         if num % 3 == 0 and num % 5 == 0:
@@ -52,8 +53,15 @@ def xfizzbuzz():
             yield num
 
 
-if __name__ == "__main__":
+def _command_line_start():
+    """Start the program from the command line."""
+    print("Normal function: ")
     for num in fizzbuzz():
         print(num)
+    print("\nGenerator function: ")
     for num in xfizzbuzz():
         print(num)
+
+
+if __name__ == "__main__":
+    _command_line_start()
