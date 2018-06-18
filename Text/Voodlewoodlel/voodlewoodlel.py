@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Replace all vowels in s string with oodle
+"""Replace all vowels in s string with "oodle".
 
 Title:
 Voodlewoodlel
@@ -18,17 +18,16 @@ outputs
 Poodleoodlevoodles
 Soodlenoodlestroodle
 """
+VOWELS = ("a", "e", "i", "o", "u")
 
 
-def voodlewoodlel(string: str):
-    """Return voodlewoodlel version of string
-    """
-    vowels = ("a", "e", "i", "o", "u")
+def voodlewoodlel(string: str) -> str:
+    """Return voodlewoodlel version of string."""
     new_string = ""
 
     for line in string.splitlines():
         for character in line:
-            if character.lower() in vowels:
+            if character.lower() in VOWELS:
                 new_string += "oodle"
             else:
                 new_string += character
@@ -38,9 +37,14 @@ def voodlewoodlel(string: str):
     return new_string
 
 
-if __name__ == "__main__":
+def _start_interactively():
+    """Start the program interactively through the command line."""
     while True:
         # get input from user and replace automatically escaped new lines
-        STRING = input("Please input the string "
+        string = input("Please input the string "
                        "you want to voodlewoodlel: ").replace("\\n", "\n")
-        print(voodlewoodlel(STRING))
+        print(voodlewoodlel(string) + "\n")
+
+
+if __name__ == "__main__":
+    _start_interactively()
