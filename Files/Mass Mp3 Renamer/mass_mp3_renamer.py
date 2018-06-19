@@ -44,13 +44,14 @@ Bob Dylan - 06 Pretty Peggy-O (1962).mp3
 -> 1962 Bob Dylan/06 Pretty Peggy-O.mp3
 Submitted by Kaustubh
 """
-import re
 import os
-from typing import List, Tuple
+import re
 from collections import OrderedDict
+from typing import List, Tuple
 
 
-def rename_mp3s(directory_path: str, input_format: str, output_format: str) -> List[Tuple[str, str]]:
+def rename_mp3s(directory_path: str, input_format: str, output_format: str)\
+        -> List[Tuple[str, str]]:
     """Return files in directory with names changed to output_format."""
     old_filenames = os.listdir(directory_path)
     new_filenames = _convert_filenames(old_filenames,
@@ -59,14 +60,17 @@ def rename_mp3s(directory_path: str, input_format: str, output_format: str) -> L
     return [*zip(old_filenames, new_filenames)]
 
 
-def _convert_filenames(old_filenames: List[str], input_format: str, output_format: str) -> List[str]:
+def _convert_filenames(old_filenames: List[str], input_format: str, output_format: str)\
+        -> List[str]:
     """Convert filenames from input_format to output_format."""
     new_filenames = []
     input_format_regex = _convert_to_regex(input_format)
     format_order = _get_format_order(input_format)
+
     for file_name in old_filenames:
         match = input_format_regex.match(file_name)
         format_items_dict = {}
+
         for index, format_item in enumerate(format_order):
             format_items_dict[format_item] = match.group(index+1)
         new_filename = (output_format
@@ -100,12 +104,17 @@ def _get_format_order(input_format: str):
     return order
 
 
-if __name__ == "__main__":
-    SAMPLE_INPUT_FORMAT = "<artiste> - <track> <title> (<year>).mp3"
-    SAMPLE_OUTPUT_FORMAT = "<year> <artiste>/<track> <title>.mp3"
+def _start():
+    """Start running an example."""
+    sample_input_format = "<artiste> - <track> <title> (<year>).mp3"
+    sample_output_format = "<year> <artiste>/<track> <title>.mp3"
 
     sample_output = rename_mp3s("./Sample files",
-                                SAMPLE_INPUT_FORMAT,
-                                SAMPLE_OUTPUT_FORMAT)
+                                sample_input_format,
+                                sample_output_format)
     for file in sample_output:
         print(file[0] + " -> " + file[1])
+
+
+if __name__ == "__main__":
+    _start()
