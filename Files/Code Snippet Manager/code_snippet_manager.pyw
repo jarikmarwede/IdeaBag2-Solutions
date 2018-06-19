@@ -26,7 +26,8 @@ DATABASE_FILE_NAME = "./database"
 class CodeSnippet:
     """A code snippet."""
 
-    def __init__(self, name: str, language: str, code_type: str, code: str, tags=()):
+    def __init__(self, name: str = "", language: str = "",
+                 code_type: str = "", code: str = "", tags=()):
         """Define code snippet properties."""
         self.name = name
         self.language = language
@@ -41,16 +42,16 @@ class CodeSnippet:
         return False
 
 
-class MainWindow:
+class MainWindow(tk.Tk):
     """The class for interacting with tkinter."""
 
-    def __init__(self, master: tk.Tk):
+    def __init__(self):
         """Initialize window."""
-        self.master = master
-        self.master.title("Code Snippet Manager")
-        self.master.geometry()
-        self.master.resizable(width=False, height=False)
-        self.master.protocol("WM_DELETE_WINDOW", self.save_and_exit)
+        super().__init__()
+        self.title("Code Snippet Manager")
+        self.geometry()
+        self.resizable(width=False, height=False)
+        self.protocol("WM_DELETE_WINDOW", self.save_and_exit)
 
         # define instance variables
         self.code_snippets = []
@@ -60,10 +61,10 @@ class MainWindow:
         self.search_selection = tk.StringVar(value=DEFAULT_SEARCH_SELECTION)
 
         # create frames
-        self.search_frame = ttk.Frame(self.master)
+        self.search_frame = ttk.Frame(self)
         self.search_radiobuttons_frame = ttk.Frame(self.search_frame)
-        self.selection_buttons_frame = ttk.Frame(self.master)
-        self.code_buttons_frame = ttk.Frame(self.master)
+        self.selection_buttons_frame = ttk.Frame(self)
+        self.code_buttons_frame = ttk.Frame(self)
 
         # create other widgets
         self.search_button = ttk.Button(self.search_frame,
@@ -87,7 +88,7 @@ class MainWindow:
                                                        text="Tags",
                                                        value="tags",
                                                        variable=self.search_selection)
-        self.snippet_selection_treeview = ttk.Treeview(self.master,
+        self.snippet_selection_treeview = ttk.Treeview(self,
                                                        columns=("Name", "Type", "Language", "Tags"),
                                                        selectmode="browse")
         self.add_snippet_button = ttk.Button(self.selection_buttons_frame,
@@ -99,7 +100,7 @@ class MainWindow:
         self.change_properties_button = ttk.Button(self.selection_buttons_frame,
                                                    text="Edit Properties",
                                                    command=self.change_properties)
-        self.code_editor_text = tk.Text(self.master)
+        self.code_editor_text = tk.Text(self)
         self.save_changes_button = ttk.Button(self.code_buttons_frame,
                                               text="Save changes",
                                               command=self.save_code_changes)
@@ -120,6 +121,14 @@ class MainWindow:
         self.snippet_selection_treeview.heading("Language", text="Language")
         self.snippet_selection_treeview.heading("Tags", text="Tags")
 
+        self._display_widgets()
+
+        # load user data
+        self.load_data()
+        self.refresh_treeview()
+
+    def _display_widgets(self):
+        """Display widgets."""
         # display frames
         self.search_frame.grid(row=0, column=0, padx=10, pady=10)
         self.search_radiobuttons_frame.grid(row=0, column=2, padx=10)
@@ -141,19 +150,16 @@ class MainWindow:
         self.save_changes_button.grid(row=0, column=0, padx=2.5)
         self.copy_snippet_button.grid(row=0, column=1, padx=2.5)
 
-        # load user data
-        self.load_data()
-        self.refresh_treeview()
-
     def copy_snippet(self):
         """Copy code of current snippet to clipboard."""
-        self.master.clipboard_clear()
-        self.master.clipboard_append(self.code_editor_text.get(0.1, tk.END))
+        self.clipboard_clear()
+        code = self.code_editor_text.get(0.1, tk.END)
+        self.clipboard_append(code)
 
     def add_new_snippet(self):
         """Create new snippet window."""
-        new_snippet_window = NewCodeSnippetWindow(self.master)
-        self.master.wait_window(new_snippet_window)
+        new_snippet_window = NewCodeSnippetWindow(self)
+        self.wait_window(new_snippet_window)
 
         new_snippet = new_snippet_window.code_snippet
         if new_snippet.not_empty():
@@ -165,24 +171,27 @@ class MainWindow:
         try:
             selected_snippet = self.snippet_selection_treeview.selection()[0]
         except IndexError:
-            return None
+            return
         selected_snippet_index = self.snippet_selection_treeview.index(selected_snippet)
         snippet_name = self.code_snippets[selected_snippet_index].name
 
         user_input = tkinter.messagebox.askyesno(title="Delete Snippet?",
                                                  message="Do you really want to delete \""
-                                                         f" {snippet_name}\" ?",
+                                                         f"{snippet_name}\" ?",
                                                  default=tkinter.messagebox.NO,
-                                                 parent=self.master)
+                                                 parent=self)
 
-        if user_input:
-            self.code_snippets.pop(selected_snippet_index)
-            self.table.pop(selected_snippet_index)
-            self.refresh_treeview()
+        if not user_input:
+            return
+        self.code_snippets.pop(selected_snippet_index)
+        self.table.pop(selected_snippet_index)
+        self.refresh_treeview()
 
     def refresh_treeview(self):
         """Sync treeview widget with self.code_snippets."""
-        self.snippet_selection_treeview.delete(*self.snippet_selection_treeview.get_children())
+        treeview_items = self.snippet_selection_treeview.get_children()
+        self.snippet_selection_treeview.delete(*treeview_items)
+
         self.table = []
         search_term = self.search_bar_entry.get()
         search_selection = self.search_selection.get()
@@ -221,7 +230,7 @@ class MainWindow:
         try:
             selected_snippet = self.snippet_selection_treeview.selection()[0]
         except IndexError:
-            return None
+            return
         selected_snippet_index = self.snippet_selection_treeview.index(selected_snippet)
         snippet = self.code_snippets[selected_snippet_index]
 
@@ -232,32 +241,31 @@ class MainWindow:
         try:
             selected_snippet = self.snippet_selection_treeview.selection()[0]
         except IndexError:
-            return None
-        selected_snippet_index = self.snippet_selection_treeview.index(selected_snippet)
+            return
+        snippet_index = self.snippet_selection_treeview.index(selected_snippet)
 
-        self.code_snippets[selected_snippet_index].code = self.code_editor_text.get(0.1, tk.END)
+        self.code_snippets[snippet_index].code = self.code_editor_text.get(0.1, tk.END)
 
     def change_properties(self):
         """Open window for changing properties of selected snippet."""
         try:
             selected_snippet = self.snippet_selection_treeview.selection()[0]
         except IndexError:
-            return None
-        selected_snippet_index = self.snippet_selection_treeview.index(selected_snippet)
+            return
+        snippet_index = self.snippet_selection_treeview.index(selected_snippet)
 
-        properties_window = PropertiesWindow(self.master,
-                                             self.code_snippets[selected_snippet_index])
-        self.master.wait_window(properties_window)
+        properties_window = PropertiesWindow(self, self.code_snippets[snippet_index])
+        self.wait_window(properties_window)
 
         changed_snippet = properties_window.changed_snippet
         if changed_snippet.not_empty():
-            self.code_snippets[selected_snippet_index] = changed_snippet
+            self.code_snippets[snippet_index] = changed_snippet
             self.refresh_treeview()
 
     def save_and_exit(self):
         """Save user data and then exit."""
         self.save_data()
-        self.master.destroy()
+        self.destroy()
 
     def save_data(self):
         """Save user data to pickle file."""
@@ -282,7 +290,7 @@ class NewCodeSnippetWindow(tk.Toplevel):
         self.geometry()
         self.resizable(width=False, height=False)
 
-        self.code_snippet = CodeSnippet("", "", "", "")
+        self.code_snippet = CodeSnippet()
 
         # create frames
         self.input_frame = ttk.Frame(self)
@@ -318,10 +326,14 @@ class NewCodeSnippetWindow(tk.Toplevel):
                                         command=self.destroy)
 
         # widget bindings
-        self.name_entry.bind("<KeyPress-Return>", lambda _: self.save_and_exit())
-        self.code_type_entry.bind("<KeyPress-Return>", lambda _: self.save_and_exit())
-        self.language_entry.bind("<KeyPress-Return>", lambda _: self.save_and_exit())
-        self.tags_entry.bind("<KeyPress-Return>", lambda _: self.save_and_exit())
+        self.name_entry.bind("<KeyPress-Return>",
+                             lambda _: self.save_and_exit())
+        self.code_type_entry.bind("<KeyPress-Return>",
+                                  lambda _: self.save_and_exit())
+        self.language_entry.bind("<KeyPress-Return>",
+                                 lambda _: self.save_and_exit())
+        self.tags_entry.bind("<KeyPress-Return>",
+                             lambda _: self.save_and_exit())
 
         # display frames
         self.input_frame.grid(row=0, column=0, padx=10, pady=10)
@@ -358,12 +370,12 @@ class NewCodeSnippetWindow(tk.Toplevel):
             tkinter.messagebox.showerror(title="Missing name",
                                          message="Please enter a name for the Snippet!",
                                          parent=self)
-            return None
+            return
         elif code in string.whitespace:
             tkinter.messagebox.showerror(title="No code",
                                          message="Please first type in some code for the Snippet!",
                                          parent=self)
-            return None
+            return
 
         self.code_snippet = CodeSnippet(name, language, code_type, code, tags)
 
@@ -381,7 +393,7 @@ class PropertiesWindow(tk.Toplevel):
         self.geometry()
         self.resizable(width=False, height=False)
 
-        self.changed_snippet = CodeSnippet("", "", "", "")
+        self.changed_snippet = CodeSnippet()
         self.snippet = snippet
 
         # create variables for widgets
@@ -460,14 +472,19 @@ class PropertiesWindow(tk.Toplevel):
             tkinter.messagebox.showerror(title="Missing name",
                                          message="Please enter a name for the Snippet!",
                                          parent=self)
-            return None
+            return
 
-        self.changed_snippet = CodeSnippet(name, language, code_type, self.snippet.code, tags)
+        self.changed_snippet = CodeSnippet(name, language, code_type,
+                                           self.snippet.code, tags)
 
         self.destroy()
 
 
+def _start_gui():
+    """Start the Graphical User Interface."""
+    main_window = MainWindow()
+    main_window.mainloop()
+
+
 if __name__ == "__main__":
-    root = tk.Tk()
-    main_window = MainWindow(root)
-    root.mainloop()
+    _start_gui()
