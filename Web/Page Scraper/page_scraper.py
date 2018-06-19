@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""A webscraper that scrapes all images and links from a website.
+"""A web scraper that scrapes all images and links from a website.
 
 Title:
 Page Scraper
@@ -13,25 +13,26 @@ organize the indexed content and don't allow duplicates.
 Have it put the results into an easily searchable index file.
 """
 import urllib.request
+
 import bs4 as bs
 
 
-def get_html(url: str):
+def get_html(url: str) -> bytes:
     """Return html code of the specified website."""
     html = urllib.request.urlopen(url).read()
     return html
 
 
-def get_image_urls(source: str):
+def get_image_urls(source: bytes) -> list:
     """Return the urls of all images in the specified html code."""
     soup = bs.BeautifulSoup(source, "lxml")
 
     images = soup.find_all("img")
     urls = [image.get("src") for image in images]
-    return list(set(urls))
+    return list(set(urls))  # remove duplicates
 
 
-def get_links(source: str):
+def get_links(source: bytes) -> list:
     """Return the urls of all links in the specified html code."""
     soup = bs.BeautifulSoup(source, "lxml")
 
@@ -40,11 +41,11 @@ def get_links(source: str):
             if link.get("href")
             and link.get("href") != "#"
             and link.get("href") != "/"]
-    return list(set(urls))
+    return list(set(urls))  # remove duplicates
 
 
 def save_to_file(links: list, file_path: str):
-    """Save the specified links to the specified file."""
+    """Save the links to the specified file."""
     text = ""
     for index, link in enumerate(links):
         text += " ".join((str(index), link, "\n"))
@@ -53,8 +54,8 @@ def save_to_file(links: list, file_path: str):
         file.write(text)
 
 
-def _start():
-    """Start the program interactively."""
+def _start_interactively():
+    """Start the program interactively through the command line."""
     url = input("What url do you want to get images/links from? ")
     html = get_html(url)
     images = get_image_urls(html)
@@ -63,7 +64,8 @@ def _start():
     print(" ".join(("Links: ", *links)))
     file_path = input("What file do you want to save the links in? ")
     save_to_file(images + links, file_path)
+    print("")
 
 
 if __name__ == "__main__":
-    _start()
+    _start_interactively()
