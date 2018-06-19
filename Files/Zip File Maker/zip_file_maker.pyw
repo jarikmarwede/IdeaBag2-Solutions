@@ -16,22 +16,22 @@ import os
 import tkinter as tk
 import tkinter.filedialog
 from tkinter import ttk
-from zipfile import ZipFile, ZIP_DEFLATED
+from zipfile import ZIP_DEFLATED, ZipFile
 
 
-class MainWindow:
+class MainWindow(tk.Tk):
     """The class for interacting with tkinter."""
 
-    def __init__(self, master: tk.Tk):
+    def __init__(self):
         """Initialize main window."""
-        self.master = master
-        self.master.resizable(width=False, height=False)
-        self.master.geometry()
-        self.master.title("Zip File Maker")
+        super().__init__()
+        self.resizable(width=False, height=False)
+        self.geometry()
+        self.title("Zip File Maker")
 
         # create frames
-        self.treeview_frame = ttk.Frame(self.master)
-        self.button_row_frame = ttk.Frame(self.master)
+        self.treeview_frame = ttk.Frame(self)
+        self.button_row_frame = ttk.Frame(self)
 
         # create other widgets
         self.files_treeview = ttk.Treeview(self.treeview_frame,
@@ -73,40 +73,44 @@ class MainWindow:
 
     def add_files(self):
         """Ask user to give file path and save new file."""
-        file_paths = tkinter.filedialog.askopenfilenames(parent=self.master)
-        if file_paths:
-            for file_path in file_paths:
-                self.files_treeview.insert("", "end", values=(file_path,))
-            self.files_treeview.selection_set(self.files_treeview.get_children()[-1])
+        file_paths = tkinter.filedialog.askopenfilenames(parent=self)
+
+        if not file_paths:
+            return
+        for file_path in file_paths:
+            self.files_treeview.insert("", "end", values=(file_path,))
+        self.files_treeview.selection_set(self.files_treeview.get_children()[-1])
 
     def remove_file(self):
         """Remove currently selected file."""
         selected_column = self.files_treeview.selection()
 
-        if selected_column:
-            self.files_treeview.delete(selected_column)
-            if self.files_treeview.get_children():
-                self.files_treeview.selection_set(self.files_treeview.get_children()[-1])
+        if not selected_column:
+            return
+        self.files_treeview.delete(selected_column)
+        treeview_items = self.files_treeview.get_children()
+        if treeview_items:
+            self.files_treeview.selection_set(treeview_items[-1])
 
     def compress_files(self):
         """Compress all files to zip archive."""
-        archive_file_path = tkinter.filedialog.asksaveasfilename(parent=self.master,
+        archive_file_path = tkinter.filedialog.asksaveasfilename(parent=self,
                                                                  defaultextension=".zip",
                                                                  filetypes=[("Zip File", "*.zip")])
-        if archive_file_path and self.files_treeview.get_children():
+        treeview_items = self.files_treeview.get_children()
+        if archive_file_path and treeview_items:
             with ZipFile(archive_file_path, "w", ZIP_DEFLATED) as archive:
-                for row in self.files_treeview.get_children():
+                for row in treeview_items:
                     file_path = self.files_treeview.item(row, "values")[0]
                     file_name = os.path.basename(file_path)
                     archive.write(file_path, arcname=file_name)
 
 
-def start_gui():
-    """Start the GUI."""
-    root = tk.Tk()
-    MainWindow(root)
-    root.mainloop()
+def _start_gui():
+    """Start the Graphical User Interface."""
+    main_window = MainWindow()
+    main_window.mainloop()
 
 
 if __name__ == "__main__":
-    start_gui()
+    _start_gui()
