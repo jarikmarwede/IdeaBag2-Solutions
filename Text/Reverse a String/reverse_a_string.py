@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reverse a string
+"""Reverse a string.
 
 Title:
 Reverse a String
@@ -11,15 +11,19 @@ Your program should reverse the string and print it out.
 
 
 def reverse(string: str) -> str:
-    """Return string reversed
-    """
+    """Return the string reversed."""
     reversed_string = ""
     for index in range(len(string) - 1, -1, -1):
         reversed_string += string[index]
     return reversed_string
 
 
-if __name__ == "__main__":
+def _start_interactively():
+    """Start the program interactively through the command line."""
     while True:
-        STRING = input("Please input a string: ")
-        print(reverse(STRING))
+        string = input("Please input a string: ")
+        print(reverse(string) + "\n")
+
+
+if __name__ == "__main__":
+    _start_interactively()
