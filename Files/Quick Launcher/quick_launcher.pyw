@@ -23,25 +23,25 @@ DEFAULT_FILE_TYPE = "executable"
 BUTTONS_PER_ROW = 4
 
 
-class MainWindow:
+class MainWindow(tk.Tk):
     """The class for interacting with the tkinter GUI."""
 
-    def __init__(self, master):
+    def __init__(self):
         """Create widgets and initialize window."""
         # set up main window
-        self.master = master
-        self.master.title("Quick Launcher")
-        self.master.resizable(width=False, height=False)
-        self.master.minsize(width=200, height=50)
-        self.master.geometry()
-        self.master.window_icon = tk.PhotoImage(file=WINDOW_ICON_PATH)
-        self.master.iconphoto(self.master, self.master.window_icon)
+        super().__init__()
+        self.title("Quick Launcher")
+        self.resizable(width=False, height=False)
+        self.minsize(width=200, height=50)
+        self.geometry()
+        self.window_icon = tk.PhotoImage(file=WINDOW_ICON_PATH)
+        self.iconphoto(self, self.window_icon)
 
         # create widgets
-        self.toolbar_frame = ttk.Frame(self.master)
+        self.toolbar_frame = ttk.Frame(self)
 
         self.entries = []
-        self.add_entry_button = ttk.Button(self.master,
+        self.add_entry_button = ttk.Button(self,
                                            command=self.add_new_entry,
                                            compound=tk.TOP,
                                            text="Add new entry")
@@ -60,42 +60,43 @@ class MainWindow:
                        pady=5)
 
     def add_new_entry(self):
-        """Create the NewEntryWindow and add the data entered into it to the toolbar."""
-        new_entry_window = NewEntryWindow(self.master)
-        self.master.wait_window(new_entry_window)
-        if new_entry_window.saved:
-            title = new_entry_window.new_title
-            icon = new_entry_window.icon
-            icon_path = new_entry_window.icon_path
-            file_type = new_entry_window.file_type
-            executable_path = new_entry_window.executable_file
-            commandline_arguments = new_entry_window.command_line_arguments
-            code = new_entry_window.code
+        """Create NewEntryWindow and add data entered into it to the toolbar."""
+        new_entry_window = NewEntryWindow(self)
+        self.wait_window(new_entry_window)
 
-            if file_type == "executable":
-                button = ttk.Button(self.toolbar_frame,
-                                    text=title,
-                                    image=icon,
-                                    compound=tk.LEFT,
-                                    command=lambda: launch_program(executable_path,
-                                                                   commandline_arguments))
-                button.icon_path = icon_path
-                button.file_type = "executable"
-                button.executable_path = executable_path
-                button.commandline_arguments = commandline_arguments
-                self.entries.append(button)
-                self.refresh_entries()
-            elif file_type == "commandline":
-                button = ttk.Button(self.toolbar_frame,
-                                    text=title,
-                                    image=icon,
-                                    compound=tk.LEFT,
-                                    command=lambda: run_script(code))
-                button.icon_path = icon_path
-                button.file_type = "commandline"
-                button.code = code
-                self.entries.append(button)
-                self.refresh_entries()
+        if not new_entry_window.saved:
+            return
+        title = new_entry_window.new_title
+        icon = new_entry_window.icon
+        icon_path = new_entry_window.icon_path
+        file_type = new_entry_window.file_type
+        executable_path = new_entry_window.executable_file
+        commandline_arguments = new_entry_window.command_line_arguments
+        code = new_entry_window.code
+
+        if file_type == "executable":
+            button = ttk.Button(self.toolbar_frame,
+                                text=title,
+                                image=icon,
+                                compound=tk.LEFT,
+                                command=lambda: launch_program(executable_path,
+                                                               commandline_arguments))
+            button.icon_path = icon_path
+            button.file_type = "executable"
+            button.executable_path = executable_path
+            button.commandline_arguments = commandline_arguments
+            self.entries.append(button)
+        elif file_type == "commandline":
+            button = ttk.Button(self.toolbar_frame,
+                                text=title,
+                                image=icon,
+                                compound=tk.LEFT,
+                                command=lambda: run_script(code))
+            button.icon_path = icon_path
+            button.file_type = "commandline"
+            button.code = code
+            self.entries.append(button)
+        self.refresh_entries()
 
 
 class NewEntryWindow(tk.Toplevel):
@@ -118,6 +119,11 @@ class NewEntryWindow(tk.Toplevel):
         self.saved = False
         self.executable_file = None
         self.file_type_choice = tk.StringVar(value=DEFAULT_FILE_TYPE)
+        self.new_title = ""
+        self.icon_path = ""
+        self.file_type = ""
+        self.command_line_arguments = ""
+        self.code = ""
 
         # create widgets
         self.title_frame = ttk.Frame(self)
@@ -144,12 +150,12 @@ class NewEntryWindow(tk.Toplevel):
                                                       value="executable",
                                                       variable=self.file_type_choice,
                                                       text="Executable (*.exe)",
-                                                      command=self.change_file_type)
+                                                      command=self.toggle_file_type)
         self.command_line_radiobutton = ttk.Radiobutton(self.file_type_frame,
                                                         value="commandline",
                                                         variable=self.file_type_choice,
                                                         text="Command Line Script",
-                                                        command=self.change_file_type)
+                                                        command=self.toggle_file_type)
         self.executable_file_label = ttk.Label(self.executable_file_frame,
                                                text="Choose an executable: ")
         self.executable_file_button = ttk.Button(self.executable_file_frame,
@@ -168,7 +174,13 @@ class NewEntryWindow(tk.Toplevel):
                                         command=self.destroy,
                                         text="Cancel")
 
-        # display widgets
+        self._display_widgets()
+
+        self.command_line_frame.grid_remove()
+
+    def _display_widgets(self):
+        """Display widgets."""
+        # display frames
         self.title_frame.grid(column=0, row=0, padx=10, pady=10)
         self.icon_frame.grid(column=0, row=1, padx=10, pady=10)
         self.file_type_frame.grid(column=0, row=2, padx=10, pady=10)
@@ -178,6 +190,7 @@ class NewEntryWindow(tk.Toplevel):
         self.command_line_frame.grid(column=0, row=4, padx=10, pady=10)
         self.bottom_buttons_frame.grid(column=0, row=5, padx=10, pady=10)
 
+        # display widgets
         self.title_label.grid(column=0, row=0)
         self.title_entry.grid(column=1, row=0)
         self.icon_label.grid(column=0, row=0)
@@ -194,9 +207,7 @@ class NewEntryWindow(tk.Toplevel):
         self.save_entry_button.grid(column=0, row=0, padx=5)
         self.cancel_button.grid(column=1, row=0, padx=5)
 
-        self.command_line_frame.grid_remove()
-
-    def change_file_type(self):
+    def toggle_file_type(self):
         """Display correct widgets for the current file type."""
         if self.file_type_choice.get() == "executable":
             self.command_line_frame.grid_remove()
@@ -211,9 +222,10 @@ class NewEntryWindow(tk.Toplevel):
                                                        filetypes=[("PNG", "*.png")],
                                                        parent=self,
                                                        title="Choose an icon")
-        if file_name:
-            self.icon = tk.PhotoImage(file=file_name)
-            self.icon_button.config(image=self.icon)
+        if not file_name:
+            return
+        self.icon = tk.PhotoImage(file=file_name)
+        self.icon_button.config(image=self.icon)
 
     def pick_executable_file(self):
         """Ask user to enter a file then display file name on self.executable_file_button."""
@@ -221,9 +233,10 @@ class NewEntryWindow(tk.Toplevel):
                                                        filetypes=[("EXE", "*.exe")],
                                                        parent=self,
                                                        title="Choose an executable")
-        if file_name:
-            self.executable_file = file_name
-            self.executable_file_button.config(text=file_name.split("/")[-1])
+        if not file_name:
+            return
+        self.executable_file = file_name
+        self.executable_file_button.config(text=file_name.split("/")[-1])
 
     def save_entry(self):
         """Save entry and close window."""
@@ -239,7 +252,7 @@ class NewEntryWindow(tk.Toplevel):
             self.destroy()
         else:
             tkinter.messagebox.showwarning(title="Invalid input",
-                                           message="Please either enter an executable file "
+                                           message="Please enter either an executable file "
                                            "or a commandline script!")
 
 
@@ -253,7 +266,11 @@ def run_script(code: str):
     os.system(code)
 
 
+def _start_gui():
+    """Start the Graphical User Interface."""
+    main_window = MainWindow()
+    main_window.mainloop()
+
+
 if __name__ == "__main__":
-    root = tk.Tk()
-    window = MainWindow(root)
-    root.mainloop()
+    _start_gui()
