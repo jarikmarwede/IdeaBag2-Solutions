@@ -16,6 +16,8 @@ import urllib.request
 
 import bs4 as bs
 
+PARSER = "html.parser"
+
 
 def get_html(url: str) -> bytes:
     """Return html code of the specified website."""
@@ -25,7 +27,7 @@ def get_html(url: str) -> bytes:
 
 def get_image_urls(source: bytes) -> list:
     """Return the urls of all images in the specified html code."""
-    soup = bs.BeautifulSoup(source, "lxml")
+    soup = bs.BeautifulSoup(source, PARSER)
 
     images = soup.find_all("img")
     urls = [image.get("src") for image in images]
@@ -34,7 +36,7 @@ def get_image_urls(source: bytes) -> list:
 
 def get_links(source: bytes) -> list:
     """Return the urls of all links in the specified html code."""
-    soup = bs.BeautifulSoup(source, "lxml")
+    soup = bs.BeautifulSoup(source, PARSER)
 
     links = soup.find_all("a")
     urls = [link.get("href") for link in links
