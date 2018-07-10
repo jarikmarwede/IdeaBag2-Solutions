@@ -23,7 +23,6 @@ If you want to contribute in any way please take a look at [CONTRIBUTING.md](CON
 * [Python 3.6+](https://www.python.org/downloads/)
 * [Pillow 5.1.0](http://python-pillow.org) (Graphics and Multimedia/Dominant Colors, Threading/Bulk Thumbnail Creator)
 * [Beautifulsoup4 4.6.0](https://www.crummy.com/software/BeautifulSoup/) (Web/Page Scraper)
-* [lxml 4.2.1](http://lxml.de/) (Web/Page Scraper)
 * [Pygame 1.9.3](https://www.pygame.org/) (Graphics and Multimedia/Mp3 Player)
 
 ## License
