@@ -24,6 +24,7 @@ If you want to contribute in any way please take a look at [CONTRIBUTING.md](CON
 * [Pillow 5.1.0](http://python-pillow.org) (Graphics and Multimedia/Dominant Colors, Threading/Bulk Thumbnail Creator)
 * [Beautifulsoup4 4.6.0](https://www.crummy.com/software/BeautifulSoup/) (Web/Page Scraper)
 * [Pygame 1.9.3](https://www.pygame.org/) (Graphics and Multimedia/Mp3 Player)
+* [SymPy 1.2](https://www.sympy.org/) (Numbers/Find Pi to the Nth digit)
 
 ## License
 This repository uses the MIT License.
