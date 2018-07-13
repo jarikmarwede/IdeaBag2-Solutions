@@ -11,11 +11,11 @@ This document specifies how to contribute to the repository.
 ### Contributing a new program
 
 When adding a new program please remember:
-* Add a [shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)) line
+* Create a new folder named after the title of the idea inside its category folder
+* Add a [shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)) line (i.e. `#!/usr/bin/env python3`)
 * Add a module docstring containing the title and the description of the idea from *Idea Bag 2*
 * Add ways to both import the program and to run it individually
-* Try to use only modules from the standard library, if possible
-* If the program requires more than one file you should create a folder named after the program in the appropriate category
+* If possible, try using only modules from the standard library
 * All rules for [contributing to existing programs](https://github.com/jarik-marwede/IdeaBag2-Projects/blob/master/CONTRIBUTING.md#contributing-to-an-existing-program)
 
 ### Contributing to an existing program
@@ -38,23 +38,41 @@ inside the python shell.
 > The Zen of Python, by Tim Peters
 >
 > Beautiful is better than ugly.
+
 > Explicit is better than implicit.
+
 > Simple is better than complex.
+
 > Complex is better than complicated.
+
 > Flat is better than nested.
+
 > Sparse is better than dense.
+
 > Readability counts.
+
 > Special cases aren't special enough to break the rules.
+
 > Although practicality beats purity.
+
 > Errors should never pass silently.
+
 > Unless explicitly silenced.
+
 > In the face of ambiguity, refuse the temptation to guess.
+
 > There should be one-- and preferably only one --obvious way to do it.
+
 > Although that way may not be obvious at first unless you're Dutch.
+
 > Now is better than never.
+
 > Although never is often better than *right* now.
+
 > If the implementation is hard to explain, it's a bad idea.
+
 > If the implementation is easy to explain, it may be a good idea.
+
 > Namespaces are one honking great idea -- let's do more of those!
 
 #### Codestyle
