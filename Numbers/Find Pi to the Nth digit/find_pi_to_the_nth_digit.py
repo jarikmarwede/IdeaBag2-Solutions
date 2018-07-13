@@ -13,9 +13,10 @@ from sympy import N, pi
 
 
 def _start_interactively():
+    """Start the program interactively through the command line."""
     while True:
         print("To how many digits would you like to calculate Pi?")
-        length = input()
+        length = int(input())
         print(N(pi, length))
 
 
