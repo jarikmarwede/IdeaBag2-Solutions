@@ -1,4 +1,4 @@
-File worked on: FILE_NAME
+File/Folder worked on: FILE_OR_FOLDER_PATH
 
 Changes summary: SUMMARY
 
