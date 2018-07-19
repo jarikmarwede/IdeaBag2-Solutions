@@ -1,0 +1,5 @@
+beautifulsoup4==4.6.0
+mpmath==1.0.0
+Pillow==5.2.0
+pygame==1.9.4
+sympy==1.2

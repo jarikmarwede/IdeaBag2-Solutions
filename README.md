@@ -14,17 +14,22 @@ The original categorys from *Idea Bag 2* are used to organize them.
 If you want to get the programs for playing around with them or editing them just download or clone them from Github.
 All programs need [python 3.6](https://www.python.org/downloads/) or later installed, 
 and for some of them external modules are required.
-Go to [Dependencies](#dependencies) to check which modules you need to install.
+Go to [Dependencies](#dependencies) to check which modules you need to install and how.
 
 ## Contributing
 If you want to contribute in any way please take a look at [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Dependencies
 * [Python 3.6+](https://www.python.org/downloads/)
-* [Pillow 5.1.0](http://python-pillow.org) (Graphics and Multimedia/Dominant Colors, Threading/Bulk Thumbnail Creator)
-* [Beautifulsoup4 4.6.0](https://www.crummy.com/software/BeautifulSoup/) (Web/Page Scraper)
-* [Pygame 1.9.3](https://www.pygame.org/) (Graphics and Multimedia/Mp3 Player)
-* [SymPy 1.2](https://www.sympy.org/) (Numbers/Find Pi to the Nth digit)
+* [Pillow](http://python-pillow.org) (Graphics and Multimedia/Dominant Colors, Threading/Bulk Thumbnail Creator)
+* [Beautifulsoup](https://www.crummy.com/software/BeautifulSoup/) (Web/Page Scraper)
+* [Pygame](https://www.pygame.org/) (Graphics and Multimedia/Mp3 Player)
+* [SymPy](https://www.sympy.org/) (Numbers/Find Pi to the Nth digit)
+
+You can install all of them together through running `pip install -r requirements.txt` inside the repository folder.
+
+If you only want to install some of them you can find the required versions in [requirements.txt](requirements.txt).
+
 
 ## License
 This repository uses the MIT License.
