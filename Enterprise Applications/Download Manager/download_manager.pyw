@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""
+"""A simple multi threaded downloader application.
 
 Title:
 Download Manager
