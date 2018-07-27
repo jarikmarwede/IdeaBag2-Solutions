@@ -10,7 +10,7 @@ and each one is downloading in the background on a separate thread.
 The main thread will keep track of the other thread’s progress
 and notify the user when downloads are completed.
 """
-import os
+import os.path
 import urllib.request
 import tkinter as tk
 from tkinter import ttk
@@ -28,8 +28,6 @@ class MainWindow(tk.Tk):
         self.title("Download Manager")
         self.geometry("")
         self.resizable(width=False, height=False)
-
-        self.downloading_urls = []
 
         # define frames
         self.download_directory_frame = ttk.Frame(self)
@@ -106,17 +104,17 @@ class MainWindow(tk.Tk):
 
     def download_current_urls(self):
         """Download all currently added files."""
-        if self.downloading_urls:
-            return
-        self.downloading_urls = [self.urls_treeview.item(iid, "values")[0]
-                                 for iid in self.urls_treeview.get_children()]
-        download_files(self.downloading_urls, self.downloads_finished)
+        downloading_urls = [self.urls_treeview.item(iid, "values")[0]
+                            for iid in self.urls_treeview.get_children()]
+        download_files(downloading_urls, self.downloads_finished)
 
     def downloads_finished(self, download_response):
         """Save the files returned by the download threads and alert user."""
         directory = self.download_directory_entry.get()
         save_file_to_directory(download_response, directory)
-        # alert user
+
+        tk_messagebox.showinfo("Download finished",
+                               "Your downloads have finished!")
 
 
 class NewURLWindow(tk.Toplevel):
