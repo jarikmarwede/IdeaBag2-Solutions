@@ -10,6 +10,7 @@ and each one is downloading in the background on a separate thread.
 The main thread will keep track of the other thread’s progress
 and notify the user when downloads are completed.
 """
+import os
 import urllib.request
 import tkinter as tk
 from tkinter import ttk
@@ -27,6 +28,8 @@ class MainWindow(tk.Tk):
         self.title("Download Manager")
         self.geometry("")
         self.resizable(width=False, height=False)
+
+        self.downloading_urls = []
 
         # define frames
         self.download_directory_frame = ttk.Frame(self)
@@ -103,7 +106,17 @@ class MainWindow(tk.Tk):
 
     def download_current_urls(self):
         """Download all currently added files."""
-        pass
+        if self.downloading_urls:
+            return
+        self.downloading_urls = [self.urls_treeview.item(iid, "values")[0]
+                                 for iid in self.urls_treeview.get_children()]
+        download_files(self.downloading_urls, self.downloads_finished)
+
+    def downloads_finished(self, download_response):
+        """Save the files returned by the download threads and alert user."""
+        directory = self.download_directory_entry.get()
+        save_file_to_directory(download_response, directory)
+        # alert user
 
 
 class NewURLWindow(tk.Toplevel):
@@ -155,8 +168,19 @@ def download_files(urls: list, callback):
     """Download files from all urls asynchronous."""
     pool = ThreadPool(len(urls))
     pool.map_async(urllib.request.urlopen, urls, callback=callback)
-    pool.close()
-    pool.join()
+
+
+def save_file_to_directory(download_response, directory: str):
+    """Save the specified files to the directory."""
+    for response in download_response:
+        url = response.geturl()
+        if url.endswith("/"):
+            url = url[0:-1]
+        file_name = url.split("/")[-1]
+        file_content = response.read()
+
+        with open(os.path.join(directory, file_name), "wb") as file:
+            file.write(file_content)
 
 
 def center_window_on_screen(window):
