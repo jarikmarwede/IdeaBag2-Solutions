@@ -15,12 +15,14 @@ The user is prompted to input a range eg 1-90.
 Your program should print out the neon numbers in that range.
 Submitted by Shib Shankar Ghosh
 """
+from typing import Generator
 
 
 def is_neon(number: int) -> bool:
     """Return whether the specified number is a neon number."""
     square = number ** 2
     result = 0
+
     for digit in str(square):
         result += int(digit)
     if result == number:
@@ -28,13 +30,11 @@ def is_neon(number: int) -> bool:
     return False
 
 
-def find_neons(start: int, end: int) -> list:
+def find_neons(start: int, end: int) -> Generator[int, None, None]:
     """Return a list of all neon numbers in the specified range."""
-    neons = []
     for number in range(start, end + 1):
         if is_neon(number):
-            neons.append(number)
-    return neons
+            yield number
 
 
 def _start_interactively():
@@ -42,7 +42,7 @@ def _start_interactively():
     while True:
         start = int(input("Please enter the starting number: "))
         end = int(input("Please enter the ending number: "))
-        print(str(find_neons(start, end)) + "\n")
+        print(*find_neons(start, end), "\n")
 
 
 if __name__ == "__main__":
