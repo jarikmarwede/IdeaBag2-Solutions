@@ -21,6 +21,7 @@ Also you could try to do the cycling part
 purely mathematically - without converting to a string and slicing it.
 Submitted by Lovecraft
 """
+from typing import Generator
 
 
 def is_prime(number: int) -> bool:
@@ -41,13 +42,11 @@ def is_circular_prime(number: int) -> bool:
     return True
 
 
-def circular_primes(start: int, end: int) -> list:
+def circular_primes(start: int, end: int) -> Generator[int, None, None]:
     """Return all circular prime numbers in the specified range."""
-    result = []
     for number in range(start, end):
         if is_circular_prime(number):
-            result.append(number)
-    return result
+            yield number
 
 
 def _start_interactively():
