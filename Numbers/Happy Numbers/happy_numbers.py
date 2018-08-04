@@ -14,6 +14,7 @@ Those numbers for which this process ends in 1 are happy numbers,
 while those that do not end in 1 are unhappy numbers.
 Find the first 8 happy numbers.
 """
+from typing import Generator
 
 
 def is_happy_number(number: int) -> bool:
@@ -35,23 +36,24 @@ def square_of_digits(number: int) -> int:
     return output
 
 
-def find_happy_numbers(amount: int) -> list:
+def find_happy_numbers(amount: int) -> Generator[int, None, None]:
     """Return happy numbers up to the given amount."""
-    happy_numbers = []
+    happy_numbers = 0
     current_number = 1
-    while len(happy_numbers) < amount:
-        if is_happy_number(current_number) is True:
-            happy_numbers.append(current_number)
+
+    while happy_numbers < amount:
+        if is_happy_number(current_number):
+            yield current_number
             current_number += 1
+            happy_numbers += 1
         else:
             current_number += 1
-    return happy_numbers
 
 
 def _start_interactively():
     """Start the program interactively from the command line."""
     print("These are the first 8 happy numbers:",
-          str(find_happy_numbers(8)))
+          *find_happy_numbers(8))
 
     while True:
         number = int(input("Please type in a number: "))

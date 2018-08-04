@@ -14,6 +14,7 @@ or to the Nth number.
 def get_fibonacci_sequence(length: int) -> list:
     """Return the fibonacci sequence to the specified length."""
     fibonacci_sequence = [0, 1]
+
     if length == 1:
         return [fibonacci_sequence[0], ]
     elif length == 2:
