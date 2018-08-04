@@ -21,6 +21,7 @@ def arabic_to_roman(number: int) -> str:
         raise ValueError(f"Number can not be represented with roman numerals: "
                          f"{number}")
     roman_number = ""
+
     for index, digit in enumerate(reversed(str(number))):
         if index == 0:
             first = "I"

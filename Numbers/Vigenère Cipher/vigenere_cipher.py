@@ -14,6 +14,8 @@ Give the user a message if their input is invalid
 (empty/just numbers/etc)
 Submitted by Imperial_Squid
 """
+from typing import Tuple
+
 ALPHABET = (
     "a", "b", "c", "d", "e", "f",
     "g", "h", "i", "j", "k", "l",
@@ -23,9 +25,10 @@ ALPHABET = (
 )
 
 
-def vigenere_table() -> tuple:
+def vigenere_table() -> Tuple[Tuple[str, ...], ...]:
     """Return vigenère table."""
     result = [ALPHABET, ]
+
     for shift in range(1, 26):
         result.append(ALPHABET[shift:] + ALPHABET[:shift])
     return tuple(result)
@@ -34,6 +37,7 @@ def vigenere_table() -> tuple:
 def get_key(string: str, key: str) -> str:
     """Return key repeated to fit the length of string."""
     full_key = key
+
     while len(full_key) < len(string):
         if len(full_key + key) <= len(string):
             full_key += key
@@ -58,6 +62,7 @@ def encrypt(string: str, key: str) -> str:
     full_key = get_key(string, key)
     table = vigenere_table()
     result = ""
+
     for index, character in enumerate(string):
         for row in table:
             if row[0] == full_key[index]:
@@ -76,6 +81,7 @@ def encrypt(string: str, key: str) -> str:
 
 def _start_interactively():
     """Start the program interactively through the command line."""
+    print(vigenere_table())
     while True:
         string = input("Please input the string you want to encrypt: ")
         key = input("Please input the encryption key: ")

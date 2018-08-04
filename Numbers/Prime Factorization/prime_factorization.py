@@ -8,9 +8,10 @@ Description:
 Develop a program that has the user enter a number
 and find all the Prime Factors (if there are any) and display them.
 """
+from typing import List
 
 
-def find_prime_factors(number: int) -> list:
+def find_prime_factors(number: int) -> List[int]:
     """Return all prime factors of the specified number."""
     for num in range(2, number):
         if number % num == 0 and num != number:

@@ -11,12 +11,15 @@ For more info on Pascal's Triangle,
 look here: https://en.m.wikipedia.org/wiki/Pascal's_triangle
 Submitted by Imperial_Squid
 """
+from typing import Tuple
 
 
-def pascals_triangle(rows: int) -> tuple:
+def pascals_triangle(rows: int) -> Tuple[Tuple[int, ...], ...]:
+
     """Return tuple containing pascals triangle up to specified length."""
     result = []
     next_numbers = [1]
+
     for _ in range(0, rows):
         # move row
         current_numbers = next_numbers
@@ -38,6 +41,7 @@ def _start_interactively():
     while True:
         rows = int(input("Please input the number of rows"
                          " the program should print out: "))
+        print(type(pascals_triangle(rows)[0][0]))
         for row in pascals_triangle(rows):
             print(*row)
         print("")
