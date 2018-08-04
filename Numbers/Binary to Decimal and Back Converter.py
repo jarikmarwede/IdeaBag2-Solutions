@@ -11,34 +11,31 @@ try adding converters to Octals and Hexadecimals too.
 
 
 def binary_to_decimal(number: int) -> int:
-    """Return decimal version of the specified binary number
-    """
+    """Return decimal version of the specified binary number."""
     result = 0
+
     for index, digit in enumerate(reversed(str(number))):
         if index == 0:
             result += int(digit)
         else:
-            result += index * 2 * int(digit)
+            result += 2 ** index * int(digit)
     return int(result)
 
 
 def decimal_to_binary(number: int) -> str:
-    """Return binary version of the specified decimal number
-    """
+    """Return binary version of the specified decimal number."""
     result = bin(number)[2:]
     return result
 
 
 def decimal_to_octal(number: int) -> str:
-    """Return octal version of the specified decimal number
-    """
+    """Return octal version of the specified decimal number."""
     result = oct(number)[2:]
     return result
 
 
 def decimal_to_hexadecimal(number: int) -> str:
-    """Return hexadecimal version of the specified decimal number
-    """
+    """Return hexadecimal version of the specified decimal number."""
     result = hex(number)[2:]
     return result
 
@@ -50,9 +47,9 @@ if __name__ == "__main__":
         NUMBER = int(input("Please type in the number "
                            "that you want to convert: "))
         if CHOICE == "dec":
-            print(decimal_to_binary(NUMBER))
-        elif CHOICE == "bin":
             print(binary_to_decimal(NUMBER))
+        elif CHOICE == "bin":
+            print(decimal_to_binary(NUMBER))
         elif CHOICE == "oct":
             print(decimal_to_octal(NUMBER))
         elif CHOICE == "hex":
