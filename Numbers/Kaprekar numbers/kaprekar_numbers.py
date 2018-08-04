@@ -18,6 +18,7 @@ From the example: 45 is the Kaprekar number in that range.
 For your program focus only on base 10 numbers.
 For added complexity, see if you can make it work in arbitrary bases.
 """
+from typing import Generator
 
 
 def is_kaprekar(number: int) -> bool:
@@ -40,13 +41,11 @@ def is_kaprekar(number: int) -> bool:
     return False
 
 
-def find_kaprekars(search_range: tuple) -> list:
-    """Return all kaprekar number in the specified range."""
-    kaprekars = []
-    for number in range(search_range[0], search_range[1] + 1):
+def get_kaprekars(start: int, end: int) -> Generator[int, None, None]:
+    """Generate all kaprekar numbers in the specified range."""
+    for number in range(start, end + 1):
         if is_kaprekar(number):
-            kaprekars.append(number)
-    return kaprekars
+            yield number
 
 
 def _start_interactively():
@@ -54,7 +53,7 @@ def _start_interactively():
     while True:
         start = int(input("Please specify the starting number: "))
         end = int(input("Please specify the ending number: "))
-        print(str(find_kaprekars((start, end))) + "\n")
+        print(*get_kaprekars(start, end), "\n")
 
 
 if __name__ == "__main__":
