@@ -1,4 +1,4 @@
-beautifulsoup4==4.6.0
+beautifulsoup4==4.6.1
 mpmath==1.0.0
 Pillow==5.2.0
 pygame==1.9.4
