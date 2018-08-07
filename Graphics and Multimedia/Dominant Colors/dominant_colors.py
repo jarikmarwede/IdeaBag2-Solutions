@@ -18,10 +18,11 @@ generate the RGB, HSB, CYMK and HEX color.
 Also you can add the ability
 to save the generated color palette with all the above information.
 """
+import colorsys
 import tkinter as tk
 from tkinter import filedialog, ttk
 
-from PIL import Image
+from PIL import Image, ImageTk
 
 
 class MainWindow(tk.Tk):
@@ -35,9 +36,7 @@ class MainWindow(tk.Tk):
         self.resizable(width=False, height=False)
 
         self.bands = tk.StringVar()
-        self.dominant_color1 = tk.StringVar()
-        self.dominant_color2 = tk.StringVar()
-        self.dominant_color3 = tk.StringVar()
+        self.color_images = []
 
         self.current_image_frame = ttk.Frame(self)
         self.bands_frame = ttk.Frame(self)
@@ -55,21 +54,32 @@ class MainWindow(tk.Tk):
                                      justify=tk.CENTER)
         self.dominant_colors_label = ttk.Label(self.colors_frame,
                                                text="Most common colors")
-        self.dominant_color_entry1 = ttk.Entry(self.colors_frame,
-                                               textvariable=self.dominant_color1,
-                                               state="readonly",
-                                               justify=tk.CENTER)
-        self.dominant_color_entry2 = ttk.Entry(self.colors_frame,
-                                               textvariable=self.dominant_color2,
-                                               state="readonly",
-                                               justify=tk.CENTER)
-        self.dominant_color_entry3 = ttk.Entry(self.colors_frame,
-                                               textvariable=self.dominant_color3,
-                                               state="readonly",
-                                               justify=tk.CENTER)
+        self.dominant_color_treeview = ttk.Treeview(self.colors_frame,
+                                                    columns=("RGB",
+                                                             "HSL",
+                                                             "HSV",
+                                                             "HEX"))
         self.choose_image_button = ttk.Button(self,
                                               command=self.new_image,
                                               text="Choose a new image")
+
+        self.dominant_color_treeview.column("#0", minwidth=40,
+                                            width=40, stretch=0)
+        self.dominant_color_treeview.column("RGB", minwidth=100,
+                                            width=100, anchor=tk.CENTER)
+        self.dominant_color_treeview.heading("RGB", text="RGB/RGBA")
+        self.dominant_color_treeview.column("HSL", minwidth=100,
+                                            width=100, anchor=tk.CENTER)
+        self.dominant_color_treeview.heading("HSL", text="HSL")
+        self.dominant_color_treeview.column("HSV", minwidth=100,
+                                            width=100, anchor=tk.CENTER)
+        self.dominant_color_treeview.heading("HSV", text="HSV")
+        self.dominant_color_treeview.column("HEX", minwidth=100,
+                                            width=100, anchor=tk.CENTER)
+        self.dominant_color_treeview.heading("HEX", text="HEX")
+        for item_id in range(0, 3):
+            self.dominant_color_treeview.insert("", "end", item_id,
+                                                values=("", "", ""))
 
         self.current_image_frame.grid(row=0, column=0, padx=5, pady=10)
         self.bands_frame.grid(row=1, column=0, padx=5, pady=10)
@@ -81,9 +91,7 @@ class MainWindow(tk.Tk):
         self.bands_entry.grid(row=1, column=0, padx=5, pady=5)
         self.dominant_colors_label.grid(row=0, column=0, padx=5, pady=2.5,
                                         columnspan=3)
-        self.dominant_color_entry1.grid(row=1, column=0, padx=5, pady=5)
-        self.dominant_color_entry2.grid(row=1, column=1, padx=5, pady=5)
-        self.dominant_color_entry3.grid(row=1, column=2, padx=5, pady=5)
+        self.dominant_color_treeview.grid(row=1, column=0)
         self.choose_image_button.grid(row=3, column=0, padx=10, pady=10)
 
     def new_image(self):
@@ -98,14 +106,23 @@ class MainWindow(tk.Tk):
         self.current_image_label2.config(text=image_path)
 
         image = load_image(image_path)
-
         colors = image.getcolors(maxcolors=image.size[0]*image.size[1])
         most_frequent_colors = dominant_colors(colors)
-        self.dominant_color1.set(most_frequent_colors[0])
-        self.dominant_color2.set(most_frequent_colors[1])
-        self.dominant_color3.set(most_frequent_colors[2])
+        color_dict_list = convert_to_color_dict_list(most_frequent_colors)
 
-        self.bands.set(image.getbands())
+        self.color_images = []
+        for item_id in range(0, 3):
+            self.color_images.append(ImageTk.PhotoImage(Image.new("RGBA",
+                                                                  (16, 16),
+                                                                  color=color_dict_list[item_id]
+                                                                  ["rgb"])))
+            self.dominant_color_treeview.item(item_id,
+                                              image=self.color_images[item_id],
+                                              values=(color_dict_list[item_id]["rgb"],
+                                                      color_dict_list[item_id]["hsl"],
+                                                      color_dict_list[item_id]["hsv"],
+                                                      "".join(color_dict_list[item_id]["hex"])))
+        self.bands.set("".join(image.getbands()))
 
 
 def load_image(image_path: str) -> Image:
@@ -125,6 +142,29 @@ def dominant_colors(colors: list) -> list:
         most_frequent_colors.append(color_dict[most_frequent_color])
         del color_dict[most_frequent_color]
     return most_frequent_colors
+
+
+def convert_to_color_dict_list(colors: list) -> list:
+    """Return a list of dictionaries of colors in different formats."""
+    color_dict_list = []
+
+    for color in colors:
+        hex_color = []
+        for color_index in range(0, 3):
+            hex_color_part = hex(color[color_index]).replace("0x", "")
+            if len(hex_color_part) == 1:
+                hex_color_part = "0" + hex_color_part
+            hex_color.append(hex_color_part)
+
+        color_dict_list.append({
+            "rgb": color,
+            "hsl": [round(color, 2) for color
+                    in colorsys.rgb_to_hls(color[0], color[1], color[2])],
+            "hsv": [round(color, 2) for color
+                    in colorsys.rgb_to_hsv(color[0], color[1], color[2])],
+            "hex": hex_color
+        })
+    return color_dict_list
 
 
 def _start_gui():
