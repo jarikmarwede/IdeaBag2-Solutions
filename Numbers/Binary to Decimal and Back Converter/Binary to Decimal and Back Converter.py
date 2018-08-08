@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
-"""
+"""A converter between multiple numeral systems.
+
 Title:
 Binary to Decimal and Back Converter
 
 Description:
-Develop a program that converts a decimal number to its decimal equivalent.
+Develop a program that converts a decimal number to binary
+or a binary number to its decimal equivalent.
 For added complexity,
 try adding converters to Octals and Hexadecimals too.
 """
@@ -60,17 +62,23 @@ def decimal_to_hexadecimal(number: int) -> str:
     return result
 
 
-if __name__ == "__main__":
+def _start_interactively():
+    """Start the program interactively through the command line."""
     while True:
-        CHOICE = input("Do you want to convert to decimal, "
+        choice = input("Do you want to convert to decimal, "
                        "binary, octal or hexadecimal (dec|bin|oct|hex): ")
-        NUMBER = int(input("Please type in the number "
+        number = int(input("Please type in the number "
                            "that you want to convert: "))
-        if CHOICE == "dec":
-            print(binary_to_decimal(NUMBER))
-        elif CHOICE == "bin":
-            print(decimal_to_binary(NUMBER))
-        elif CHOICE == "oct":
-            print(decimal_to_octal(NUMBER))
-        elif CHOICE == "hex":
-            print(decimal_to_hexadecimal(NUMBER))
+
+        if choice == "dec":
+            print(binary_to_decimal(number))
+        elif choice == "bin":
+            print(decimal_to_binary(number))
+        elif choice == "oct":
+            print(decimal_to_octal(number))
+        elif choice == "hex":
+            print(decimal_to_hexadecimal(number))
+
+
+if __name__ == "__main__":
+    _start_interactively()
