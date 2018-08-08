@@ -8,6 +8,7 @@ Develop a program that converts a decimal number to its decimal equivalent.
 For added complexity,
 try adding converters to Octals and Hexadecimals too.
 """
+import math
 
 
 def binary_to_decimal(number: int) -> int:
@@ -24,7 +25,26 @@ def binary_to_decimal(number: int) -> int:
 
 def decimal_to_binary(number: int) -> str:
     """Return binary version of the specified decimal number."""
-    result = bin(number)[2:]
+    binary_list = []
+
+    while number > 1:
+        current_number = 2
+        while True:
+            if current_number * 2 > number:
+                break
+            current_number *= 2
+        binary_list.append(current_number)
+        number -= current_number
+    if number > 0:
+        binary_list.append(1)
+        number -= 1
+
+    result = int(math.log(max(binary_list), 2) + 1) * "0"
+    for digit in binary_list:
+        if digit == 1:
+            result = result[:-1] + "1"
+        else:
+            result = result[:-int(math.log(digit, 2)) - 1] + "1" + result[-int(math.log(digit, 2)):]
     return result
 
 
