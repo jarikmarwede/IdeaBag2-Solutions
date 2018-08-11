@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""
+"""A password generator and manager.
+
 Title:
 Password Generator
 
@@ -31,46 +32,50 @@ passwords = {}
 
 
 def generate_password(length: int) -> str:
-    """Return random password of specified length
-    """
+    """Return random password of specified length."""
     choice = string.ascii_letters + string.digits
     password = ""
+
     for character in random.choices(choice, k=length):
         password += character
     return password
 
 
 def new_password(name: str, length: int):
-    """Add new password to passwords dictionary
-    """
+    """Add new password to passwords dictionary."""
     if name in passwords:
-        raise ValueError("A password with name '{}' already exists".format(name))
+        raise ValueError(f"A password with name '{name}' already exists")
     password = generate_password(length)
     passwords[name] = password
 
 
 def refresh_password(name: str, length: int):
-    """Refresh existing password
-    """
+    """Refresh existing password."""
     password = generate_password(length)
     passwords[name] = password
 
 
-if __name__ == "__main__":
+def _start_interactively():
+    """Start the program interactively through the command line."""
     while True:
-        CHOICE = input("Do you want to add a password, "
+        choice = input("Do you want to add a password, "
                        "refresh an existing password "
                        "or see all passwords (new|refresh|show): ")
-        if CHOICE == "new":
-            NAME = input("Type in the name the password should have: ")
-            LENGTH = int(input("Type in the length of the password: "))
+        if choice == "new":
+            name = input("Type in the name the password should have: ")
+            length = int(input("Type in the length of the password: "))
             try:
-                new_password(NAME, LENGTH)
+                new_password(name, length)
             except ValueError:
-                print("A password with name '{}' already exists".format(NAME))
-        elif CHOICE == "refresh":
-            NAME = input("Type in the name of the password: ")
-            LENGTH = int(input("Type in the length of the password: "))
-            refresh_password(NAME, LENGTH)
-        elif CHOICE == "show":
+                print(f"A password with name '{name}' already exists")
+        elif choice == "refresh":
+            name = input("Type in the name of the password: ")
+            length = int(input("Type in the length of the password: "))
+            refresh_password(name, length)
+        elif choice == "show":
             print(passwords)
+        print("")
+
+
+if __name__ == "__main__":
+    _start_interactively()

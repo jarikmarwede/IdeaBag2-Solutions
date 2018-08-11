@@ -9,7 +9,7 @@ Your program will accept a mathematical expression as a string,
 parse it and output the answer of the expression.
 For example, "2*3+2-(4+5)" will output 9.
 For added complexity,
-add the ability to calculate expressions with scientifix terms
+add the ability to calculate expressions with scientific terms
 like cos, sin, tan, log, mod, dqr etc.
 Submitted by David
 """
@@ -24,7 +24,12 @@ def evaluate(expression: str) -> float:
         raise ValueError(expression + " is not a mathematical expression.")
 
 
-if __name__ == "__main__":
+def _start_interactively():
+    """Start the program interactively through the command line."""
     while True:
-        EXPRESSION = input("Please input a mathematical expresion: ")
-        print(evaluate(EXPRESSION))
+        expression = input("Please input a mathematical expression: ")
+        print(evaluate(expression))
+
+
+if __name__ == "__main__":
+    _start_interactively()

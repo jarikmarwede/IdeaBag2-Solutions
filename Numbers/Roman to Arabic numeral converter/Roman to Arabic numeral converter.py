@@ -25,8 +25,7 @@ Submitted by Alex Lushiku
 
 
 def convert_to_arabic(number: str) -> int:
-    """Return arabic version of number
-    """
+    """Return arabic version of number."""
     result = 0
     roman_digits = {"M": 1000,
                     "D": 500,
@@ -35,6 +34,7 @@ def convert_to_arabic(number: str) -> int:
                     "X": 10,
                     "V": 5,
                     "I": 1}
+
     for index, character in enumerate(number):
         if character in roman_digits:
             if index == len(number) - 1:
@@ -46,12 +46,11 @@ def convert_to_arabic(number: str) -> int:
     return result
 
 
-def convert_to_roman(number: int):
-    """Return roman version of number
-    """
+def convert_to_roman(number: int) -> str:
+    """Return roman version of number."""
     if number > 3999:
-        raise ValueError("Number can not be represented with roman numerals: "
-                         "{}".format(number))
+        raise ValueError(f"Number can not be represented with roman numerals: "
+                         f"{number}")
     roman_number = ""
     for index, digit in enumerate(reversed(str(number))):
         if index == 0:
@@ -71,7 +70,7 @@ def convert_to_roman(number: int):
             fifth = ""
             tenth = ""
         else:
-            raise ValueError("Invalid input: {}".format(number))
+            raise ValueError(f"Invalid input: {number}")
 
         if digit == "0":
             continue
@@ -96,13 +95,18 @@ def convert_to_roman(number: int):
     return roman_number
 
 
-if __name__ == "__main__":
+def _start_interactively():
+    """Start the program interactively through the command line."""
     while True:
-        ARABIC_OR_ROMAN = input("Do you want to convert"
+        arabic_or_roman = input("Do you want to convert"
                                 " to arabic or roman (arabic|roman): ")
-        NUMBER = input("Please input the number you want to convert: ")
-        if ARABIC_OR_ROMAN == "arabic":
-            print(convert_to_arabic(NUMBER))
-        elif ARABIC_OR_ROMAN == "roman":
-            print(convert_to_roman(int(NUMBER)))
+        number = input("Please input the number you want to convert: ")
+        if arabic_or_roman == "arabic":
+            print(convert_to_arabic(number))
+        elif arabic_or_roman == "roman":
+            print(convert_to_roman(int(number)))
         print("")
+
+
+if __name__ == "__main__":
+    _start_interactively()

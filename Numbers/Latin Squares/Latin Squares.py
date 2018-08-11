@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""
+"""Checks for latin squares.
+
 Title:
 Latin Squares
 
 Description:
 A Latin square is an n x n array filled with n different symbols 
-each occuring exactly once in each row and exactly once in each column.
+each occurring exactly once in each row and exactly once in each column.
 For example
 1
 And,
@@ -32,8 +33,7 @@ false
 
 
 def is_latin_square(row_length: int, array: str) -> bool:
-    """Return whether array is a latin square
-    """
+    """Return whether array is a latin square."""
     # check horizontally
     for index, digit in enumerate(array):
         # check for beginning
@@ -58,10 +58,15 @@ def is_latin_square(row_length: int, array: str) -> bool:
     return True
 
 
-if __name__ == "__main__":
+def _start_interactively():
+    """Start the program interactively through the command line."""
     while True:
-        ARRAY = input("Please type in the array"
+        array = input("Please type in the array"
                       " that should be checked for being a latin square: ")
-        ROW_LENGTH = int(input("Please type in the length "
+        row_length = int(input("Please type in the length "
                                "of each row in your array: "))
-        print(is_latin_square(ROW_LENGTH, ARRAY))
+        print(is_latin_square(row_length, array))
+
+
+if __name__ == "__main__":
+    _start_interactively()

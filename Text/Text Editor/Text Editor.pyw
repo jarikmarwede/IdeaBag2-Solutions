@@ -112,6 +112,8 @@ class MainWindow(tk.Tk):
         """Open a file."""
         file_path = tk_filedialog.askopenfilename(parent=self,
                                                   defaultextension=".txt")
+        if not file_path:
+            return
         with open(file_path, "r") as file:
             file_content = file.read()
         file_name = os.path.basename(file_path)
@@ -121,6 +123,7 @@ class MainWindow(tk.Tk):
     def save_file(self, notebook_tab_frame):
         """Save current file."""
         tab = self.notebook_tabs[notebook_tab_frame]
+
         if not tab["file_path"]:
             self.save_file_as(notebook_tab_frame)
         else:
@@ -134,6 +137,7 @@ class MainWindow(tk.Tk):
                                                     filetypes=[("All types", "*.*")])
         self.notebook_tabs[notebook_tab_frame]["file_path"] = file_path
         tab = self.notebook_tabs[notebook_tab_frame]
+
         if file_path:
             with open(file_path, "w") as file:
                 file.write(tab["text_editor"].get("0.0", tk.END))
@@ -151,6 +155,7 @@ class MainWindow(tk.Tk):
     def close_tab(self, notebook_tab_frame):
         """Close the current tab in the notebook."""
         tab = self.notebook_tabs[notebook_tab_frame]
+
         if tab["file_path"]:
             with open(tab["file_path"], "r") as file:
                 file_content = file.read()
@@ -188,12 +193,13 @@ class MainWindow(tk.Tk):
 def tab_pressed(text_widget):
     """Insert spaces instead of tabs."""
     text_widget.insert(tk.INSERT, " " * INDENT_SIZE)
-    return "break"
+    return "break"  # stop tkinter from also inserting tabs
 
 
 def shift_tab_pressed(text_widget):
     """Remove spaces according to indent size."""
     reversed_text = text_widget.get("insert linestart", tk.INSERT)[::-1]
+
     if reversed_text.startswith(" " * INDENT_SIZE):
         new_text = reversed_text[:INDENT_SIZE-1:-1]
         text_widget.delete("insert linestart", tk.INSERT)
@@ -204,13 +210,14 @@ def enter_pressed(text_widget):
     """Handle indentation when pressing enter."""
     current_line = text_widget.get("insert linestart", "insert lineend")
     preceding_spaces = 0
+
     for character in current_line:
         if character == " ":
             preceding_spaces += 1
         else:
             break
     text_widget.insert("insert lineend", "\n" + " " * preceding_spaces)
-    return "break"
+    return "break"  # stop tkinters default behaviour
 
 
 def _start_gui():
