@@ -16,6 +16,10 @@ All programs need [python 3.6](https://www.python.org/downloads/) or later insta
 and for some of them external modules are required.
 Go to [Dependencies](#dependencies) to check which modules you need to install and how.
 
+You can watch this video, which explains how to use this repository and how it is organized:
+
+[![Thumbnail of the video](https://img.youtube.com/vi/JV7tHBfdsVs/0.jpg)](https://www.youtube.com/watch?v=JV7tHBfdsVs)
+
 ## Contributing
 If you want to contribute in any way please take a look at [CONTRIBUTING.md](CONTRIBUTING.md).
 
