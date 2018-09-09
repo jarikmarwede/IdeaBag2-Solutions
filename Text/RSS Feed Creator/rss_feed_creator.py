@@ -94,7 +94,112 @@ class RSSFile:
 
     def load(self):
         """Load the rss document from the file."""
-        pass
+        tree = ET.parse(self.file_name)
+        root = tree.getroot()
+        channel = root.find("channel")
+
+        channel_title = channel.find("title").text
+        channel_link = channel.find("link").text
+        channel_description = channel.find("description").text
+        items = []
+        for item in channel.findall("item"):
+            item_title = item.find("title").text
+            item_link = item.find("link")
+            if item_link:
+                item_link = item_link.text
+            item_description = item.find("description")
+            if item_description:
+                item_description = item_description.text
+            item_author = item.find("author")
+            if item_author:
+                item_author = item_author.text
+            item_category = item.find("category")
+            if item_category:
+                item_category = item_category.text
+            item_comments = item.find("comments")
+            if item_comments:
+                item_comments = item_comments.text
+            item_enclosure = None  # TODO
+            item_guid = item.find("guid")
+            if item_guid:
+                item_guid = item_guid.text
+            item_pub_date = item.find("pubDate")
+            if item_pub_date:
+                item_pub_date = datetime.datetime.fromisoformat(item_pub_date.text)
+            item_source = item.find("source")
+            if item_source:
+                item_source = item_source.text
+            items.append(RSSItem(
+                item_title,
+                item_link,
+                item_description,
+                item_author,
+                item_category,
+                item_comments,
+                item_enclosure,
+                item_guid,
+                item_pub_date,
+                item_source
+            ))
+        language = channel.find("language")
+        if language:
+            language = language.text
+        copyright = channel.find("copyright")
+        if copyright:
+            copyright = copyright.text
+        managing_editor = channel.find("managingEditor")
+        if managing_editor:
+            managing_editor = managing_editor.text
+        web_master = channel.find("webMaster")
+        if web_master:
+            web_master = web_master.text
+        pub_date = channel.find("pubDate")
+        if pub_date:
+            pub_date = datetime.datetime.fromisoformat(pub_date.text)
+        last_build_date = channel.find("lastBuildDate")
+        if last_build_date:
+            last_build_date = datetime.datetime.fromisoformat(last_build_date.text)
+        category = channel.find("category")
+        if category:
+            category = category.text
+        generator = channel.find("generator")
+        if generator:
+            generator = generator.text
+        docs = channel.find("docs")
+        if docs:
+            docs = docs.text
+        cloud = None  # TODO
+        ttl = channel.find("ttl")
+        if ttl:
+            ttl = int(ttl.text)
+        image = None  # TODO
+        rating = None  # TODO
+        text_input = None  # TODO
+        skip_hours = None  # TODO
+        skip_days = None  # TODO
+
+        self.rss_document = RSSDocument(
+            channel_title,
+            channel_link,
+            channel_description,
+            items,
+            language,
+            copyright,
+            managing_editor,
+            web_master,
+            pub_date,
+            last_build_date,
+            category,
+            generator,
+            docs,
+            cloud,
+            ttl,
+            image,
+            rating,
+            text_input,
+            skip_hours,
+            skip_days
+        )
 
     def save(self):
         """Save the rss document to the file."""
