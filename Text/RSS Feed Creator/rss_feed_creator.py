@@ -9,6 +9,34 @@ A program which can read in text from other sources
 and put it in RSS or Atom news format for syndication.
 """
 import datetime
+import xml.etree.ElementTree as ET
+from typing import List
+
+
+class RSSItem:
+    """An RSS item."""
+
+    def __init__(self,
+                 title: str,
+                 link: str = None,
+                 description: str = None,
+                 author: str = None,
+                 category: str = None,
+                 comments: str = None,
+                 enclosure=None,
+                 guid: str = None,
+                 pub_date: datetime.datetime = None,
+                 source: str = None):
+        self.title = title
+        self.link = link
+        self.description = description
+        self.author = author
+        self.category = category
+        self.comments = comments
+        self.enclosure = enclosure
+        self.guid = guid
+        self.pub_date = pub_date
+        self.source = source
 
 
 class RSSDocument:
@@ -18,6 +46,7 @@ class RSSDocument:
                  channel_title: str,
                  channel_link: str,
                  channel_description: str,
+                 items: List[RSSItem],
                  language=None,
                  copyright: str = None,
                  managing_editor: str = None,
@@ -37,6 +66,7 @@ class RSSDocument:
         self.channel_title = channel_title
         self.channel_link = channel_link
         self.channel_description = channel_description
+        self.items = items
         self.language = language
         self.copyright = copyright
         self.managing_editor = managing_editor
