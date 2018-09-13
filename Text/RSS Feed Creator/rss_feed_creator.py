@@ -206,3 +206,87 @@ class RSSFile:
         if not self.rss_document or not type(self.rss_document) is RSSDocument:
             raise TypeError(f"rss_document should be of type RSSDocument "
                             f"instead of type: {type(self.rss_document)}")
+        tree = ET.ElementTree(ET.Element("rss", {"version": "2.0"}))
+        root = tree.getroot()
+        channel = ET.SubElement(root, "channel")
+        channel_title = ET.SubElement(channel, "title")
+        channel_title.text = self.rss_document.channel_title
+        channel_link = ET.SubElement(channel, "link")
+        channel_link.text = self.rss_document.channel_link
+        channel_description = ET.SubElement(channel, "description")
+        channel_description.text = self.rss_document.channel_description
+        for item in self.rss_document.items:
+            item_element = ET.SubElement(channel, "item")
+            title = ET.SubElement(item_element, "title")
+            title.text = item.title
+            if item.link:
+                link = ET.SubElement(item_element, "link")
+                link.text = item.link
+            if item.description:
+                description = ET.SubElement(item_element, "description")
+                description.text = item.description
+            if item.author:
+                author = ET.SubElement(item_element, "author")
+                author.text = item.author
+            if item.category:
+                category = ET.SubElement(item_element, "category")
+                category.text = item.category
+            if item.comments:
+                comments = ET.SubElement(item_element, "comments")
+                comments.text = item.comments
+            if item.enclosure:
+                enclosure = ET.SubElement(item_element, "enclosure")
+                enclosure.text = item.enclosure
+            if item.guid:
+                guid = ET.SubElement(item_element, "guid")
+                guid.text = item.guid
+            if item.pub_date:
+                pub_date = ET.SubElement(item_element, "pubDate")
+                pub_date.text = item.pub_date
+            if item.source:
+                source = ET.SubElement(item_element, "source")
+                source.text = item.source
+        if self.rss_document.language:
+            language = ET.SubElement(channel, "language")
+            language.text = self.rss_document.language
+        if self.rss_document.copyright:
+            copyright = ET.SubElement(channel, "copyright")
+            copyright.text = self.rss_document.copyright
+        if self.rss_document.managing_editor:
+            managing_editor = ET.SubElement(channel, "managingEditor")
+            managing_editor.text = self.rss_document.managing_editor
+        if self.rss_document.web_master:
+            web_master = ET.SubElement(channel, "webMaster")
+            web_master.text = self.rss_document.web_master
+        if self.rss_document.pub_date:
+            pub_date = ET.SubElement(channel, "pubDate")
+            pub_date.text = self.rss_document.pub_date
+        if self.rss_document.last_build_date:
+            last_build_date = ET.SubElement(channel, "lastBuildDate")
+            last_build_date.text = self.rss_document.last_build_date
+        if self.rss_document.category:
+            category = ET.SubElement(channel, "category")
+            category.text = self.rss_document.category
+        if self.rss_document.generator:
+            generator = ET.SubElement(channel, "generator")
+            generator.text = self.rss_document.generator
+        if self.rss_document.docs:
+            docs = ET.SubElement(channel, "docs")
+            docs.text = self.rss_document.docs
+        if self.rss_document.cloud:
+            cloud = ET.SubElement(channel, "cloud")  # TODO
+        if self.rss_document.ttl:
+            ttl = ET.SubElement(channel, "ttl")
+            ttl.text = self.rss_document.ttl
+        if self.rss_document.image:
+            image = ET.SubElement(channel, "image")  # TODO
+        if self.rss_document.rating:
+            rating = ET.SubElement(channel, "rating")  # TODO
+        if self.rss_document.text_input:
+            text_input = ET.SubElement(channel, "textInput")  # TODO
+        if self.rss_document.skip_hours:
+            skip_hours = ET.SubElement(channel, "skipHours")  # TODO
+        if self.rss_document.skip_days:
+            skip_days = ET.SubElement(channel, "skipDays")  # TODO
+
+        tree.write(self.file_name)
