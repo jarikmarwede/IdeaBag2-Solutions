@@ -10,6 +10,7 @@ and put it in RSS or Atom news format for syndication.
 """
 import datetime
 import xml.etree.ElementTree as ET
+from email.utils import format_datetime, parsedate_to_datetime
 from typing import List
 
 
@@ -141,8 +142,8 @@ class RSSFile:
             else:
                 item_guid = None
             item_pub_date_element = item.find("pubDate")
-            if item_pub_date_element:
-                item_pub_date = datetime.datetime.fromisoformat(item_pub_date_element.text)
+            if item_pub_date_element is not None:
+                item_pub_date = parsedate_to_datetime(item_pub_date_element.text)
             else:
                 item_pub_date = None
             item_source_element = item.find("source")
@@ -184,13 +185,13 @@ class RSSFile:
         else:
             web_master = None
         pub_date_element = channel.find("pubDate")
-        if pub_date_element:
-            pub_date = datetime.datetime.fromisoformat(pub_date_element.text)
+        if pub_date_element is not None:
+            pub_date = parsedate_to_datetime(pub_date_element.text)
         else:
             pub_date = None
         last_build_date_element = channel.find("lastBuildDate")
-        if last_build_date_element:
-            last_build_date = datetime.datetime.fromisoformat(last_build_date_element.text)
+        if last_build_date_element is not None:
+            last_build_date = parsedate_to_datetime(last_build_date_element.text)
         else:
             last_build_date = None
         category_element = channel.find("category")
@@ -327,7 +328,7 @@ class RSSFile:
                 guid.text = item.guid
             if item.pub_date:
                 pub_date = ET.SubElement(item_element, "pubDate")
-                pub_date.text = item.pub_date
+                pub_date.text = format_datetime(item.pub_date)
             if item.source:
                 source = ET.SubElement(item_element, "source")
                 source.text = item.source
@@ -345,10 +346,10 @@ class RSSFile:
             web_master.text = self.rss_document.web_master
         if self.rss_document.pub_date:
             pub_date = ET.SubElement(channel, "pubDate")
-            pub_date.text = self.rss_document.pub_date
+            pub_date.text = format_datetime(self.rss_document.pub_date)
         if self.rss_document.last_build_date:
             last_build_date = ET.SubElement(channel, "lastBuildDate")
-            last_build_date.text = self.rss_document.last_build_date
+            last_build_date.text = format_datetime(self.rss_document.last_build_date)
         if self.rss_document.category:
             category = ET.SubElement(channel, "category")
             category.text = self.rss_document.category
