@@ -40,7 +40,7 @@ class RSSItem:
 
 
 class RSSDocument:
-    """A RSS Document."""
+    """An RSS Document."""
 
     def __init__(self,
                  channel_title: str,
@@ -86,7 +86,7 @@ class RSSDocument:
 
 
 class RSSFile:
-    """A RSS file."""
+    """An RSS file."""
 
     def __init__(self, file_name: str, rss_document: RSSDocument = None):
         self.file_name = file_name
@@ -119,7 +119,9 @@ class RSSFile:
             item_comments = item.find("comments")
             if item_comments:
                 item_comments = item_comments.text
-            item_enclosure = None  # TODO
+            item_enclosure = item.find("enclosure")
+            if item_enclosure:
+                item_enclosure = item_enclosure.attrib
             item_guid = item.find("guid")
             if item_guid:
                 item_guid = item_guid.text
@@ -168,12 +170,16 @@ class RSSFile:
         docs = channel.find("docs")
         if docs:
             docs = docs.text
-        cloud = None  # TODO
+        cloud = channel.find("cloud")
+        if cloud:
+            cloud = cloud.attrib
         ttl = channel.find("ttl")
         if ttl:
             ttl = int(ttl.text)
         image = None  # TODO
-        rating = None  # TODO
+        rating = channel.find("rating")
+        if rating:
+            rating = rating.text
         text_input = None  # TODO
         skip_hours = None  # TODO
         skip_days = None  # TODO
@@ -236,7 +242,7 @@ class RSSFile:
                 comments.text = item.comments
             if item.enclosure:
                 enclosure = ET.SubElement(item_element, "enclosure")
-                enclosure.text = item.enclosure
+                enclosure.atrrib = item.enclosure
             if item.guid:
                 guid = ET.SubElement(item_element, "guid")
                 guid.text = item.guid
@@ -274,14 +280,16 @@ class RSSFile:
             docs = ET.SubElement(channel, "docs")
             docs.text = self.rss_document.docs
         if self.rss_document.cloud:
-            cloud = ET.SubElement(channel, "cloud")  # TODO
+            cloud = ET.SubElement(channel, "cloud")
+            cloud.attrib = self.rss_document.cloud
         if self.rss_document.ttl:
             ttl = ET.SubElement(channel, "ttl")
             ttl.text = self.rss_document.ttl
         if self.rss_document.image:
             image = ET.SubElement(channel, "image")  # TODO
         if self.rss_document.rating:
-            rating = ET.SubElement(channel, "rating")  # TODO
+            rating = ET.SubElement(channel, "rating")
+            rating.text = self.rss_document.rating
         if self.rss_document.text_input:
             text_input = ET.SubElement(channel, "textInput")  # TODO
         if self.rss_document.skip_hours:
