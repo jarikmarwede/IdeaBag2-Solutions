@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""
+"""An RSS module that can parse and save to RSS files.
 
 Title:
 RSS Feed Creator
@@ -24,7 +24,7 @@ class RSSItem:
                  author: str = None,
                  category: str = None,
                  comments: str = None,
-                 enclosure=None,
+                 enclosure: dict = None,
                  guid: str = None,
                  pub_date: datetime.datetime = None,
                  source: str = None):
@@ -48,7 +48,7 @@ class RSSDocument:
                  channel_link: str,
                  channel_description: str,
                  items: List[RSSItem],
-                 language=None,
+                 language: str = None,
                  copyright: str = None,
                  managing_editor: str = None,
                  web_master: str = None,
@@ -57,13 +57,13 @@ class RSSDocument:
                  category: str = None,
                  generator: str = None,
                  docs: str = None,
-                 cloud=None,
+                 cloud: dict = None,
                  ttl: int = None,
-                 image=None,
-                 rating=None,
-                 text_input=None,
-                 skip_hours=None,
-                 skip_days=None):
+                 image: dict = None,
+                 rating: str = None,
+                 text_input: dict = None,
+                 skip_hours: list = None,
+                 skip_days: list = None):
         self.channel_title = channel_title
         self.channel_link = channel_link
         self.channel_description = channel_description
@@ -289,7 +289,7 @@ class RSSFile:
 
     def save(self):
         """Save the rss document to the file."""
-        if not self.rss_document or not type(self.rss_document) is RSSDocument:
+        if not self.rss_document or not isinstance(self.rss_document, RSSDocument):
             raise TypeError(f"rss_document should be of type RSSDocument "
                             f"instead of type: {type(self.rss_document)}")
         tree = ET.ElementTree(ET.Element("rss", {"version": "2.0"}))
