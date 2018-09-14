@@ -101,36 +101,55 @@ class RSSFile:
         channel_title = channel.find("title").text
         channel_link = channel.find("link").text
         channel_description = channel.find("description").text
+
         items = []
         for item in channel.findall("item"):
             item_title = item.find("title").text
-            item_link = item.find("link")
-            if item_link:
-                item_link = item_link.text
-            item_description = item.find("description")
-            if item_description:
-                item_description = item_description.text
-            item_author = item.find("author")
-            if item_author:
-                item_author = item_author.text
-            item_category = item.find("category")
-            if item_category:
-                item_category = item_category.text
-            item_comments = item.find("comments")
-            if item_comments:
-                item_comments = item_comments.text
-            item_enclosure = item.find("enclosure")
-            if item_enclosure:
-                item_enclosure = item_enclosure.attrib
-            item_guid = item.find("guid")
-            if item_guid:
-                item_guid = item_guid.text
-            item_pub_date = item.find("pubDate")
-            if item_pub_date:
-                item_pub_date = datetime.datetime.fromisoformat(item_pub_date.text)
-            item_source = item.find("source")
-            if item_source:
-                item_source = item_source.text
+            item_link_element = item.find("link")
+            if item_link_element:
+                item_link = item_link_element.text
+            else:
+                item_link = None
+            item_description_element = item.find("description")
+            if item_description_element:
+                item_description = item_description_element.text
+            else:
+                item_description = None
+            item_author_element = item.find("author")
+            if item_author_element:
+                item_author = item_author_element.text
+            else:
+                item_author = None
+            item_category_element = item.find("category")
+            if item_category_element:
+                item_category = item_category_element.text
+            else:
+                item_category = None
+            item_comments_element = item.find("comments")
+            if item_comments_element:
+                item_comments = item_comments_element.text
+            else:
+                item_comments = None
+            item_enclosure_element = item.find("enclosure")
+            if item_enclosure_element:
+                item_enclosure = item_enclosure_element.attrib
+            else:
+                item_enclosure = None
+            item_guid_element = item.find("guid")
+            if item_guid_element:
+                item_guid = item_guid_element.text
+            else:
+                item_guid = None
+            item_pub_date_element = item.find("pubDate")
+            if item_pub_date_element:
+                item_pub_date = datetime.datetime.fromisoformat(item_pub_date_element.text)
+            else:
+                item_pub_date = None
+            item_source_element = item.find("source")
+            if item_source_element:
+                item_source = item_source_element.text
+            else:
+                item_source = None
             items.append(RSSItem(
                 item_title,
                 item_link,
@@ -143,46 +162,106 @@ class RSSFile:
                 item_pub_date,
                 item_source
             ))
-        language = channel.find("language")
-        if language:
-            language = language.text
-        copyright = channel.find("copyright")
-        if copyright:
-            copyright = copyright.text
-        managing_editor = channel.find("managingEditor")
-        if managing_editor:
-            managing_editor = managing_editor.text
-        web_master = channel.find("webMaster")
-        if web_master:
-            web_master = web_master.text
-        pub_date = channel.find("pubDate")
-        if pub_date:
-            pub_date = datetime.datetime.fromisoformat(pub_date.text)
-        last_build_date = channel.find("lastBuildDate")
-        if last_build_date:
-            last_build_date = datetime.datetime.fromisoformat(last_build_date.text)
-        category = channel.find("category")
-        if category:
-            category = category.text
-        generator = channel.find("generator")
-        if generator:
-            generator = generator.text
-        docs = channel.find("docs")
-        if docs:
-            docs = docs.text
-        cloud = channel.find("cloud")
-        if cloud:
-            cloud = cloud.attrib
-        ttl = channel.find("ttl")
-        if ttl:
-            ttl = int(ttl.text)
-        image = None  # TODO
-        rating = channel.find("rating")
-        if rating:
-            rating = rating.text
-        text_input = None  # TODO
-        skip_hours = None  # TODO
-        skip_days = None  # TODO
+
+        language_element = channel.find("language")
+        if language_element:
+            language = language_element.text
+        else:
+            language = None
+        copyright_element = channel.find("copyright")
+        if copyright_element:
+            copyright = copyright_element.text
+        else:
+            copyright = None
+        managing_editor_element = channel.find("managingEditor")
+        if managing_editor_element:
+            managing_editor = managing_editor_element.text
+        else:
+            managing_editor = None
+        web_master_element = channel.find("webMaster")
+        if web_master_element:
+            web_master = web_master_element.text
+        else:
+            web_master = None
+        pub_date_element = channel.find("pubDate")
+        if pub_date_element:
+            pub_date = datetime.datetime.fromisoformat(pub_date_element.text)
+        else:
+            pub_date = None
+        last_build_date_element = channel.find("lastBuildDate")
+        if last_build_date_element:
+            last_build_date = datetime.datetime.fromisoformat(last_build_date_element.text)
+        else:
+            last_build_date = None
+        category_element = channel.find("category")
+        if category_element:
+            category = category_element.text
+        else:
+            category = None
+        generator_element = channel.find("generator")
+        if generator_element:
+            generator = generator_element.text
+        else:
+            generator = None
+        docs_element = channel.find("docs")
+        if docs_element:
+            docs = docs_element.text
+        else:
+            docs = None
+        cloud_element = channel.find("cloud")
+        if cloud_element:
+            cloud = cloud_element.attrib
+        else:
+            cloud = None
+        ttl_element = channel.find("ttl")
+        if ttl_element:
+            ttl = int(ttl_element.text)
+        else:
+            ttl = None
+        image_element = channel.find("image")
+        if image_element:
+            image = {
+                "url": image_element.find("url").text,
+                "title": image_element.find("title").text,
+                "link": image_element.find("link").text
+            }
+            if image_element.find("width"):
+                image["width"] = int(image_element.find("width").text)
+            if image_element.find("height"):
+                image["height"] = int(image_element.find("height").text)
+            if image_element.find("description"):
+                image["description"] = image_element.find("description").text
+        else:
+            image = None
+        rating_element = channel.find("rating")
+        if rating_element:
+            rating = rating_element.text
+        else:
+            rating = None
+        text_input_element = channel.find("textInput")
+        if text_input_element:
+            text_input = {
+                "title": text_input_element.find("title").text,
+                "description": text_input_element.find("description").text,
+                "name": text_input_element.find("name").text,
+                "link": text_input_element.find("link").text
+            }
+        else:
+            text_input = None
+        skip_hours_element = channel.find("skipHours")
+        if skip_hours_element:
+            skip_hours = []
+            for hour in skip_hours_element.find_all("hour"):
+                skip_hours.append(int(hour.text))
+        else:
+            skip_hours = None
+        skip_days_element = channel.find("skipDays")
+        if skip_days_element:
+            skip_days = []
+            for day in skip_days_element.find_all("day"):
+                skip_days.append(day.text)
+        else:
+            skip_days = None
 
         self.rss_document = RSSDocument(
             channel_title,
