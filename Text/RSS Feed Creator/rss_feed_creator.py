@@ -365,15 +365,33 @@ class RSSFile:
             ttl = ET.SubElement(channel, "ttl")
             ttl.text = self.rss_document.ttl
         if self.rss_document.image:
-            image = ET.SubElement(channel, "image")  # TODO
+            image = ET.SubElement(channel, "image")
+            ET.SubElement(image, "url").text = self.rss_document.image["url"]
+            ET.SubElement(image, "title").text = self.rss_document.image["title"]
+            ET.SubElement(image, "link").text = self.rss_document.image["link"]
+            if "width" in self.rss_document.image:
+                ET.SubElement(image, "width").text = self.rss_document.image["width"]
+            if "height" in self.rss_document.image:
+                ET.SubElement(image, "height").text = self.rss_document.image["height"]
+            if "description" in self.rss_document.image:
+                ET.SubElement(image, "description").text = self.rss_document.image["description"]
         if self.rss_document.rating:
             rating = ET.SubElement(channel, "rating")
             rating.text = self.rss_document.rating
         if self.rss_document.text_input:
-            text_input = ET.SubElement(channel, "textInput")  # TODO
+            text_input = ET.SubElement(channel, "textInput")
+            ET.SubElement(text_input, "title").text = self.rss_document.text_input["title"]
+            ET.SubElement(text_input, "description").text = \
+                self.rss_document.text_input["description"]
+            ET.SubElement(text_input, "name").text = self.rss_document.text_input["name"]
+            ET.SubElement(text_input, "link").text = self.rss_document.text_input["link"]
         if self.rss_document.skip_hours:
-            skip_hours = ET.SubElement(channel, "skipHours")  # TODO
+            skip_hours = ET.SubElement(channel, "skipHours")
+            for hour in self.rss_document.skip_hours:
+                ET.SubElement(skip_hours, "hour").text = hour
         if self.rss_document.skip_days:
-            skip_days = ET.SubElement(channel, "skipDays")  # TODO
+            skip_days = ET.SubElement(channel, "skipDays")
+            for day in self.rss_document.skip_days:
+                ET.SubElement(skip_days, "hour").text = day
 
         tree.write(self.file_name)
