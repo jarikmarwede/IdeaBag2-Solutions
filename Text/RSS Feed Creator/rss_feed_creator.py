@@ -106,37 +106,37 @@ class RSSFile:
         for item in channel.findall("item"):
             item_title = item.find("title").text
             item_link_element = item.find("link")
-            if item_link_element:
+            if item_link_element is not None:
                 item_link = item_link_element.text
             else:
                 item_link = None
             item_description_element = item.find("description")
-            if item_description_element:
+            if item_description_element is not None:
                 item_description = item_description_element.text
             else:
                 item_description = None
             item_author_element = item.find("author")
-            if item_author_element:
+            if item_author_element is not None:
                 item_author = item_author_element.text
             else:
                 item_author = None
             item_category_element = item.find("category")
-            if item_category_element:
+            if item_category_element is not None:
                 item_category = item_category_element.text
             else:
                 item_category = None
             item_comments_element = item.find("comments")
-            if item_comments_element:
+            if item_comments_element is not None:
                 item_comments = item_comments_element.text
             else:
                 item_comments = None
             item_enclosure_element = item.find("enclosure")
-            if item_enclosure_element:
+            if item_enclosure_element is not None:
                 item_enclosure = item_enclosure_element.attrib
             else:
                 item_enclosure = None
             item_guid_element = item.find("guid")
-            if item_guid_element:
+            if item_guid_element is not None:
                 item_guid = item_guid_element.text
             else:
                 item_guid = None
@@ -146,7 +146,7 @@ class RSSFile:
             else:
                 item_pub_date = None
             item_source_element = item.find("source")
-            if item_source_element:
+            if item_source_element is not None:
                 item_source = item_source_element.text
             else:
                 item_source = None
@@ -164,22 +164,22 @@ class RSSFile:
             ))
 
         language_element = channel.find("language")
-        if language_element:
+        if language_element is not None:
             language = language_element.text
         else:
             language = None
         copyright_element = channel.find("copyright")
-        if copyright_element:
+        if copyright_element is not None:
             copyright = copyright_element.text
         else:
             copyright = None
         managing_editor_element = channel.find("managingEditor")
-        if managing_editor_element:
+        if managing_editor_element is not None:
             managing_editor = managing_editor_element.text
         else:
             managing_editor = None
         web_master_element = channel.find("webMaster")
-        if web_master_element:
+        if web_master_element is not None:
             web_master = web_master_element.text
         else:
             web_master = None
@@ -194,52 +194,52 @@ class RSSFile:
         else:
             last_build_date = None
         category_element = channel.find("category")
-        if category_element:
+        if category_element is not None:
             category = category_element.text
         else:
             category = None
         generator_element = channel.find("generator")
-        if generator_element:
+        if generator_element is not None:
             generator = generator_element.text
         else:
             generator = None
         docs_element = channel.find("docs")
-        if docs_element:
+        if docs_element is not None:
             docs = docs_element.text
         else:
             docs = None
         cloud_element = channel.find("cloud")
-        if cloud_element:
+        if cloud_element is not None:
             cloud = cloud_element.attrib
         else:
             cloud = None
         ttl_element = channel.find("ttl")
-        if ttl_element:
+        if ttl_element is not None:
             ttl = int(ttl_element.text)
         else:
             ttl = None
         image_element = channel.find("image")
-        if image_element:
+        if image_element is not None:
             image = {
                 "url": image_element.find("url").text,
                 "title": image_element.find("title").text,
                 "link": image_element.find("link").text
             }
-            if image_element.find("width"):
+            if image_element.find("width") is not None:
                 image["width"] = int(image_element.find("width").text)
-            if image_element.find("height"):
+            if image_element.find("height") is not None:
                 image["height"] = int(image_element.find("height").text)
-            if image_element.find("description"):
+            if image_element.find("description") is not None:
                 image["description"] = image_element.find("description").text
         else:
             image = None
         rating_element = channel.find("rating")
-        if rating_element:
+        if rating_element is not None:
             rating = rating_element.text
         else:
             rating = None
         text_input_element = channel.find("textInput")
-        if text_input_element:
+        if text_input_element is not None:
             text_input = {
                 "title": text_input_element.find("title").text,
                 "description": text_input_element.find("description").text,
@@ -249,14 +249,14 @@ class RSSFile:
         else:
             text_input = None
         skip_hours_element = channel.find("skipHours")
-        if skip_hours_element:
+        if skip_hours_element is not None:
             skip_hours = []
             for hour in skip_hours_element.find_all("hour"):
                 skip_hours.append(int(hour.text))
         else:
             skip_hours = None
         skip_days_element = channel.find("skipDays")
-        if skip_days_element:
+        if skip_days_element is not None:
             skip_days = []
             for day in skip_days_element.find_all("day"):
                 skip_days.append(day.text)
