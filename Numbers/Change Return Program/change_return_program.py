@@ -30,42 +30,43 @@ def calculate_change(price: float, paid: float) -> dict:
         "penny": 0
     }
     change = round(paid - price, 2)
+
     while change > 0:
-        if change - 100 >= 0:
-            change -= 100
+        if round(change - 100.0, 2) >= 0:
+            change = round(change - 100.0, 2)
             change_dictionary["one_hundred"] += 1
-        elif change - 50 >= 0:
-            change -= 50
+        elif round(change - 50.0, 2) >= 0:
+            change = round(change - 50.0, 2)
             change_dictionary["fifty"] += 1
-        elif change - 20 >= 0:
-            change -= 20
+        elif round(change - 20.0, 2) >= 0:
+            change = round(change - 20.0, 2)
             change_dictionary["twenty"] += 1
-        elif change - 10 >= 0:
-            change -= 10
+        elif round(change - 10.0, 2) >= 0:
+            change = round(change - 10.0, 2)
             change_dictionary["ten"] += 1
-        elif change - 5 >= 0:
-            change -= 5
+        elif round(change - 5.0, 2) >= 0:
+            change = round(change - 5.0, 2)
             change_dictionary["five"] += 1
-        elif change - 2 >= 0:
-            change -= 2
+        elif round(change - 2.0, 2) >= 0:
+            change = round(change - 2.0, 2)
             change_dictionary["two"] += 1
-        elif change - 1 >= 0:
-            change -= 1
+        elif round(change - 1.0, 2) >= 0:
+            change = round(change - 1.0, 2)
             change_dictionary["one"] += 1
-        elif change - 0.5 >= 0:
-            change -= 0.5
+        elif round(change - 0.5, 2) >= 0:
+            change = round(change - 0.5, 2)
             change_dictionary["half"] += 1
-        elif change - 0.25 >= 0:
-            change -= 0.25
+        elif round(change - 0.25, 2) >= 0:
+            change = round(change - 0.25)
             change_dictionary["quarter"] += 1
-        elif change - 0.1 >= 0:
-            change -= 0.1
+        elif round(change - 0.1, 2) >= 0:
+            change = round(change - 0.1, 2)
             change_dictionary["dime"] += 1
-        elif change - 0.05 >= 0:
-            change -= 0.05
+        elif round(change - 0.05, 2) >= 0:
+            change = round(change - 0.05)
             change_dictionary["nickel"] += 1
-        elif change - 0.01 >= 0:
-            change -= 0.01
+        elif round(change - 0.01, 2) >= 0:
+            change = round(change - 0.01, 2)
             change_dictionary["penny"] += 1
     return change_dictionary
 
