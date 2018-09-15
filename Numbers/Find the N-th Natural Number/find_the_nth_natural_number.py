@@ -21,10 +21,11 @@ def find_natural_number(position: int) -> tuple:
     """Return natural number at specified position and number its a part of."""
     num_range = ""
     counter = 0
+
     while len(str(num_range)) < position:
         counter += 1
         num_range += str(counter)
-    return num_range[-1], counter
+    return int(num_range[-1]), counter
 
 
 def _start_interactively():
