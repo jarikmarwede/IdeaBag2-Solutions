@@ -32,6 +32,7 @@ def _start_interactively():
             print(find_factorial(number))
         except ValueError:
             print(f"Invalid number: {number}")
+        print("")
 
 
 if __name__ == "__main__":
