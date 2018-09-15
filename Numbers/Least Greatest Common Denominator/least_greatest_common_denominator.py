@@ -15,6 +15,7 @@ def least_common_multiple(number1: int, number2: int) -> int:
     """Return least common multiple of number1 and number2."""
     start1 = number1
     start2 = number2
+
     while number1 != number2:
         if number1 < number2:
             number1 += start1
