@@ -35,14 +35,13 @@ false
 def is_latin_square(row_length: int, array: str) -> bool:
     """Return whether array is a latin square."""
     # check horizontally
+    row = 1
+    column = 0
+    numbers = []
+
     for index, digit in enumerate(array):
-        # check for beginning
-        if index == 0:
-            row = 1
-            column = 0
-            numbers = []
         # check for new row
-        elif index % row_length == 0:
+        if index % row_length == 0:
             row += 1
             column = 0
             numbers = []
@@ -66,6 +65,7 @@ def _start_interactively():
         row_length = int(input("Please type in the length "
                                "of each row in your array: "))
         print(is_latin_square(row_length, array))
+        print("")
 
 
 if __name__ == "__main__":
