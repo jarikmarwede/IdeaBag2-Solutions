@@ -31,6 +31,7 @@ def is_happy_number(number: int) -> bool:
 def square_of_digits(number: int) -> int:
     """Return the sum of the digits of the specified number squared."""
     output = 0
+
     for digit in str(number):
         output += int(digit) * int(digit)
     return output
