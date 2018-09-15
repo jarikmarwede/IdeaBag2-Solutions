@@ -12,12 +12,18 @@ Try to keep a limit as to how far the program will go.
 from sympy import N, pi
 
 
+def get_pi_to(length: int) -> float:
+    """Return the constant PI up to a specified length."""
+    return float(str(N(pi, length + 2))[:-1])
+
+
 def _start_interactively():
     """Start the program interactively through the command line."""
     while True:
         print("To how many digits would you like to calculate Pi?")
         length = int(input())
-        print(N(pi, length))
+        print(get_pi_to(length))
+        print("")
 
 
 if __name__ == "__main__":
