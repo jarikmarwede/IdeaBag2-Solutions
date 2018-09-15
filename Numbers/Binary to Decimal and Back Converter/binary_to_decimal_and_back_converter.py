@@ -25,7 +25,7 @@ def binary_to_decimal(number: int) -> int:
     return int(result)
 
 
-def decimal_to_binary(number: int) -> str:
+def decimal_to_binary(number: int) -> int:
     """Return binary version of the specified decimal number."""
     binary_list = []
 
@@ -47,12 +47,12 @@ def decimal_to_binary(number: int) -> str:
             result = result[:-1] + "1"
         else:
             result = result[:-int(math.log(digit, 2)) - 1] + "1" + result[-int(math.log(digit, 2)):]
-    return result
+    return int(result)
 
 
-def decimal_to_octal(number: int) -> str:
+def decimal_to_octal(number: int) -> int:
     """Return octal version of the specified decimal number."""
-    result = oct(number)[2:]
+    result = int(oct(number)[2:])
     return result
 
 
