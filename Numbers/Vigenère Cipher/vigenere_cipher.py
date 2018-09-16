@@ -81,7 +81,6 @@ def encrypt(string: str, key: str) -> str:
 
 def _start_interactively():
     """Start the program interactively through the command line."""
-    print(vigenere_table())
     while True:
         string = input("Please input the string you want to encrypt: ")
         key = input("Please input the encryption key: ")
