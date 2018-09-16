@@ -15,7 +15,6 @@ from typing import Tuple
 
 
 def pascals_triangle(rows: int) -> Tuple[Tuple[int, ...], ...]:
-
     """Return tuple containing pascals triangle up to specified length."""
     result = []
     next_numbers = [1]
@@ -41,7 +40,6 @@ def _start_interactively():
     while True:
         rows = int(input("Please input the number of rows"
                          " the program should print out: "))
-        print(type(pascals_triangle(rows)[0][0]))
         for row in pascals_triangle(rows):
             print(*row)
         print("")
