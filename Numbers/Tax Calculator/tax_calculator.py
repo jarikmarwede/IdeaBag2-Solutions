@@ -31,6 +31,7 @@ def _start_interactively():
                          .replace("%", ""))
         print(f"Tax: {get_tax(cost, tax_rate)}")
         print(f"Final cost: {apply_tax(cost, tax_rate)}")
+        print("")
 
 
 if __name__ == "__main__":
