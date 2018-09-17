@@ -8,7 +8,7 @@ Description:
 Make a program that removes every vowel and whitespace found in a string.
 It should output the resulting disemvoweled string
 with the removed vowels concatenated to the end of it.
-For example 'Hello world' outputs 'hllwrld eoo'.
+For example 'Hello world' outputs 'Hllwrld eoo'.
 """
 VOWELS = ("a", "e", "i", "o", "u")
 
