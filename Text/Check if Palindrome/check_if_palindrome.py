@@ -6,7 +6,7 @@ Check if Palindrome
 
 Description:
 Develop a program that checks if a string entered by a user is a palindrome.
-A palindrome is a word that reads the same forwerds as backwards.
+A palindrome is a word that reads the same forwards as backwards.
 An example is "racecar" or "madam".
 """
 
