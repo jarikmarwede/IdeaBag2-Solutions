@@ -23,11 +23,11 @@ The order of the output words doesn't matter.
 
 
 def find_possible_words(word: str, dictionary: list) -> list:
-    """Return all possible words from word
-    """
+    """Return all possible words from word."""
     possible_words = []
     first_character = word[0]
     last_character = word[len(word) - 1]
+
     for dictionary_entry in dictionary:
         if (dictionary_entry.startswith(first_character) and
                 dictionary_entry.endswith(last_character)):
@@ -42,9 +42,9 @@ def find_possible_words(word: str, dictionary: list) -> list:
 
 
 def get_dictionary(file_name: str) -> list:
-    """Return dictionary from file
-    """
+    """Return dictionary from file."""
     dictionary = []
+
     with open(file_name, "r") as file:
         for line in file.readlines():
             if len(line.strip()) > 4:
@@ -53,10 +53,10 @@ def get_dictionary(file_name: str) -> list:
 
 
 def get_possible_words(string: str, file_name: str) -> list:
-    """Return all possible words from each word in string
-    """
+    """Return all possible words from each word in string."""
     possible_string = []
     dictionary = get_dictionary(file_name)
+
     for word in string.split():
         if len(word) > 4:
             possible_words = find_possible_words(word, dictionary)
@@ -66,8 +66,13 @@ def get_possible_words(string: str, file_name: str) -> list:
     return possible_string
 
 
-if __name__ == "__main__":
+def _start_interactively():
+    """Start the program interactively through the command line."""
     while True:
-        STRING = input("Please enter a string: ")
-        FILE_NAME = input("Please enter the path to the dictionary: ")
-        print(get_possible_words(STRING, FILE_NAME))
+        string = input("Please enter a string: ")
+        file_name = input("Please enter the path to the dictionary: ")
+        print(get_possible_words(string, file_name))
+
+
+if __name__ == "__main__":
+    _start_interactively()
