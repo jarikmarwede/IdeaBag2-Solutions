@@ -36,6 +36,7 @@ MORSE_CODE_DICT = {" ": "/", "a": ".-", "b": "-...", "c": "-.-.",
 def convert_to_morse_code(string: str) -> str:
     """Convert to morse code."""
     new_string = ""
+
     for char in string:
         if char.lower() in MORSE_CODE_DICT:
             new_string += MORSE_CODE_DICT[char.lower()] + " "
@@ -48,6 +49,7 @@ def convert_to_morse_code(string: str) -> str:
 def convert_from_morse_code(string: str) -> str:
     """Convert from morse code."""
     new_string = ""
+
     for letter_code in string.split():
         for char, morse_code in MORSE_CODE_DICT.items():
             if letter_code == morse_code:
