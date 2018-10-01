@@ -29,6 +29,7 @@ If you want to contribute in any way please take a look at [CONTRIBUTING.md](CON
 * [Beautifulsoup](https://www.crummy.com/software/BeautifulSoup/) (Web/Page Scraper)
 * [Pygame](https://www.pygame.org/) (Graphics and Multimedia/Mp3 Player)
 * [SymPy](https://www.sympy.org/) (Numbers/Find Pi to the Nth digit)
+* [ntplib](https://code.google.com/archive/p/ntplib/) (Networking/Get Atomic Time form Internet Clock)
 
 You can install all of them together through running `pip install -r requirements.txt` inside the repository folder.
 
