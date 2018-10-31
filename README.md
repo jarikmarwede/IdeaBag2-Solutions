@@ -1,12 +1,12 @@
 # IdeaBag2-Solutions
 This is a collection of programs from the *Idea Bag 2* app ([*Programming Ideas 2*](https://play.google.com/store/apps/details?id=com.alansa.ideabag2) on the google play store).
 
-The intention of this repository is to help people that are stuck on an Idea or want to see another approach.
+The intention of this project is to help people that are stuck on an Idea or want to see another approach.
 The goal is also to find optimal solutions for all Ideas.
 The programs are made in a way that it is easy to understand and learn from them.
 
 All programs are written in python 3.
-The original categorys from *Idea Bag 2* are used to organize them.
+The original categories from *Idea Bag 2* are used to organize them.
 
 *Idea Bag 2* also has a github repository which can be found [here](https://github.com/mclintprojects/ideabag2).
 
