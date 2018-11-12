@@ -37,6 +37,14 @@ class MainWindow(tk.Tk):
             command=self.start_checking,
         )
 
+        self.email_treeview.column("#0", minwidth=0, width=0)
+        self.email_treeview.column(0, anchor=tk.CENTER)
+        self.email_treeview.column(1, anchor=tk.CENTER)
+        self.email_treeview.column(2, anchor=tk.CENTER)
+        self.email_treeview.heading(0, text="Host")
+        self.email_treeview.heading(1, text="Username")
+        self.email_treeview.heading(2, text="Password")
+
         self.email_treeview_frame.grid(
             row=0, column=0, padx=15, pady=15, sticky=tk.NSEW
         )
