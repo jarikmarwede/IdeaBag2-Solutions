@@ -54,11 +54,13 @@ class MainWindow(tk.Tk):
 
         self.update()
         self.minsize(self.winfo_width(), self.winfo_height())
+        center_window_on_screen(self)
 
     def add_address(self):
         """Add an email address to check."""
         add_address_popup = AddAddressPopup()
         add_address_popup.transient(self)
+        center_window_on_screen(add_address_popup)
         self.wait_window(add_address_popup)
         self.email_treeview.insert(
             parent="",
@@ -121,6 +123,32 @@ class AddAddressPopup(tk.Toplevel):
         self.username = self.username_entry.get()
         self.password = self.password_entry.get()
         self.destroy()
+
+
+def center_window_on_screen(window):
+    """Center the specified window on the screen."""
+    window.update_idletasks()
+    height = window.winfo_height()
+    width = window.winfo_width()
+    screen_height = window.winfo_screenheight()
+    screen_width = window.winfo_screenwidth()
+
+    x_coordinate = int(screen_width / 2 - width / 2)
+    y_coordinate = int(screen_height / 2 - height / 2)
+
+    window.geometry(
+        "".join(
+            (
+                str(width),
+                "x",
+                str(height),
+                "+",
+                str(x_coordinate),
+                "+",
+                str(y_coordinate),
+            )
+        )
+    )
 
 
 def _start_gui():
