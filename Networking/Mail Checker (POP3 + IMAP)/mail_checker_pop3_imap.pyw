@@ -31,6 +31,11 @@ class MainWindow(tk.Tk):
             text="Add email address",
             command=self.add_address,
         )
+        self.remove_address_button = ttk.Button(
+            self.bottom_buttons_frame,
+            text="Remove email address",
+            command=self.remove_address,
+        )
         self.start_checking_button = ttk.Button(
             self.bottom_buttons_frame,
             text="Start checking in background",
@@ -57,7 +62,8 @@ class MainWindow(tk.Tk):
         self.email_treeview.grid(row=0, column=0, sticky=tk.NSEW)
         self.email_treeview_scrollbar.grid(row=0, column=1, sticky=tk.NS + tk.E)
         self.add_address_button.grid(row=0, column=0, padx=(0, 5))
-        self.start_checking_button.grid(row=0, column=1, padx=(5, 0))
+        self.remove_address_button.grid(row=0, column=1, padx=5)
+        self.start_checking_button.grid(row=0, column=2, padx=(5, 0))
 
         self.update()
         self.minsize(self.winfo_width(), self.winfo_height())
@@ -78,6 +84,12 @@ class MainWindow(tk.Tk):
                 add_address_popup.password,
             ),
         )
+
+    def remove_address(self):
+        """Remove the selected addresses from the treeview."""
+        selected_items = self.email_treeview.selection()
+        for item in selected_items:
+            self.email_treeview.delete(item)
 
     def start_checking(self):
         """Start checking for incoming emails."""
