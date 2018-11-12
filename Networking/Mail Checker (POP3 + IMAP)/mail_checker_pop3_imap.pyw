@@ -13,7 +13,6 @@ class MainWindow(tk.Tk):
         """Initialize window."""
         super().__init__()
         self.title("Mail Checker (POP3 / IMAP)")
-        self.resizable(width=True, height=True)
 
         self.email_treeview_frame = ttk.Frame(self)
         self.bottom_buttons_frame = ttk.Frame(self)
@@ -117,6 +116,11 @@ class AddAddressPopup(tk.Toplevel):
         self.password_label.grid(row=0, column=0)
         self.password_entry.grid(row=1, column=0)
         self.add_address_button.grid(row=3, column=0, pady=10)
+
+        self.host_entry.bind("<KeyPress-Return>", lambda _: self.add_address())
+        self.username_entry.bind("<KeyPress-Return>", lambda _: self.add_address())
+        self.password_entry.bind("<KeyPress-Return>", lambda _: self.add_address())
+        self.host_entry.focus()
 
     def add_address(self):
         self.host = self.host_entry.get()
