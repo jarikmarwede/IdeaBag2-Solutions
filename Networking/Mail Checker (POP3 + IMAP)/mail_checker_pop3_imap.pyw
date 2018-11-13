@@ -91,6 +91,7 @@ class MainWindow(tk.Tk):
             index="end",
             values=(
                 add_address_popup.host,
+                add_address_popup.protocol,
                 add_address_popup.username,
                 add_address_popup.password,
             ),
@@ -174,6 +175,7 @@ class AddAddressPopup(tk.Toplevel):
 
     def add_address(self):
         self.host = self.host_entry.get()
+        self.protocol = self.protocol_listbox.selection_get()
         self.username = self.username_entry.get()
         self.password = self.password_entry.get()
         self.destroy()
@@ -184,8 +186,10 @@ def checking_mainloop(addresses_information: list) -> bool:
     number_of_emails = {}
     new_number_of_emails = {}
     while True:
-        for host, username, password in addresses_information:
-            new_number_of_emails[username] = get_email_amount(host, username, password)
+        for host, protocol, username, password in addresses_information:
+            new_number_of_emails[username] = get_email_amount(
+                host, protocol, username, password
+            )
             if number_of_emails.get(username) is None:
                 number_of_emails[username] = new_number_of_emails[username]
             elif new_number_of_emails[username] > number_of_emails[username]:
@@ -194,11 +198,18 @@ def checking_mainloop(addresses_information: list) -> bool:
         time.sleep(1)
 
 
-def get_email_amount(host: str, username: str, password: str) -> int:
+def get_email_amount(host: str, protocol: str, username: str, password: str) -> int:
     """Return the number of emails in the accounts inbox."""
-    with imaplib.IMAP4_SSL(host) as M:
-        M.login(username, password)
-        return int(M.select()[1][0].decode("UTF-8"))
+    if protocol == "IMAP":
+        with imaplib.IMAP4_SSL(host) as M:
+            M.login(username, password)
+            number_of_emails = int(M.select()[1][0].decode("UTF-8"))
+    else:
+        M = poplib.POP3_SSL(host)
+        M.user(username)
+        M.pass_(password)
+        number_of_emails = len(M.list()[1])
+    return number_of_emails
 
 
 def center_window_on_screen(window):
