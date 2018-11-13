@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+"""A program that checks for new mail on your email accounts.
+Title:
+Mail Checker (POP3 / IMAP)
+
+Description:
+The user enters various account information including web server, IP, protocol type (POP3 or IMAP)
+and the application will check for email on several accounts at a given interval.
+"""
 import imaplib
 import poplib
 import time
@@ -162,20 +170,24 @@ class AddAddressPopup(tk.Toplevel):
 
 def checking_mainloop(addresses_information: list) -> bool:
     """Return True when a new email is found."""
-    inboxes = {}
-    new_inboxes = {}
+    number_of_emails = {}
+    new_number_of_emails = {}
     while True:
         for host, username, password in addresses_information:
-            new_inboxes[host] = get_mail(host, username, password)
-        if inboxes == {}:
-            inboxes = new_inboxes
-        elif new_inboxes != inboxes:
-            return True
+            new_number_of_emails[username] = get_email_amount(host, username, password)
+            if number_of_emails.get(username) is None:
+                number_of_emails[username] = new_number_of_emails[username]
+            elif new_number_of_emails[username] > number_of_emails[username]:
+                return True
+            number_of_emails[username] = new_number_of_emails[username]
         time.sleep(1)
 
 
-def get_mail(host: str, username: str, password: str) -> list:
-    """Return a list of all the emails are in the accounts inbox."""
+def get_email_amount(host: str, username: str, password: str) -> int:
+    """Return the number of emails in the accounts inbox."""
+    with imaplib.IMAP4_SSL(host) as M:
+        M.login(username, password)
+        return int(M.select()[1][0].decode("UTF-8"))
 
 
 def center_window_on_screen(window):
