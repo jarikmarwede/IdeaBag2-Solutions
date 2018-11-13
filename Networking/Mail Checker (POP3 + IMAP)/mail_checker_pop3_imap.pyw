@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import imaplib
 import poplib
+import time
 import tkinter as tk
 from tkinter import ttk
 import tkinter.messagebox as tk_messagebox
@@ -93,6 +94,16 @@ class MainWindow(tk.Tk):
 
     def start_checking(self):
         """Start checking for incoming emails."""
+        self.withdraw()
+        while True:
+            found = checking_mainloop(
+                [
+                    self.email_treeview.item(children_id, "values")
+                    for children_id in self.email_treeview.get_children()
+                ]
+            )
+            if found:
+                tk_messagebox.showinfo("New message", "You have got a new message!")
 
 
 class AddAddressPopup(tk.Toplevel):
@@ -147,6 +158,24 @@ class AddAddressPopup(tk.Toplevel):
         self.username = self.username_entry.get()
         self.password = self.password_entry.get()
         self.destroy()
+
+
+def checking_mainloop(addresses_information: list) -> bool:
+    """Return True when a new email is found."""
+    inboxes = {}
+    new_inboxes = {}
+    while True:
+        for host, username, password in addresses_information:
+            new_inboxes[host] = get_mail(host, username, password)
+        if inboxes == {}:
+            inboxes = new_inboxes
+        elif new_inboxes != inboxes:
+            return True
+        time.sleep(1)
+
+
+def get_mail(host: str, username: str, password: str) -> list:
+    """Return a list of all the emails are in the accounts inbox."""
 
 
 def center_window_on_screen(window):
