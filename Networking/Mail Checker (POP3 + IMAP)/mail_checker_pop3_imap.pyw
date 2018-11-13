@@ -28,8 +28,8 @@ class MainWindow(tk.Tk):
 
         self.email_treeview = ttk.Treeview(
             self.email_treeview_frame,
-            columns=("Host", "Username", "Password"),
-            displaycolumns=("Host", "Username"),
+            columns=("Host", "Protocol", "Username", "Password"),
+            displaycolumns=("Host", "Protocol", "Username"),
         )
         self.email_treeview_scrollbar = ttk.Scrollbar(
             self.email_treeview_frame, command=self.email_treeview.yview
@@ -55,9 +55,11 @@ class MainWindow(tk.Tk):
         self.email_treeview.column(0, anchor=tk.CENTER)
         self.email_treeview.column(1, anchor=tk.CENTER)
         self.email_treeview.column(2, anchor=tk.CENTER)
+        self.email_treeview.column(3, anchor=tk.CENTER)
         self.email_treeview.heading(0, text="Host")
-        self.email_treeview.heading(1, text="Username")
-        self.email_treeview.heading(2, text="Password")
+        self.email_treeview.heading(1, text="Protocol")
+        self.email_treeview.heading(2, text="Username")
+        self.email_treeview.heading(3, text="Password")
 
         self.email_treeview_frame.grid(
             row=0, column=0, padx=15, pady=15, sticky=tk.NSEW
@@ -123,38 +125,47 @@ class AddAddressPopup(tk.Toplevel):
         self.resizable(width=False, height=False)
 
         self.host = ""
+        self.protocol = ""
         self.username = ""
         self.password = ""
 
         self.host_frame = ttk.Frame(self)
+        self.protocol_frame = ttk.Frame(self)
         self.username_frame = ttk.Frame(self)
         self.password_frame = ttk.Frame(self)
 
         self.host_label = ttk.Label(self.host_frame, text="Host:")
-        self.host_entry = ttk.Entry(self.host_frame, width=30, justify=tk.CENTER)
+        self.host_entry = ttk.Entry(self.host_frame, width=40, justify=tk.CENTER)
+        self.protocol_label = ttk.Label(self.protocol_frame, text="Protocol")
+        self.protocol_listbox = tk.Listbox(
+            self.protocol_frame, listvariable=tk.StringVar(value="IMAP POP3")
+        )
         self.username_label = ttk.Label(self.username_frame, text="Username:")
         self.username_entry = ttk.Entry(
-            self.username_frame, width=30, justify=tk.CENTER
+            self.username_frame, width=40, justify=tk.CENTER
         )
         self.password_label = ttk.Label(self.password_frame, text="Password:")
         self.password_entry = ttk.Entry(
-            self.password_frame, width=30, justify=tk.CENTER, show="*"
+            self.password_frame, width=40, justify=tk.CENTER, show="*"
         )
         self.add_address_button = ttk.Button(
             self, text="Add address", command=self.add_address
         )
 
         self.host_frame.grid(row=0, column=0, padx=10, pady=10)
-        self.username_frame.grid(row=1, column=0, padx=10, pady=10)
-        self.password_frame.grid(row=2, column=0, padx=10, pady=10)
+        self.protocol_frame.grid(row=1, column=0, padx=20, pady=10)
+        self.username_frame.grid(row=2, column=0, padx=20, pady=10)
+        self.password_frame.grid(row=3, column=0, padx=20, pady=10)
 
         self.host_label.grid(row=0, column=0)
         self.host_entry.grid(row=1, column=0)
+        self.protocol_label.grid(row=0, column=0)
+        self.protocol_listbox.grid(row=1, column=0)
         self.username_label.grid(row=0, column=0)
         self.username_entry.grid(row=1, column=0)
         self.password_label.grid(row=0, column=0)
         self.password_entry.grid(row=1, column=0)
-        self.add_address_button.grid(row=3, column=0, pady=10)
+        self.add_address_button.grid(row=4, column=0, pady=10)
 
         self.host_entry.bind("<KeyPress-Return>", lambda _: self.add_address())
         self.username_entry.bind("<KeyPress-Return>", lambda _: self.add_address())
