@@ -14,6 +14,8 @@ import tkinter as tk
 from tkinter import ttk
 import tkinter.messagebox as tk_messagebox
 
+TIMEOUT = 10
+
 
 class MainWindow(tk.Tk):
     """GUI class for interacting with tkinter."""
@@ -195,7 +197,7 @@ def checking_mainloop(addresses_information: list) -> bool:
             elif new_number_of_emails[username] > number_of_emails[username]:
                 return True
             number_of_emails[username] = new_number_of_emails[username]
-        time.sleep(1)
+        time.sleep(TIMEOUT)
 
 
 def get_email_amount(host: str, protocol: str, username: str, password: str) -> int:
