@@ -62,10 +62,10 @@ def get_images_from_directory(directory_path: str) -> list:
         file_name = file_name.lower()
 
         for file_extension in IMAGE_FILE_EXTENSIONS:
-            if not file_name.endswith(file_extension):
+            if file_name.endswith(file_extension):
+                images.append(directory_path + "/" + file_name)
                 break
-        else:
-            images.append(directory_path + "/" + file_name)
+
     return images
 
 
