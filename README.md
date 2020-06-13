@@ -19,6 +19,7 @@ Go to [Dependencies](#dependencies) to check which modules you need to install a
 You can watch this video, which explains how to use this repository and how it is organized:
 
 [![Thumbnail of the video](https://i.vimeocdn.com/video/885346517.jpg)](https://vimeo.com/412821037)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjarikmarwede%2FIdeaBag2-Solutions.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjarikmarwede%2FIdeaBag2-Solutions?ref=badge_shield)
 
 ## Contributing
 If you want to contribute in any way please take a look at [CONTRIBUTING.md](CONTRIBUTING.md).
@@ -39,3 +40,6 @@ If you only want to install some of them you can find the required versions in [
 ## License
 This repository uses the MIT License.
 A copy of it can be found in [LICENSE](LICENSE).
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fjarikmarwede%2FIdeaBag2-Solutions.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fjarikmarwede%2FIdeaBag2-Solutions?ref=badge_large)
