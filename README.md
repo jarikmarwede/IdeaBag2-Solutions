@@ -24,7 +24,7 @@ You can watch this video, which explains how to use this repository and how it i
 If you want to contribute in any way please take a look at [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Dependencies
-* [Python 3.6+](https://www.python.org/downloads/)
+* [Python 3.7+](https://www.python.org/downloads/)
 * [Pillow](http://python-pillow.org) (Graphics and Multimedia/Dominant Colors, Threading/Bulk Thumbnail Creator)
 * [Beautifulsoup](https://www.crummy.com/software/BeautifulSoup/) (Web/Page Scraper)
 * [Pygame](https://www.pygame.org/) (Graphics and Multimedia/Mp3 Player)
