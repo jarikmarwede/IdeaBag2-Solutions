@@ -18,7 +18,7 @@ Go to [Dependencies](#dependencies) to check which modules you need to install a
 
 You can watch this video, which explains how to use this repository and how it is organized:
 
-[![Thumbnail of the video](https://i.vimeocdn.com/video/885346517.jpg)](https://vimeo.com/412821037)
+[![Thumbnail of the video](video-thumbnail.png)](https://vimeo.com/412821037)
 
 ## Contributing
 If you want to contribute in any way please take a look at [CONTRIBUTING.md](CONTRIBUTING.md).
