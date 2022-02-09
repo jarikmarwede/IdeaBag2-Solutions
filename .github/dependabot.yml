@@ -8,12 +8,3 @@ updates:
   open-pull-requests-limit: 10
   reviewers:
     - "jarikmarwede"
-  ignore:
-  - dependency-name: pillow
-    versions:
-    - 8.1.0
-    - 8.1.1
-    - 8.1.2
-  - dependency-name: sympy
-    versions:
-    - 1.7.1
