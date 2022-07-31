@@ -34,7 +34,12 @@ false
 
 def is_latin_square(row_length: int, array: str) -> bool:
     """Return whether array is a latin square."""
-    # check horizontally
+    return _is_latin_square_horizontally(row_length, array) \
+        and _is_latin_square_vertically(row_length, array)
+
+
+def _is_latin_square_horizontally(row_length: int, array: str) -> bool:
+    """Return whether array is a latin square just through horizontal checking."""
     row = 1
     column = 0
     numbers = []
@@ -46,13 +51,24 @@ def is_latin_square(row_length: int, array: str) -> bool:
             column = 0
             numbers = []
         column += 1
-        print(index, digit, column, row)
         # check whether the digit is already in the current row
         if digit in numbers:
             return False
         numbers.append(digit)
 
-    # check vertically
+    return True
+
+
+def _is_latin_square_vertically(row_length: int, array: str) -> bool:
+    """Return whether array is a latin square just through vertical checking."""
+    for column in range(0, row_length):
+        numbers = []
+        for row in range(0, len(array) // row_length):
+            digit = array[row * row_length + column]
+            # check whether the digit is already in the current row
+            if digit in numbers:
+                return False
+            numbers.append(digit)
 
     return True
 
