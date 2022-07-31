@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import unittest
 
-from dominant_colors import dominant_colors, convert_to_color_dict_list
+from Graphics_and_Multimedia.Dominant_Colors.dominant_colors import dominant_colors, convert_to_color_dict_list
 
 
 class Test(unittest.TestCase):
