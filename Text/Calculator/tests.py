@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import unittest
 
-from Calculator import evaluate
+from Text.Calculator.calculator import evaluate
 
 
 class Test(unittest.TestCase):

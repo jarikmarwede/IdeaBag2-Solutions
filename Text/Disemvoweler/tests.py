@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import unittest
 
-from disemvoweler import disemvowel
+from Text.Disemvoweler.disemvoweler import disemvowel
 
 
 class Test(unittest.TestCase):
