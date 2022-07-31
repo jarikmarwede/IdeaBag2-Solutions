@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import unittest
 
-from lotto import gamble
+from Numbers.Lotto.lotto import gamble
 
 
 class Test(unittest.TestCase):
