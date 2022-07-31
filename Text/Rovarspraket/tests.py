@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import unittest
 
-from rovarspraket import translate_from, translate_to
+from Text.Rovarspraket.rovarspraket import translate_from, translate_to
 
 
 class Test(unittest.TestCase):

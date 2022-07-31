@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import unittest
 
-from voodlewoodlel import voodlewoodlel
+from Text.Voodlewoodlel.voodlewoodlel import voodlewoodlel
 
 
 class Test(unittest.TestCase):
