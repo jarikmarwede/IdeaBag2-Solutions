@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install requirements
+        run: pip install -r requirements.txt
+      - name: Run unittests
+        run: python -m unittest discover -p 'tests.py'
