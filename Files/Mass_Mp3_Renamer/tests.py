@@ -2,7 +2,8 @@
 import re
 import unittest
 
-from mass_mp3_renamer import _convert_filenames, _convert_to_regex, _get_format_order
+from Files.Mass_Mp3_Renamer.mass_mp3_renamer import \
+    _convert_filenames, _convert_to_regex, _get_format_order
 
 
 class Test(unittest.TestCase):
