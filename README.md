@@ -12,7 +12,7 @@ The original categories from *Idea Bag 2* are used to organize them.
 
 ## How to use
 If you want to get the programs for playing around with them or editing them just download or clone them from Github.
-All programs need [python 3.6](https://www.python.org/downloads/) or later installed, 
+All programs need [python 3.7](https://www.python.org/downloads/) or later installed, 
 and for some of them external modules are required.
 Go to [Dependencies](#dependencies) to check which modules you need to install and how.
 
