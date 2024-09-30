@@ -1,5 +1,5 @@
 beautifulsoup4==4.12.3
 ntplib==0.4.0
 Pillow==10.4.0
-pygame==2.6.0
+pygame==2.6.1
 sympy==1.13.3
