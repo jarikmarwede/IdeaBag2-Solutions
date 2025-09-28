@@ -27,6 +27,8 @@ def find_prime_factors(number: int) -> List[int]:
             else:
                 return [num, *find_prime_factors(int(number / num))]
 
+    return []
+
 
 def _start_interactively():
     """Start the program interactively."""

@@ -13,8 +13,10 @@ organize the indexed content and don't allow duplicates.
 Have it put the results into an easily searchable index file.
 """
 import urllib.request
+from typing import List
 
 import bs4 as bs
+from bs4 import Tag
 
 PARSER = "html.parser"
 
@@ -29,7 +31,8 @@ def get_image_urls(source: bytes) -> list:
     """Return the urls of all images in the specified html code."""
     soup = bs.BeautifulSoup(source, PARSER)
 
-    images = soup.find_all("img")
+    images_result = soup.find_all("img")
+    images: List[Tag] = [img for img in images_result if isinstance(img, Tag)]
     urls = [image.get("src") for image in images]
     return list(set(urls))  # remove duplicates
 
@@ -38,7 +41,8 @@ def get_links(source: bytes) -> list:
     """Return the urls of all links in the specified html code."""
     soup = bs.BeautifulSoup(source, PARSER)
 
-    links = soup.find_all("a")
+    links_result = soup.find_all("a")
+    links: List[Tag] = [link for link in links_result if isinstance(link, Tag)]
     urls = [link.get("href") for link in links
             if link.get("href")
             and link.get("href") != "#"

@@ -15,7 +15,7 @@ There are various clocks across the world.
 Do a search for a list of them and use one.
 """
 import datetime
-import ntplib
+import ntplib  # type: ignore
 
 
 def get_time(ntp_server: str) -> datetime.time:

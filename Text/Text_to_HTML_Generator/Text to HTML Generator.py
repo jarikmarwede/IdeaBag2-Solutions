@@ -70,6 +70,8 @@ def check_heading(index: int, line: str, lines: list, html: str) -> bool:
     else:
         return False
 
+    return False
+
 
 def check_paragraph(index: int, line: str, lines: list) -> bool:
     """Return True if line specified is a paragraph
