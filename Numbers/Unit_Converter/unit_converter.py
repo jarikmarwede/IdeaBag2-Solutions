@@ -34,7 +34,7 @@ class Unit:
 
 
 class Length(Unit):
-    _unit_in_base = 1
+    _unit_in_base: float = 1
 
     def convert_to_base(self):
         """Convert the current value to the base unit."""
@@ -52,7 +52,7 @@ class Length(Unit):
 
 
 class Mass(Unit):
-    _unit_in_base = 1
+    _unit_in_base: float = 1
 
     def convert_to_base(self):
         """Convert the current value to the base unit."""

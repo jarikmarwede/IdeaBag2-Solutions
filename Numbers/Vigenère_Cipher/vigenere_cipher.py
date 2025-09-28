@@ -14,7 +14,7 @@ Give the user a message if their input is invalid
 (empty/just numbers/etc)
 Submitted by Imperial_Squid
 """
-from typing import Tuple
+from typing import Tuple, List
 
 ALPHABET = (
     "a", "b", "c", "d", "e", "f",
@@ -27,7 +27,7 @@ ALPHABET = (
 
 def vigenere_table() -> Tuple[Tuple[str, ...], ...]:
     """Return vigenère table."""
-    result = [ALPHABET, ]
+    result: List[tuple[str, ...]] = [ALPHABET, ]
 
     for shift in range(1, 26):
         result.append(ALPHABET[shift:] + ALPHABET[:shift])

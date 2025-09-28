@@ -30,6 +30,7 @@ true
 false
 false
 """
+from typing import List
 
 
 def is_latin_square(row_length: int, array: str) -> bool:
@@ -42,7 +43,7 @@ def _is_latin_square_horizontally(row_length: int, array: str) -> bool:
     """Return whether array is a latin square just through horizontal checking."""
     row = 1
     column = 0
-    numbers = []
+    numbers: List[str] = []
 
     for index, digit in enumerate(array):
         # check for new row
