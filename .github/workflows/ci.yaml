@@ -11,8 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
-        with:
-          python-version: '3.x'
       - name: Install requirements
         run: pip install -r requirements.txt
       - name: Run unittests
