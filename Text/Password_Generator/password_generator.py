@@ -28,7 +28,7 @@ Submitted by Andrew J.
 import random
 import string
 
-passwords = {}
+passwords: dict[str, str] = {}
 
 
 def generate_password(length: int) -> str:
