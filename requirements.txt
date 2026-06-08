@@ -1,4 +1,4 @@
-beautifulsoup4==4.14.3
+beautifulsoup4==4.15.0
 ntplib==0.4.0
 Pillow==12.2.0
 pygame==2.6.1
